@@ -1,5 +1,7 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
+import { isEmpty } from "ramda";
 import Swiper from "react-id-swiper";
+
 import { withStyles } from "@material-ui/core/styles";
 
 import TwitterUser from "./twitterUser";
@@ -33,6 +35,11 @@ const styles = {
   },
   onFullScreenEntity: {
     height: "calc(100%*0.20)",
+    width: "100%"
+  },
+  onFullScreenEmojis: {
+    display: "flex",
+    height: "calc(100%*0.80)",
     width: "100%"
   },
   onFullScreenTweet: {
@@ -74,83 +81,70 @@ const PARAMS = {
   slidesPerView: 4,
   spaceBetween: 10,
   freeMode: true,
-  slideToClickedSlide: true
+  slideToClickedSlide: true,
+  grabCursor: true
 };
 
 const VERTICICAL_PARAMS = {
   direction: "vertical",
   spaceBetween: 20,
-  slidesPerView: 6,
-  slidesOffsetBefore: 10
+  slidesPerView: 4,
+  grabCursor: true
 };
 
-class ReactionFeed extends Component {
+class ReactionFeed extends PureComponent {
   constructor(props) {
     super(props);
 
     this.swiper = null;
-    this.beginSwitchToNextTweet = null;
-    this.interval = null;
-    this.socket = null;
+    this.pollInterval = null;
+
     this.state = {
       viewing: 0
     };
   }
 
-  // componentDidMount() {
-  //   // if (this.props.variant === "onVideo") {
-  //   //   this.swiper.setTranslate(200);
-  //   //   console.log(this.swiper.getTranslate());
-  //   // }
-  //   this.beginSwitchToNextTweet = setTimeout(() => {
-  //     this.goNext();
-  //     this.autoSwitchToNextTweet(3);
-  //   }, 2000);
-  // }
+  componentDidUpdate(prevProps) {
+    if (this.props.selectedEntity.name) {
+      //If entity is changed, so names will change, viewing = 0
+      if (this.props.selectedEntity.name !== prevProps.selectedEntity.name) {
+        this.setState({ viewing: 0 });
+        //Since new entity poll for tweets
+        this.props.onPollEntityTweets();
+      } else {
+        //If entity remains the same, poll tweets
+        const tweetsCount = this.props.selectedEntity.tweets.length;
 
-  // componentDidUpdate() {
-  //   const {selectedEntity: {tweets}} = this.props;
-  //   const {viewing} = this.state;
+        if (tweetsCount === 0) {
+          console.log("poll");
+          this.props.onPollEntityTweets();
+        } else if (this.state.viewing === tweetsCount - 1) {
+          this.props.onPollEntityTweets();
+        }
 
-  //   if (viewing < tweets.length - 1) {
-  //     this.goNext();
-  //   }
-  // }
-
-  componentWillUnmount() {
-    clearTimeout(this.beginSwitchToNextTweet);
-    clearInterval(this.interval);
+        //Add a condition to poll Tweets when the last viewing state didn't result in polling tweets;
+      }
+    }
   }
 
-  autoSwitchToNextTweet = time => {
-    this.interval = setInterval(() => {
-      this.goNext();
-    }, time * 1000);
-  };
+  componentWillUnmount() {
+    clearInterval(this.pollInterval);
+  }
 
   handleClick = index => {
-    // clearInterval(this.interval);
-    this.setState({ viewing: this.swiper.activeIndex });
+    this.swiper.slideTo(index);
+    this.setState({ viewing: index });
     // this.autoSwitchToNextTweet(5);
   };
 
   goNext = () => {
     if (this.swiper) {
-      this.swiper.slideNext();
+      const { viewing } = this.state;
+      const nextViewing = viewing + 1;
+      this.swiper.slideTo(nextViewing);
       this.setState({
-        viewing: this.swiper.activeIndex
+        viewing: nextViewing
       });
-    }
-  };
-
-  goPrevious = () => {
-    if (this.swiper) {
-      this.swiper.slidePrev();
-      if (this.state.viewing !== 0) {
-        this.setState({
-          viewing: this.state.viewing - 1
-        });
-      }
     }
   };
 
@@ -163,7 +157,8 @@ class ReactionFeed extends Component {
     } = this.props;
     const { tweets } = selectedEntity;
     const { viewing } = this.state;
-    if (variant === "onVideo") {
+
+    if (variant === "onVideo" && selectedEntity.name) {
       return (
         <React.Fragment>
           <div className={classes.onFullScreenleftContainer}>
@@ -175,29 +170,31 @@ class ReactionFeed extends Component {
                   entityImage={selectedEntity.image}
                 />
               </div>
-              <Swiper
-                shouldSwiperUpdate
-                {...VERTICICAL_PARAMS}
-                ref={node => {
-                  if (node) this.swiper = node.swiper;
-                }}
-              >
-                {tweets.map((tweet, index) => (
-                  <div key={index}>
-                    <TwitterUser
-                      index={index}
-                      viewing={viewing}
-                      tweet={tweet}
-                      onUserClick={this.handleClick}
-                    />
-                  </div>
-                ))}
-              </Swiper>
+              <div className={classes.onFullScreenEmojis}>
+                <Swiper
+                  shouldSwiperUpdate
+                  {...VERTICICAL_PARAMS}
+                  ref={node => {
+                    if (node) this.swiper = node.swiper;
+                  }}
+                >
+                  {tweets.map((tweet, index) => (
+                    <div key={index}>
+                      <TwitterUser
+                        index={index}
+                        viewing={viewing}
+                        tweet={tweet}
+                        onUserClick={this.handleClick}
+                      />
+                    </div>
+                  ))}
+                </Swiper>
+              </div>
             </div>
           </div>
           <div className={classes.onFullScreenTweetTextContainer}>
             <div className={classes.onFullScreenTweetText}>
-              {tweets[viewing].tweet}
+              {!isEmpty(tweets) && tweets[viewing].tweet}
             </div>
           </div>
           <div className={classes.exitCTA}>
@@ -216,7 +213,7 @@ class ReactionFeed extends Component {
 
     return (
       <div className={classes.root}>
-        <TweetBox text={tweets[viewing].tweet} />
+        {!isEmpty(tweets) && <TweetBox text={tweets[viewing].tweet} />}
         <div>
           <Swiper
             shouldSwiperUpdate

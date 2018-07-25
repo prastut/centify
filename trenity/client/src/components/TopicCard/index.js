@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 import Emoji from "./emoji";
@@ -41,7 +41,7 @@ const styles = {
   }
 };
 
-class TopicCard extends Component {
+class TopicCard extends PureComponent {
   handleTopicCardClick = () => {
     this.props.onEntityClick(this.props.entityKey);
   };

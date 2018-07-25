@@ -23,7 +23,12 @@ class Match extends Component {
     this.eventsInterval = null;
     this.trendingEntitiesInterval = null;
     this.emojisEntitiesInterval = null;
-    this.specificEntityPollingTweetsInterval = null;
+
+    //Moved this interval to ReactionFeed
+    // this.specificEntityPollingTweetsInterval = null;
+
+    //Timeouts
+    this.toggleTrendingOnVideo = null;
 
     //MatchDataPacket
     this.match = {};
@@ -31,11 +36,15 @@ class Match extends Component {
       startSimulation: false,
       timeInsideMatch: "",
       events: [],
-      trendingEntities: {},
+      trending: {
+        entities: {},
+        visible: true
+      },
       emojis: {},
       selectedEntity: {
         name: "",
-        tweets: []
+        tweets: [],
+        image: ""
       },
       video: {
         playing: false,
@@ -179,11 +188,27 @@ class Match extends Component {
 
   tick = () => {
     const { timeInsideMatch } = this.state;
-    //Add a condition that start time > end time then match is finished
+
+    //Mandzukich Throttle
+    const mandzuTime = moment.utc("2018-07-15 15:17:50");
+
+    console.log(timeInsideMatch.format());
+    if (timeInsideMatch.isSame(mandzuTime)) {
+      this.setState({
+        selectedEntity: {
+          name: "Mario_Mandzukic",
+          tweets: [],
+          image:
+            "https://api.fifa.com/api/v1/picture/players/2018fwc/375518_sq-300_jpg?allowDefaultPicture=true"
+        }
+      });
+    }
 
     this.setState({
       timeInsideMatch: timeInsideMatch.clone().add(1, "s")
     });
+
+    //Work Left: Add a condition that start time > end time then match is finished
   };
 
   //Events
@@ -224,7 +249,7 @@ class Match extends Component {
 
     let sortedTrendingEntities = null;
 
-    if (isEmpty(this.state.trendingEntities)) {
+    if (isEmpty(this.state.trending.entities)) {
       sortedTrendingEntities = sort(
         (a, b) => b[1] - a[1],
         toPairs(trendingEntitiesCount)
@@ -243,7 +268,7 @@ class Match extends Component {
       const unsortedTrendingEntities = {};
 
       Object.keys(trendingEntitiesCount).forEach(entity => {
-        const prevDataForEntity = this.state.trendingEntities[entity];
+        const prevDataForEntity = this.state.trending.entities[entity];
 
         if (prevDataForEntity) {
           const oldCount = prevDataForEntity.count;
@@ -270,20 +295,54 @@ class Match extends Component {
         )
       );
     }
-    this.setState({ trendingEntities: sortedTrendingEntities });
+
+    this.setState(({ trending }) => {
+      return {
+        trending: {
+          ...trending,
+          entities: sortedTrendingEntities
+        }
+      };
+    });
   };
 
-  pollEntityTweets = entity => {
+  pollEntityTweets = () => {
     const { matchId } = this.match;
-    const { timeInsideMatch } = this.state;
-    this.socket.emit("get entity tweets", timeInsideMatch, matchId, entity);
+    const {
+      timeInsideMatch,
+      selectedEntity: { name }
+    } = this.state;
+    this.socket.emit("get entity tweets", timeInsideMatch, matchId, name);
+  };
+
+  delay = (fn, timeout) => {
+    clearTimeout(this.toggleTrendingOnVideo);
+    this.toggleTrendingOnVideo = setTimeout(() => {
+      fn();
+    }, timeout);
+  };
+
+  hideTrending = () => {
+    this.setState({
+      trending: {
+        ...this.state.trending,
+        visible: false
+      }
+    });
+  };
+
+  showTrending = () => {
+    this.setState({
+      trending: {
+        ...this.state.trending,
+        visible: true
+      }
+    });
   };
 
   //Click Handlers
   handleSpecificEntityClick = entity => {
-    //Clear pollingTweetsInterval if already set before
-    clearInterval(this.specificEntityPollingTweetsInterval);
-
+    console.log(entity);
     const entityData = this.match.allEntities.find(
       data => entity === data.entityName
     );
@@ -295,12 +354,7 @@ class Match extends Component {
       }
     });
 
-    this.specificEntityPollingTweetsInterval = setInterval(() => {
-      //   console.log("getting called");
-      this.pollEntityTweets(entity);
-    }, 2000);
-
-    this.pollEntityTweets(entity);
+    this.pollEntityTweets();
   };
 
   handleVideoPlayPause = () => {
@@ -320,10 +374,15 @@ class Match extends Component {
         fullScreen: !this.state.video.fullScreen
       }
     });
+
+    if (this.state.trending.visible) {
+      this.delay(this.hideTrending, 5000);
+    } else {
+      this.showTrending();
+    }
   };
 
   handleExitEntityViewOnVideo = () => {
-    console.log("called");
     this.setState({
       selectedEntity: {
         name: "",
@@ -331,6 +390,17 @@ class Match extends Component {
         image: ""
       }
     });
+
+    this.showAndThenFadeTrending();
+  };
+
+  showAndThenFadeTrending = () => {
+    this.showTrending();
+    this.delay(this.hideTrending, 5000);
+  };
+
+  handleVideoClickOrTap = () => {
+    this.showAndThenFadeTrending();
   };
 
   render() {
@@ -341,12 +411,14 @@ class Match extends Component {
           matchData={this.match}
           stateOfVideo={this.state.video}
           events={this.state.events}
-          trendingEntities={this.state.trendingEntities}
+          trending={this.state.trending}
           emojis={this.state.emojis}
           selectedEntity={this.state.selectedEntity}
           onSpecificEntityClick={this.handleSpecificEntityClick}
+          onPollEntityTweets={this.pollEntityTweets}
           onVideoPlayPause={this.handleVideoPlayPause}
           onVideoFullScreen={this.handleVideoFullScreen}
+          onVideoClickOrTap={this.handleVideoClickOrTap}
           onExitEntityViewOnVideo={this.handleExitEntityViewOnVideo}
         />
       );
