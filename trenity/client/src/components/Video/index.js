@@ -93,7 +93,6 @@ class Video extends Component {
       return (
         <React.Fragment>
           <video
-            muted
             ref={this.video}
             className={classes.video}
             src={stateOfVideo.src}
@@ -112,7 +111,6 @@ class Video extends Component {
     return (
       <div className={classes.root}>
         <video
-          muted
           ref={this.video}
           className={classes.video}
           src={stateOfVideo.src}

@@ -103,6 +103,7 @@ class MatchView extends Component {
       emojis,
       selectedEntity,
       onSpecificEntityClick,
+      onCancelSpecificEntityView,
       onPollEntityTweets,
       onVideoPlayPause,
       onVideoFullScreen,
@@ -166,6 +167,7 @@ class MatchView extends Component {
             {!stateOfVideo.fullScreen && (
               <div
                 className={[classes.headings, classes.centerPadding].join(" ")}
+                onClick={onCancelSpecificEntityView}
               >
                 TRENDING ENTITIES
               </div>

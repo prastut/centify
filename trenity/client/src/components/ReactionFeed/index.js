@@ -104,28 +104,28 @@ class ReactionFeed extends PureComponent {
     };
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.selectedEntity.name) {
-      //If entity is changed, so names will change, viewing = 0
-      if (this.props.selectedEntity.name !== prevProps.selectedEntity.name) {
-        this.setState({ viewing: 0 });
-        //Since new entity poll for tweets
-        this.props.onPollEntityTweets();
-      } else {
-        //If entity remains the same, poll tweets
-        const tweetsCount = this.props.selectedEntity.tweets.length;
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.selectedEntity.name) {
+  //     //If entity is changed, so names will change, viewing = 0
+  //     if (this.props.selectedEntity.name !== prevProps.selectedEntity.name) {
+  //       this.setState({ viewing: 0 });
+  //       //Since new entity poll for tweets
+  //       this.props.onPollEntityTweets();
+  //     } else {
+  //       //If entity remains the same, poll tweets
+  //       const tweetsCount = this.props.selectedEntity.tweets.length;
 
-        if (tweetsCount === 0) {
-          console.log("poll");
-          this.props.onPollEntityTweets();
-        } else if (this.state.viewing === tweetsCount - 1) {
-          this.props.onPollEntityTweets();
-        }
+  //       if (tweetsCount === 0) {
+  //         console.log("poll");
+  //         this.props.onPollEntityTweets();
+  //       } else if (this.state.viewing === tweetsCount - 1) {
+  //         this.props.onPollEntityTweets();
+  //       }
 
-        //Add a condition to poll Tweets when the last viewing state didn't result in polling tweets;
-      }
-    }
-  }
+  //       //Add a condition to poll Tweets when the last viewing state didn't result in polling tweets;
+  //     }
+  //   }
+  // }
 
   componentWillUnmount() {
     clearInterval(this.pollInterval);
@@ -194,7 +194,7 @@ class ReactionFeed extends PureComponent {
           </div>
           <div className={classes.onFullScreenTweetTextContainer}>
             <div className={classes.onFullScreenTweetText}>
-              {!isEmpty(tweets) && tweets[viewing].tweet}
+              {tweets[viewing] && tweets[viewing].tweet}
             </div>
           </div>
           <div className={classes.exitCTA}>
@@ -213,7 +213,7 @@ class ReactionFeed extends PureComponent {
 
     return (
       <div className={classes.root}>
-        {!isEmpty(tweets) && <TweetBox text={tweets[viewing].tweet} />}
+        {tweets[viewing] && <TweetBox text={tweets[viewing].tweet} />}
         <div>
           <Swiper
             shouldSwiperUpdate

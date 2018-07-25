@@ -25,7 +25,7 @@ class Match extends Component {
     this.emojisEntitiesInterval = null;
 
     //Moved this interval to ReactionFeed
-    // this.specificEntityPollingTweetsInterval = null;
+    this.specificEntityPollingTweetsInterval = null;
 
     //Timeouts
     this.toggleTrendingOnVideo = null;
@@ -190,18 +190,11 @@ class Match extends Component {
     const { timeInsideMatch } = this.state;
 
     //Mandzukich Throttle
-    const mandzuTime = moment.utc("2018-07-15 15:17:50");
+    const mandzuTime = moment.utc("2018-07-15 15:19:00");
 
     console.log(timeInsideMatch.format());
     if (timeInsideMatch.isSame(mandzuTime)) {
-      this.setState({
-        selectedEntity: {
-          name: "Mario_Mandzukic",
-          tweets: [],
-          image:
-            "https://api.fifa.com/api/v1/picture/players/2018fwc/375518_sq-300_jpg?allowDefaultPicture=true"
-        }
-      });
+      this.handleSpecificEntityClick("Mario_Mandzukic");
     }
 
     this.setState({
@@ -306,13 +299,10 @@ class Match extends Component {
     });
   };
 
-  pollEntityTweets = () => {
+  pollEntityTweets = entity => {
     const { matchId } = this.match;
-    const {
-      timeInsideMatch,
-      selectedEntity: { name }
-    } = this.state;
-    this.socket.emit("get entity tweets", timeInsideMatch, matchId, name);
+    const { timeInsideMatch } = this.state;
+    this.socket.emit("get entity tweets", timeInsideMatch, matchId, entity);
   };
 
   delay = (fn, timeout) => {
@@ -354,7 +344,14 @@ class Match extends Component {
       }
     });
 
-    this.pollEntityTweets();
+    clearInterval(this.specificEntityPollingTweetsInterval);
+
+    this.specificEntityPollingTweetsInterval = setInterval(() => {
+      console.log("getting called");
+      this.pollEntityTweets(entity);
+    }, 2000);
+
+    this.pollEntityTweets(entity);
   };
 
   handleVideoPlayPause = () => {
