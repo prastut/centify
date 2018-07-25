@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import moment from "moment";
+import queryString from "query-string";
 import { concat, isEmpty, toPairs, sort, fromPairs } from "ramda";
 
 //API
@@ -10,7 +11,7 @@ import MatchView from "./MatchView";
 
 //Assets
 import "../../assets/css/swiper.min.css";
-import video from "../../assets/video/sample_video.mp4";
+// import video from "../../assets/video/sample_video.mp4";
 
 class Match extends Component {
   constructor(props) {
@@ -49,15 +50,20 @@ class Match extends Component {
       video: {
         playing: false,
         fullScreen: false,
-        src: video
+        src: "",
+        muted: true
       }
     };
   }
 
   async componentDidMount() {
+    //http://localhost:3000/match/CROFRA_FINAL?link=bit.ly/2JUMWHl&matchStart=13&key=Mario_Mandzukic&throttleAt=20
     try {
       this.setupSocket();
       this.match = await this.getMatchData();
+
+      //Video Link
+      const { link } = queryString.parse(this.props.location.search);
 
       if (this.match.isLive) {
         //match is live, directly simulate
@@ -66,7 +72,11 @@ class Match extends Component {
 
         this.setState({
           startSimulation: true,
-          timeInsideMatch: this.match.startTime
+          timeInsideMatch: this.match.startTime,
+          video: {
+            ...this.state.video,
+            src: `https://${link}`
+          }
         });
 
         this.setupSocketListeners();
@@ -155,15 +165,10 @@ class Match extends Component {
   //Setting Up Match
   getMatchData = async () => {
     const { matchId } = this.props.match.params;
+    const { matchStart } = queryString.parse(this.props.location.search);
 
     const matchPromise = await axios.get(`/api/match/data/${matchId}`);
-    const {
-      matchName,
-      teamOneId,
-      teamTwoId,
-      startTime,
-      isLive
-    } = matchPromise.data;
+    const { matchName, teamOneId, teamTwoId, isLive } = matchPromise.data;
 
     const teamOnePromise = axios.get(`/api/team/entities/${teamOneId}`);
     const teamTwoPromise = axios.get(`/api/team/entities/${teamTwoId}`);
@@ -173,13 +178,15 @@ class Match extends Component {
       teamTwoPromise
     ]);
 
+    console.log();
+
     const match = {
       matchId,
       name: matchName,
       isLive,
       teamOneId,
       teamTwoId,
-      startTime: moment.utc(startTime),
+      startTime: moment.utc(`2018-07-15 15:${matchStart}:00`),
       allEntities: concat(teamOne.data, teamTwo.data)
     };
 
@@ -188,13 +195,15 @@ class Match extends Component {
 
   tick = () => {
     const { timeInsideMatch } = this.state;
+    const { key, throttleAt } = queryString.parse(this.props.location.search);
 
-    //Mandzukich Throttle
-    const mandzuTime = moment.utc("2018-07-15 15:19:00");
+    //Any player throttle
+    const throttleSpecificEntityTime = moment.utc(
+      `2018-07-15 15:${throttleAt}:00`
+    );
 
-    console.log(timeInsideMatch.format());
-    if (timeInsideMatch.isSame(mandzuTime)) {
-      this.handleSpecificEntityClick("Mario_Mandzukic");
+    if (timeInsideMatch.isSame(throttleSpecificEntityTime)) {
+      this.handleSpecificEntityClick(key);
     }
 
     this.setState({
