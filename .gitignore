@@ -1,0 +1,6 @@
+node_modules/
+.DS_Store
+venv/
+
+#toolbox
+toolbox/gitlab-to-github-issues/settings.js
