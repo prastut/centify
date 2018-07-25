@@ -64,6 +64,13 @@ class Video extends Component {
   //     });
   //   };
 
+  handleTap = () => {
+    console.log("tap");
+  };
+  handleClick = () => {
+    console.log("click");
+  };
+
   handlePlayerPlayPause = () => {
     const method = this.props.stateOfVideo.playing ? "play" : "pause";
     this.video.current[method]();
@@ -74,6 +81,7 @@ class Video extends Component {
       classes,
       stateOfVideo,
       onVideoPlayPause,
+      onVideoClickOrTap,
       toggleFullscreen
     } = this.props;
 
@@ -85,10 +93,10 @@ class Video extends Component {
       return (
         <React.Fragment>
           <video
-            muted
             ref={this.video}
             className={classes.video}
             src={stateOfVideo.src}
+            onClick={onVideoClickOrTap}
           />
 
           <VideoControls
@@ -103,7 +111,6 @@ class Video extends Component {
     return (
       <div className={classes.root}>
         <video
-          muted
           ref={this.video}
           className={classes.video}
           src={stateOfVideo.src}

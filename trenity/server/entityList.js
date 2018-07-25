@@ -254,7 +254,7 @@ const MATCHES_LIST = [
     isLive: false,
     teamOneId: "CRO",
     teamTwoId: "FRA",
-    startTime: moment.utc("2018-07-15 15:17:20")
+    startTime: moment.utc("2018-07-15 15:18:30")
   },
   {
     key: "BELFRA_SEMI",

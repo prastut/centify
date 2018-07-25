@@ -57,7 +57,20 @@ const styles = {
     background: "rgba(0,0,0,0.41)",
     display: "flex",
     alignItems: "center",
-    overflowX: "scroll"
+    overflowX: "scroll",
+    opacity: 1,
+    transition: "opacity 0.5s linear"
+  },
+  trendingFullScreenHidden: {
+    position: "absolute",
+    bottom: "0",
+    height: "calc(100%*0.15)",
+    width: "100%",
+    transform: "translateY(-40%)",
+    zIndex: "1",
+    background: "rgba(0,0,0,0.41)",
+    opacity: 0,
+    transition: "opacity 0.5s linear"
   },
   headings: {
     fontSize: "0.8em",
@@ -86,12 +99,15 @@ class MatchView extends Component {
       matchData,
       stateOfVideo,
       events,
-      trendingEntities,
+      trending,
       emojis,
       selectedEntity,
       onSpecificEntityClick,
+      onCancelSpecificEntityView,
+      onPollEntityTweets,
       onVideoPlayPause,
       onVideoFullScreen,
+      onVideoClickOrTap,
       isFullscreen,
       toggleFullscreen,
       onExitEntityViewOnVideo
@@ -103,8 +119,18 @@ class MatchView extends Component {
       ? classes.fullScreenRoot
       : classes.root;
 
+    /*
+      Possible styles based on state
+      1. stateOfVideo.fullScreen === false - show second screen experience style
+      2. stateofVideo.fullScreen === true  - showing onVideo styles
+         2.1 trending.visible === true - keep showin
+         2.2 trending.visible === false - hide it. 
+
+    */
     const trendingStyles = stateOfVideo.fullScreen
-      ? classes.trendingFullScreen
+      ? trending.visible
+        ? classes.trendingFullScreen
+        : classes.trendingFullScreenHidden
       : classes.trending;
 
     const reactionStyles = stateOfVideo.fullScreen
@@ -129,6 +155,7 @@ class MatchView extends Component {
           onSpecificEntityClick={onSpecificEntityClick}
           onVideoPlayPause={onVideoPlayPause}
           onVideoFullScreen={onVideoFullScreen}
+          onVideoClickOrTap={onVideoClickOrTap}
         />
         {!stateOfVideo.fullScreen && (
           <div className={classes.events}>
@@ -140,6 +167,7 @@ class MatchView extends Component {
             {!stateOfVideo.fullScreen && (
               <div
                 className={[classes.headings, classes.centerPadding].join(" ")}
+                onClick={onCancelSpecificEntityView}
               >
                 TRENDING ENTITIES
               </div>
@@ -147,7 +175,7 @@ class MatchView extends Component {
             <TrendingEntities
               variant={stateOfVideo.fullScreen ? "onVideo" : "tiles"}
               selected={selectedEntity.name}
-              trendingEntities={trendingEntities}
+              trending={trending}
               emojis={emojis}
               allEntities={allEntities}
               onSpecificEntityClick={onSpecificEntityClick}
@@ -162,13 +190,12 @@ class MatchView extends Component {
               TWEET STREAM
             </div>
           )}
-          {!isEmpty(selectedEntity.tweets) ? (
-            <ReactionFeed
-              variant={stateOfVideo.fullScreen ? "onVideo" : "tiles"}
-              selectedEntity={selectedEntity}
-              onExitEntityViewOnVideo={onExitEntityViewOnVideo}
-            />
-          ) : null}
+          <ReactionFeed
+            variant={stateOfVideo.fullScreen ? "onVideo" : "tiles"}
+            selectedEntity={selectedEntity}
+            onPollEntityTweets={onPollEntityTweets}
+            onExitEntityViewOnVideo={onExitEntityViewOnVideo}
+          />
         </div>
       </div>
     );

@@ -56,7 +56,6 @@ class EventsTimeline extends Component {
   }
 
   componentWillUnmount() {
-    console.log("called");
     clearTimeout(this.eventsAnimation);
   }
 

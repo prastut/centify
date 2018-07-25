@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { toPairs, sort } from "ramda";
 
 //Material Styles
@@ -35,7 +35,7 @@ const styles = {
   }
 };
 
-class TrendingEntities extends Component {
+class TrendingEntities extends PureComponent {
   entitiesDictToSortedEntitiesArray = entitiesDict => {
     const sortedEntitiesArray = sort(
       (a, b) => b[1].difference - a[1].difference,
@@ -67,7 +67,7 @@ class TrendingEntities extends Component {
       variant,
       classes,
       selected,
-      trendingEntities,
+      trending,
       emojis,
       onSpecificEntityClick
     } = this.props;
@@ -86,7 +86,7 @@ class TrendingEntities extends Component {
 
     return (
       <div className={rootStyles}>
-        {this.entitiesDictToSortedEntitiesArray(trendingEntities)
+        {this.entitiesDictToSortedEntitiesArray(trending.entities)
           .slice(0, 6)
           .map(e => (
             <div key={e.entity} className={entityStyles}>
