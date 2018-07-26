@@ -106,7 +106,7 @@ class Match extends Component {
     if (window.location.href.split("//")[1].split(":")[0] === "localhost") {
       this.socket = openSocket("http://localhost:5000/");
     } else {
-      this.socket = openSocket("https://trenity.me/");
+      this.socket = openSocket("https://trenity/");
     }
   };
 
