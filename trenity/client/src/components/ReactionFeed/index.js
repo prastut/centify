@@ -1,5 +1,4 @@
 import React, { PureComponent } from "react";
-import { isEmpty } from "ramda";
 import Swiper from "react-id-swiper";
 
 import { withStyles } from "@material-ui/core/styles";

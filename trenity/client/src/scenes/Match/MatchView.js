@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { isEmpty } from "ramda";
 import Fullscreenable from "react-fullscreenable";
 //Material Styles
 
