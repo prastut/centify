@@ -11,6 +11,9 @@ import { withStyles } from "@material-ui/core/styles";
 import Navbar from "../../components/Navbar";
 import MatchTile from "../../components/MatchTile";
 
+const HARDCODED_LINK =
+  "/match/CROFRA_FINAL?link=bit.ly/2Ad4YoC&matchStart=13&key=Mario_Mandzukic&throttleAt=20";
+
 const styles = {
   root: {
     width: "calc(100vw*0.8)",
@@ -89,7 +92,7 @@ class Home extends Component {
             <Grid item xs={12}>
               <div className={classes.headings}> PAST MATCHES </div>
               {this.state.pastMatches.map((match, index) => (
-                <Link key={match.key} to={`/match/${match.key}`}>
+                <Link key={match.key} to={HARDCODED_LINK}>
                   <MatchTile
                     image={match.matchTileImage}
                     handleClick={this.handleClick}
