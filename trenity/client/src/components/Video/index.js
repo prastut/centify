@@ -1,129 +1,54 @@
-import React, { Component } from "react";
-// import Fullscreenable from "react-fullscreenable";
-import { withStyles } from "@material-ui/core/styles";
+import React from "react";
+import videojs from "video.js";
+import "video.js/dist/video-js.css";
 
-import VideoControls from "./VideoControls";
-
-const styles = {
-  root: {
-    position: "relative",
-    color: "white",
-    overflow: "hidden"
-  },
-  video: {
-    width: "100%",
-    height: "100%"
-  },
-  playerButton: {
-    background: "none",
-    color: "white"
-  },
-  fullScreen: {
-    height: "100%",
-    background: "black"
-  }
-};
-
-class Video extends Component {
-  constructor(props) {
-    super(props);
-    this.video = React.createRef();
-  }
-
+class VideoPlayer extends React.Component {
   componentDidMount() {
-    if (this.video) {
-      this.props.onVideoPlayPause();
-    }
-  }
+    this.player = videojs(
+      this.videoNode,
+      { ...this.props.options },
+      function onPlayerReady() {}
+    );
 
-  componentDidUpdate(prevProps) {
-    if (this.props.stateOfVideo.playing !== prevProps.stateOfVideo.playing) {
-      this.handlePlayerPlayPause();
-    }
-
-    if (this.props.isFullscreen !== prevProps.isFullscreen) {
+    this.player.on("fullscreenchange", () => {
       this.props.onVideoFullScreen();
-    }
+    });
+
+    this.player.on("useractive", () => {
+      this.props.onVideoUserStatus("active");
+    });
+
+    this.player.on("userinactive", () => {
+      this.props.onVideoUserStatus("inactive");
+    });
+
+    this.player.on("play", () => {
+      this.props.onVideoStatus("play");
+    });
+
+    this.player.on("pause", () => {
+      this.props.onVideoStatus("pause");
+    });
   }
 
-  //   handleExitForSpecificEntityView = () => {
-  //     this.setState({
-  //       specificEntityView: {
-  //         display: false,
-  //         entity: null
-  //       }
-  //     });
-  //   };
-
-  //   handleEntryForSpecificEntityView = entity => {
-  //     this.setState({
-  //       specificEntityView: {
-  //         display: true,
-  //         entity
-  //       }
-  //     });
-  //   };
-
-  handleTap = () => {
-    console.log("tap");
-  };
-  handleClick = () => {
-    console.log("click");
-  };
-
-  handlePlayerPlayPause = () => {
-    const method = this.props.stateOfVideo.playing ? "play" : "pause";
-    this.video.current[method]();
-  };
-
-  render() {
-    const {
-      classes,
-      stateOfVideo,
-      onVideoPlayPause,
-      onVideoClickOrTap,
-      toggleFullscreen
-    } = this.props;
-
-    // const rootContainerStyles = isFullscreen
-    //   ? [classes.root, classes.fullScreen].join(" ")
-    //   : classes.root;
-
-    if (stateOfVideo.fullScreen) {
-      return (
-        <React.Fragment>
-          <video
-            ref={this.video}
-            className={classes.video}
-            src={stateOfVideo.src}
-            onClick={onVideoClickOrTap}
-          />
-
-          <VideoControls
-            stateOfVideo={stateOfVideo}
-            onVideoPlayPause={onVideoPlayPause}
-            toggleFullscreenClick={toggleFullscreen}
-          />
-        </React.Fragment>
-      );
+  componentWillUnmount() {
+    if (this.player) {
+      this.player.dispose();
     }
-
+  }
+  render() {
     return (
-      <div className={classes.root}>
+      <div data-vjs-player className="Video">
         <video
-          ref={this.video}
-          className={classes.video}
-          src={stateOfVideo.src}
-        />
-
-        <VideoControls
-          stateOfVideo={stateOfVideo}
-          onVideoPlayPause={onVideoPlayPause}
-          toggleFullscreenClick={toggleFullscreen}
-        />
+          ref={node => (this.videoNode = node)}
+          className="video-js vjs-16-9 vjs-big-play-centered"
+        >
+          <source src={this.props.options.src} type="video/mp4" />
+        </video>
+        {this.props.children}
       </div>
     );
   }
 }
 
-export default withStyles(styles)(Video);
+export default VideoPlayer;

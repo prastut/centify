@@ -1,13 +1,21 @@
 import React, { Component } from "react";
 import moment from "moment";
 import queryString from "query-string";
-import { concat, isEmpty, toPairs, sort, fromPairs } from "ramda";
+import { isEmpty } from "ramda";
 
 //API
-import axios from "axios";
+import api from "../../api";
 import openSocket from "socket.io-client";
 
-import MatchView from "./MatchView";
+//Containers
+import SecondScreenExperience from "./SecondScreenExperience";
+import VideoComponent from "./VideoComponent";
+
+//UI Elements
+import MatchNavBar from "../../components/MatchNavBar";
+import EventsTimeline from "../../components/EventsTimeline";
+import TrendingEntities from "../../components/TrendingEntities";
+import ReactionFeed from "../../components/ReactionFeed";
 
 //Assets
 import "../../assets/css/swiper.min.css";
@@ -33,13 +41,14 @@ class Match extends Component {
 
     //MatchDataPacket
     this.match = {};
+
+    //State
     this.state = {
       startSimulation: false,
       timeInsideMatch: "",
       events: [],
       trending: {
-        entities: {},
-        visible: true
+        entities: {}
       },
       emojis: {},
       selectedEntity: {
@@ -48,10 +57,15 @@ class Match extends Component {
         image: ""
       },
       video: {
+        autoplay: true,
         playing: false,
+        src:
+          "https://cdn-b-east.streamable.com/video/mp4/v8b3s_1.mp4?token=qWZKsMUjqYVfnRVpXOI1Dg&expires=1533119885",
+        muted: true,
+        userActive: true,
         fullScreen: false,
-        src: "",
-        muted: true
+        controls: true,
+        inactivityTimeout: 2000
       }
     };
   }
@@ -59,24 +73,21 @@ class Match extends Component {
   async componentDidMount() {
     //http://localhost:3000/match/CROFRA_FINAL?link=bit.ly/2JUMWHl&matchStart=13&key=Mario_Mandzukic&throttleAt=20
     try {
-      this.setupSocket();
-      this.match = await this.getMatchData();
+      const { matchId } = this.props.match.params;
+      const { matchStart } = queryString.parse(this.props.location.search);
 
+      this.setupSocket();
+      this.match = await api.getMatchData(matchId, matchStart);
       //Video Link
-      const { link } = queryString.parse(this.props.location.search);
 
       if (this.match.isLive) {
-        //match is live, directly simulate
+        //match is live
       } else {
         //match is in the past, simulate it.
 
         this.setState({
           startSimulation: true,
-          timeInsideMatch: this.match.startTime,
-          video: {
-            ...this.state.video,
-            src: `https://${link}`
-          }
+          timeInsideMatch: this.match.startTime
         });
 
         this.setupSocketListeners();
@@ -111,25 +122,27 @@ class Match extends Component {
   };
 
   setupIntervals = () => {
-    const throttleRateInSeconds = {
+    const throttleRate = {
       timer: 1,
       events: 1,
       trending: 10,
       emojis: 2
     };
 
-    this.simulationMatchIntervalTimer = setInterval(() => {
-      this.tick();
-    }, throttleRateInSeconds.timer * 1000);
-
-    this.eventsInterval = setInterval(
-      async () => await this.getEventsUntil(),
-      throttleRateInSeconds.events * 1000
+    this.simulationMatchIntervalTimer = setInterval(
+      this.tick,
+      throttleRate.timer * 1000
     );
 
-    this.trendingEntitiesInterval = setInterval(() => {
-      this.getTrendingEntities();
-    }, throttleRateInSeconds.trending * 1000);
+    this.eventsInterval = setInterval(
+      this.getEventsUntil,
+      throttleRate.events * 1000
+    );
+
+    this.trendingEntitiesInterval = setInterval(
+      this.getTrendingEntities,
+      throttleRate.trending * 1000
+    );
 
     this.emojisEntitiesInterval = setInterval(() => {
       this.socket.emit(
@@ -137,7 +150,7 @@ class Match extends Component {
         this.state.timeInsideMatch,
         this.match.matchId
       );
-    }, throttleRateInSeconds.emojis * 1000);
+    }, throttleRate.emojis * 1000);
   };
 
   setupSocketListeners = () => {
@@ -163,35 +176,6 @@ class Match extends Component {
   };
 
   //Setting Up Match
-  getMatchData = async () => {
-    const { matchId } = this.props.match.params;
-    const { matchStart } = queryString.parse(this.props.location.search);
-
-    const matchPromise = await axios.get(`/api/match/data/${matchId}`);
-    const { matchName, teamOneId, teamTwoId, isLive } = matchPromise.data;
-
-    const teamOnePromise = axios.get(`/api/team/entities/${teamOneId}`);
-    const teamTwoPromise = axios.get(`/api/team/entities/${teamTwoId}`);
-
-    const [teamOne, teamTwo] = await Promise.all([
-      teamOnePromise,
-      teamTwoPromise
-    ]);
-
-    console.log();
-
-    const match = {
-      matchId,
-      name: matchName,
-      isLive,
-      teamOneId,
-      teamTwoId,
-      startTime: moment.utc(`2018-07-15 15:${matchStart}:00`),
-      allEntities: concat(teamOne.data, teamTwo.data)
-    };
-
-    return match;
-  };
 
   tick = () => {
     const { timeInsideMatch } = this.state;
@@ -218,94 +202,32 @@ class Match extends Component {
     const { matchId } = this.match;
     const { timeInsideMatch } = this.state;
 
-    const events = await axios.get(`/api/match/events/${matchId}`, {
-      params: {
-        timeInsideMatch
-      }
-    });
+    const events = await api.getEventsTillNow(matchId, timeInsideMatch);
 
-    if (events.data) this.setState({ events: events.data });
+    if (events) this.setState({ events });
   };
 
   //Trending Entities
   getTrendingEntities = async () => {
-    // console.log(this.state.sortedTrendingEntities);
     const { matchId } = this.match;
     const { timeInsideMatch } = this.state;
 
-    const dataForTrendingEntitiesCount = await axios.get(
-      `/api/match/trending/${matchId}`,
-      {
-        params: {
-          timeInsideMatch
-        }
-      }
+    const entities = await api.getTrendingEntities(
+      matchId,
+      timeInsideMatch,
+      this.state.trending.entities
     );
 
-    const data = dataForTrendingEntitiesCount.data;
-    if (!data) {
-      return null;
-    }
-
-    const trendingEntitiesCount = data.until_now;
-
-    let sortedTrendingEntities = null;
-
-    if (isEmpty(this.state.trending.entities)) {
-      sortedTrendingEntities = sort(
-        (a, b) => b[1] - a[1],
-        toPairs(trendingEntitiesCount)
-      ).reduce((accumulator, currentValue, index) => {
+    if (entities) {
+      this.setState(({ trending }) => {
         return {
-          ...accumulator,
-          [currentValue[0]]: {
-            count: currentValue[1],
-            difference: 0
+          trending: {
+            ...trending,
+            entities
           }
         };
-      }, {});
-
-      //   console.log("Intial Dict Set->", sortedTrendingEntities);
-    } else {
-      const unsortedTrendingEntities = {};
-
-      Object.keys(trendingEntitiesCount).forEach(entity => {
-        const prevDataForEntity = this.state.trending.entities[entity];
-
-        if (prevDataForEntity) {
-          const oldCount = prevDataForEntity.count;
-          const newCount = trendingEntitiesCount[entity];
-          const difference = newCount - oldCount;
-
-          unsortedTrendingEntities[entity] = {
-            ...prevDataForEntity,
-            count: newCount,
-            difference
-          };
-        } else {
-          unsortedTrendingEntities[entity] = {
-            count: trendingEntitiesCount[entity],
-            difference: 0
-          };
-        }
       });
-
-      sortedTrendingEntities = fromPairs(
-        sort(
-          (a, b) => b[1].difference - a[1].difference,
-          toPairs(unsortedTrendingEntities)
-        )
-      );
     }
-
-    this.setState(({ trending }) => {
-      return {
-        trending: {
-          ...trending,
-          entities: sortedTrendingEntities
-        }
-      };
-    });
   };
 
   pollEntityTweets = entity => {
@@ -363,32 +285,41 @@ class Match extends Component {
     this.pollEntityTweets(entity);
   };
 
-  handleVideoPlayPause = () => {
-    this.setState({
-      video: {
-        ...this.state.video,
-        playing: !this.state.video.playing
-      }
+  handleVideoStatus = status => {
+    this.setState(({ video }) => {
+      return {
+        video: {
+          ...video,
+          playing: status === "play"
+        }
+      };
+    });
+  };
+
+  handleVideoUserStatus = status => {
+    this.setState(({ video }) => {
+      return {
+        video: {
+          ...video,
+          userActive: status === "active"
+        }
+      };
     });
   };
 
   handleVideoFullScreen = () => {
-    this.setState({
-      video: {
-        ...this.state.video,
-        playing: false,
-        fullScreen: !this.state.video.fullScreen
-      }
+    this.setState(({ video }) => {
+      return {
+        video: {
+          ...video,
+          fullScreen: !video.fullScreen
+        }
+      };
     });
-
-    if (this.state.trending.visible) {
-      this.delay(this.hideTrending, 5000);
-    } else {
-      this.showTrending();
-    }
   };
 
   handleExitEntityViewOnVideo = () => {
+    clearInterval(this.specificEntityPollingTweetsInterval);
     this.setState({
       selectedEntity: {
         name: "",
@@ -396,8 +327,6 @@ class Match extends Component {
         image: ""
       }
     });
-
-    this.showAndThenFadeTrending();
   };
 
   showAndThenFadeTrending = () => {
@@ -411,22 +340,54 @@ class Match extends Component {
 
   render() {
     if (this.state.startSimulation) {
-      return (
-        <MatchView
+      const navbar = (
+        <MatchNavBar
+          teamOne={this.match.teamOneId}
+          teamTwo={this.match.teamTwoId}
           timeInsideMatch={this.state.timeInsideMatch}
-          matchData={this.match}
-          stateOfVideo={this.state.video}
-          events={this.state.events}
+        />
+      );
+
+      const events = <EventsTimeline events={this.state.events} />;
+
+      const trending = (
+        <TrendingEntities
+          variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
+          selected={this.state.selectedEntity.name}
           trending={this.state.trending}
           emojis={this.state.emojis}
-          selectedEntity={this.state.selectedEntity}
+          allEntities={this.match.allEntities}
           onSpecificEntityClick={this.handleSpecificEntityClick}
+        />
+      );
+
+      const reaction = (
+        <ReactionFeed
+          variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
+          selectedEntity={this.state.selectedEntity}
           onPollEntityTweets={this.pollEntityTweets}
-          onVideoPlayPause={this.handleVideoPlayPause}
-          onVideoFullScreen={this.handleVideoFullScreen}
-          onVideoClickOrTap={this.handleVideoClickOrTap}
           onExitEntityViewOnVideo={this.handleExitEntityViewOnVideo}
         />
+      );
+
+      return (
+        <SecondScreenExperience
+          isFullScreen={this.state.video.fullScreen}
+          navbar={navbar}
+          events={events}
+          trending={trending}
+          reaction={reaction}
+        >
+          <VideoComponent
+            stateOfVideo={this.state.video}
+            isSpecificEntityView={this.state.selectedEntity.name}
+            trendingOnVideo={trending}
+            reactionOnVideo={reaction}
+            onVideoStatus={this.handleVideoStatus}
+            onVideoUserStatus={this.handleVideoUserStatus}
+            onVideoFullScreen={this.handleVideoFullScreen}
+          />
+        </SecondScreenExperience>
       );
     }
 
