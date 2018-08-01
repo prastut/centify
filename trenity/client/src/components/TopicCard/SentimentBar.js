@@ -1,24 +1,25 @@
 import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { positiveSentimentToEmoji } from "../../helper";
 
 const styles = {
   root: {
-    flex: "0 1 100%",
+    flex: "0 1 80%",
     height: "30%",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    position: "relative"
   },
   positive: {
     background: "#00FFB6",
     borderRadius: "5px",
-    transition: "flex-basis 1s linear",
     flexGrow: "0",
     flexShrink: "0",
     flexBasis: "50%",
     height: "10px"
   },
   emoji: {
+    transition: "left 0.5s linear",
     position: "absolute",
     zIndex: 1,
     left: 0,
@@ -28,7 +29,6 @@ const styles = {
     height: "10px",
     background: "#F15959",
     borderRadius: "5px",
-    transition: "flex-basis 1s linear",
     flexGrow: "0",
     flexShrink: "0",
     flexBasis: "50%"
@@ -49,9 +49,9 @@ class SentimentBar extends PureComponent {
           role="img"
           aria-label="emoji"
           className={classes.emoji}
-          style={{ left: `${positive - 5}%` }}
+          style={{ left: `${positive - 10}%` }}
         >
-          😅
+          {positiveSentimentToEmoji(positive)}
         </span>
         <div
           className={classes.negetive}

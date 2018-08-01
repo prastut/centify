@@ -65,6 +65,7 @@ class TopicCard extends PureComponent {
       entityKey,
       entityImage,
       emoji,
+      sentiment,
       selected
     } = this.props;
 
@@ -84,7 +85,10 @@ class TopicCard extends PureComponent {
             />
           </div>
           {emoji && <Emoji emoji={emoji} />}
-          <SentimentBar positive="40" negetive="50" />
+          <SentimentBar
+            positive={sentiment.positive}
+            negetive={sentiment.negative}
+          />
         </div>
       );
     }
