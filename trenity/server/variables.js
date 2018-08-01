@@ -4,11 +4,9 @@ const moment = require("moment");
 const PORT = process.env.PORT || 5000;
 const BUILD_DIRECTORY = path.join(__dirname, "../client/build");
 const SIM_MATCH_FILE = path.join(__dirname, "simulation-match-time.txt");
-const DB_URL =
-  process.env.MONGODB_URI ||
-  "mongodb://bubble:bubble@104.196.215.99:27017/Bubble";
+const DB_URL = process.env.MONGODB_URI || "mongodb://localhost:27017";
 console.log(DB_URL);
-const DATABASE = "Bubble";
+const DATABASE = "EPL";
 const ABSOLUTE_MATCH_START_TIME = {
   BELFRA_SEMI: moment.utc("2018-07-10 18:00:00"),
   ENGSWE_R16: moment.utc("2018-07-07 14:00:00"),
