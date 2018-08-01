@@ -60,7 +60,7 @@ class Match extends Component {
         autoplay: true,
         playing: false,
         src:
-          "https://cdn-b-east.streamable.com/video/mp4/v8b3s_1.mp4?token=qWZKsMUjqYVfnRVpXOI1Dg&expires=1533119885",
+          "https://cdn-b-east.streamable.com/video/mp4/v8b3s_1.mp4?token=kCBECnX77Z5_C4LvonkWTw&expires=1533129111",
         muted: true,
         userActive: true,
         fullScreen: false,

@@ -37,12 +37,15 @@ const api = {
       }
     );
 
+    // console.log(dataForTrendingEntitiesCount);
+
     const data = dataForTrendingEntitiesCount.data;
     if (!data) {
       return null;
     }
 
     const trendingEntitiesCount = data.until_now;
+    const trendingEntitiesSentiment = data.sentiment;
 
     let sortedTrendingEntities = null;
 
@@ -55,12 +58,13 @@ const api = {
           ...accumulator,
           [currentValue[0]]: {
             count: currentValue[1],
-            difference: 0
+            difference: 0,
+            sentiment: trendingEntitiesSentiment[currentValue[0]]
           }
         };
       }, {});
 
-      //   console.log("Intial Dict Set->", sortedTrendingEntities);
+      // console.log("Intial Dict Set->", sortedTrendingEntities);
     } else {
       const unsortedTrendingEntities = {};
 
@@ -75,12 +79,14 @@ const api = {
           unsortedTrendingEntities[entity] = {
             ...prevDataForEntity,
             count: newCount,
-            difference
+            difference,
+            sentiment: trendingEntitiesSentiment[entity]
           };
         } else {
           unsortedTrendingEntities[entity] = {
             count: trendingEntitiesCount[entity],
-            difference: 0
+            difference: 0,
+            sentiment: trendingEntitiesSentiment[entity]
           };
         }
       });
@@ -93,6 +99,7 @@ const api = {
       );
     }
 
+    // console.log(sortedTrendingEntities);
     return sortedTrendingEntities;
   },
 

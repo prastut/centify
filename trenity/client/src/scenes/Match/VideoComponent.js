@@ -27,7 +27,7 @@ const styles = {
   hide: {
     visibility: "hidden",
     opacity: 0,
-    transition: "visibility 0s, opacity 1.5s linear"
+    transition: "visibility 0s, opacity 0.5s linear"
   }
 };
 
@@ -41,11 +41,18 @@ class VideoComponent extends Component {
       reactionOnVideo
     } = this.props;
 
-    console.log("yp");
+    const trendingShowStyles = [classes.trendingFullScreen, classes.show].join(
+      " "
+    );
+    const trendingHideStyles = [classes.trendingFullScreen, classes.hide].join(
+      " "
+    );
 
-    const trendingContainerStyles = stateOfVideo.userActive
-      ? [classes.trendingFullScreen, classes.show].join(" ")
-      : [classes.trendingFullScreen, classes.hide].join(" ");
+    const trendingContainerStyles = stateOfVideo.playing
+      ? stateOfVideo.userActive
+        ? trendingShowStyles
+        : trendingHideStyles
+      : trendingShowStyles;
 
     if (isSpecificEntityView) {
       return reactionOnVideo;
