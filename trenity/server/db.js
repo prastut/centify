@@ -12,7 +12,7 @@ const connect = (url, done) => {
     { useNewUrlParser: true },
     (err, database) => {
       if (err) return done(err);
-      state.db = database.db("Bubble");
+      state.db = database.db(DATABASE);
       done();
     }
   );
@@ -180,6 +180,19 @@ const getLastTweetForAPastMatch = async collection => {
   }
 };
 
+const getAllFixtures = async collection => {
+  const timeStampSort = { timeStamp: 1 };
+  try {
+    return await state.db
+      .collection("fixtures")
+      .find()
+      .sort(timeStampSort)
+      .toArray();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   connect,
   get,
@@ -190,5 +203,6 @@ module.exports = {
   getTrendingEmojis,
   getSelectedEntityTweets,
   countTrendingEntities,
-  getLastTweetForAPastMatch
+  getLastTweetForAPastMatch,
+  getAllFixtures
 };

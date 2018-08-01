@@ -19,8 +19,10 @@ router.get("/events/:matchId", (req, res) => {
 });
 
 //Match Related Routes
-router.get("/match/all", (req, res) => {
-  res.json(MATCHES_LIST);
+router.get("/match/all", async (req, res) => {
+  const collection = "fixtures";
+  const fixtures = await db.getAllFixtures(collection);
+  res.json(fixtures);
 });
 
 router.get("/match/data/:matchId", (req, res) => {
