@@ -21,8 +21,7 @@ router.get("/events/:matchId", (req, res) => {
 
 //Match Related Routes
 router.get("/match/all", async (req, res) => {
-  const collection = FIXTURES_COLLECTION;
-  const fixtures = await db.getAllFixtures(collection);
+  const fixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
   res.json(fixtures);
 });
 
