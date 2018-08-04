@@ -178,12 +178,12 @@ const getLastTweetForAPastMatch = async collection => {
 };
 
 const getAllFixtures = async collection => {
-  const timeStampSort = { timeStamp: 1 };
+  const timeStampSortAscending = { timeStamp: 1 };
   try {
     return await state.db
       .collection(collection)
       .find()
-      .sort(timeStampSort)
+      .sort(timeStampSortAscending)
       .toArray();
   } catch (err) {
     console.log(err);
