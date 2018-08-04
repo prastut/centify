@@ -1,6 +1,7 @@
 const MongoClient = require("mongodb").MongoClient;
 const { DATABASE } = require("./variables");
 const { ENTITIES_COLLECTION } = require("./variables");
+const { FIXTURES_COLLECTION } = require("./variables");
 const state = {
   db: null
 };
@@ -185,7 +186,7 @@ const getAllFixtures = async collection => {
   const timeStampSort = { timeStamp: 1 };
   try {
     return await state.db
-      .collection("fixtures")
+      .collection(FIXTURES_COLLECTION)
       .find()
       .sort(timeStampSort)
       .toArray();
