@@ -16,6 +16,7 @@ const ABSOLUTE_MATCH_START_TIME = {
   CROFRA_FINAL: moment.utc("2018-07-15 15:00:00")
 };
 const ENTITIES_COLLECTION = "entities";
+const FIXTURES_COLLECTION = "fixtures";
 module.exports = {
   PORT,
   BUILD_DIRECTORY,
@@ -23,5 +24,6 @@ module.exports = {
   DB_URL,
   DATABASE,
   ABSOLUTE_MATCH_START_TIME,
-  ENTITIES_COLLECTION
+  ENTITIES_COLLECTION,
+  FIXTURES_COLLECTION
 };
