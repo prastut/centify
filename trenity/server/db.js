@@ -1,7 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
 const { DATABASE } = require("./variables");
-const { ENTITIES_COLLECTION } = require("./variables");
-const { FIXTURES_COLLECTION } = require("./variables");
+const { ENTITIES_COLLECTION, FIXTURES_COLLECTION } = require("./variables");
 const state = {
   db: null
 };
