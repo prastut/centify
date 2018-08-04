@@ -1,5 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
 const { DATABASE } = require("./variables");
+const { ENTITIES_COLLECTION } = require("./variables");
 const state = {
   db: null
 };
@@ -39,7 +40,7 @@ const close = done => {
 const getAllEntitiesForTeam = async team => {
   try {
     return await state.db
-      .collection("entities")
+      .collection(ENTITIES_COLLECTION)
       .find({ team })
       .toArray();
   } catch (err) {
