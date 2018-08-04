@@ -181,7 +181,7 @@ const getAllFixtures = async collection => {
   const timeStampSort = { timeStamp: 1 };
   try {
     return await state.db
-      .collection(FIXTURES_COLLECTION)
+      .collection(collection)
       .find()
       .sort(timeStampSort)
       .toArray();
