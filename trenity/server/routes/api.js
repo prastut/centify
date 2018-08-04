@@ -7,6 +7,7 @@ const router = express.Router();
 
 //Techical Debt
 const { BEL, FRA, CRO, ENG, SWE, MATCHES_LIST } = require("../entityList");
+const { FIXTURES_COLLECTION } = require("../variables");
 const helper = require("../helper");
 
 const db = require("../db");
@@ -20,7 +21,7 @@ router.get("/events/:matchId", (req, res) => {
 
 //Match Related Routes
 router.get("/match/all", async (req, res) => {
-  const collection = "fixtures";
+  const collection = FIXTURES_COLLECTION;
   const fixtures = await db.getAllFixtures(collection);
   res.json(fixtures);
 });
