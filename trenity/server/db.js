@@ -36,12 +36,11 @@ const close = done => {
   3. Match -> TrendingEntitiesCount are got until timeInsideMathc
   4. Match -> getTrendingEmojis for allTrendingEntities
   */
-const getAllEntitiesForTeam = async teamAsked => {
-  const query = { team: teamAsked };
+const getAllEntitiesForTeam = async team => {
   try {
     return await state.db
       .collection("entities")
-      .find(query)
+      .find({ team })
       .toArray();
   } catch (err) {
     console.log(err);
