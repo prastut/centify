@@ -18,7 +18,10 @@ class MatchTile extends Component {
     const { classes, image, index, handleClick } = this.props;
 
     return (
-      <div className={classes.root} onClick={() => handleClick(index)}>
+      <div
+        className={classes.root}
+        onClick={() => (handleClick ? handleClick(index) : null)}
+      >
         <img src={image} className={classes.image} alt="" />
       </div>
     );

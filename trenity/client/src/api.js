@@ -111,6 +111,11 @@ const api = {
     });
 
     return events.data;
+  },
+
+  socket: {
+    dev: "http://localhost:5000/",
+    production: "https://trenity.me/"
   }
 };
 

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import moment from "moment";
-import queryString from "query-string";
 import { isEmpty } from "ramda";
 
 //API
@@ -60,7 +59,7 @@ class Match extends Component {
         autoplay: true,
         playing: false,
         src:
-          "https://cdn-b-east.streamable.com/video/mp4/v8b3s_1.mp4?token=kCBECnX77Z5_C4LvonkWTw&expires=1533129111",
+          "https://s3-ap-southeast-1.amazonaws.com/centify-trenity/13'+-+23'.mp4",
         muted: true,
         userActive: true,
         fullScreen: false,
@@ -74,7 +73,8 @@ class Match extends Component {
     //http://localhost:3000/match/CROFRA_FINAL?link=bit.ly/2JUMWHl&matchStart=13&key=Mario_Mandzukic&throttleAt=20
     try {
       const { matchId } = this.props.match.params;
-      const { matchStart } = queryString.parse(this.props.location.search);
+      // const { matchStart } = queryString.parse(this.props.location.search);
+      const matchStart = 13;
 
       this.setupSocket();
       this.match = await api.getMatchData(matchId, matchStart);
@@ -115,9 +115,9 @@ class Match extends Component {
   //Sockets
   setupSocket = () => {
     if (window.location.href.split("//")[1].split(":")[0] === "localhost") {
-      this.socket = openSocket("http://localhost:5000/");
+      this.socket = openSocket(api.socket.dev);
     } else {
-      this.socket = openSocket("https://trenity.me/");
+      this.socket = openSocket(api.socket.production);
     }
   };
 
@@ -179,9 +179,12 @@ class Match extends Component {
 
   tick = () => {
     const { timeInsideMatch } = this.state;
-    const { key, throttleAt } = queryString.parse(this.props.location.search);
-
     //Any player throttle
+    // const { key, throttleAt } = queryString.parse(this.props.location.search);
+
+    const key = "Mario_Mandzukic";
+    const throttleAt = 20;
+
     const throttleSpecificEntityTime = moment.utc(
       `2018-07-15 15:${throttleAt}:00`
     );
