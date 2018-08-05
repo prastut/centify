@@ -1,18 +1,24 @@
-chrome.runtime.onInstalled.addListener(function() {
-  chrome.storage.sync.set({ color: "#3aa757" }, function() {
-    console.log("The color is green.");
-  });
+function attachToYoutubePlayer(){
+  console.dir(document);
+}
 
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-    chrome.declarativeContent.onPageChanged.addRules([
-      {
-        conditions: [
-          new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: { hostEquals: "developer.chrome.com" }
-          })
-        ],
-        actions: [new chrome.declarativeContent.ShowPageAction()]
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log(request);
+  console.log(sender);
+  console.log(sendResponse);
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+      const regex = new RegExp(/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/);
+      if(changeInfo.url && changeInfo.url.match(regex)){
+          console.log('Client is now watching a video');
+          chrome.tabs.query({active:true,currentWindow: true}, (tabs) => {
+              console.log('Attaching trenity on the youtube player...');
+              chrome.tabs.sendMessage(tabs[0].id,{action: "attach_to_youtube_player"}, (res) => {
+                  //do something with the response
+              });
+          });
       }
-    ]);
   });
 });
