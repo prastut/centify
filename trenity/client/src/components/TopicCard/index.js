@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 import Emoji from "./emoji";
+import SentimentBar from "./SentimentBar";
 
 const styles = {
   root: {
@@ -12,6 +13,7 @@ const styles = {
     borderRadius: "5px",
     boxShadow: "0 15px 30px 0 rgba(0,0,0,0.11), 0 5px 15px 0 rgba(0,0,0,0.08)",
     display: "flex",
+    flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center"
   },
@@ -37,7 +39,17 @@ const styles = {
     zIndex: "1"
   },
   onVideoEntity: {
-    flex: "0 1 40%"
+    flex: "0 1 100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "70%"
+  },
+  onVideoImage: {
+    width: "30%",
+    height: "auto",
+    borderRadius: "100%",
+    zIndex: 1
   }
 };
 
@@ -53,6 +65,7 @@ class TopicCard extends PureComponent {
       entityKey,
       entityImage,
       emoji,
+      sentiment,
       selected
     } = this.props;
 
@@ -65,9 +78,17 @@ class TopicCard extends PureComponent {
       return (
         <div className={selectedStyles} onClick={this.handleTopicCardClick}>
           <div className={classes.onVideoEntity}>
-            <img src={entityImage} className={classes.image} alt={entityKey} />
-            {emoji && <Emoji emoji={emoji} />}
+            <img
+              src={entityImage}
+              className={classes.onVideoImage}
+              alt={entityKey}
+            />
           </div>
+          {emoji && <Emoji emoji={emoji} />}
+          <SentimentBar
+            positive={sentiment.positive}
+            negetive={sentiment.negative}
+          />
         </div>
       );
     }

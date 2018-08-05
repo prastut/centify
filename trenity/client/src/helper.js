@@ -17,6 +17,20 @@ export const textToEmoji = emotion => {
   }
 };
 
+export const positiveSentimentToEmoji = value => {
+  if (value <= 100 && value > 80) {
+    return "🤩";
+  } else if (value <= 80 && value > 60) {
+    return "😁";
+  } else if (value <= 60 && value > 40) {
+    return "😀";
+  } else if (value <= 40 && value > 20) {
+    return "☹️";
+  } else {
+    return "😡";
+  }
+};
+
 export const eventsToGif = event => {
   switch (event) {
     case "GOAL":
