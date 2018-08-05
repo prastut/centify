@@ -111,7 +111,7 @@ const getTrendingEmojis = async (t, collection) => {
   }
 };
 
-const getSelectedEntityTweets = async (t, match, entity_name) => {
+const getSelectedEntityTweets = async (t, match, entity_name, gap) => {
   console.log(`timeInsideMatch ${t.format()} , entity: ${entity_name}`);
 
   try {
@@ -121,7 +121,7 @@ const getSelectedEntityTweets = async (t, match, entity_name) => {
           timeStamp: {
             $gte: t
               .clone()
-              .subtract(2, "s")
+              .subtract(gap, "s")
               .toDate(),
             $lt: t.toDate()
           }
@@ -130,10 +130,13 @@ const getSelectedEntityTweets = async (t, match, entity_name) => {
       ]
     };
 
-    return await state.db
+    const tweets = await state.db
       .collection(match)
       .find(paramsForFind)
       .toArray();
+
+    console.log(tweets);
+    return tweets;
   } catch (err) {
     console.log(err);
   }
