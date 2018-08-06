@@ -112,7 +112,9 @@ const getTrendingEmojis = async (t, collection) => {
 };
 
 const getSelectedEntityTweets = async (t, match, entity_name, gap) => {
-  console.log(`timeInsideMatch ${t.format()} , entity: ${entity_name}`);
+  console.log(
+    `timeInsideMatch ${t.format()} , entity: ${entity_name}, gap: ${gap}`
+  );
 
   try {
     const paramsForFind = {
@@ -135,7 +137,7 @@ const getSelectedEntityTweets = async (t, match, entity_name, gap) => {
       .find(paramsForFind)
       .toArray();
 
-    console.log(tweets);
+    // console.log(tweets);
     return tweets;
   } catch (err) {
     console.log(err);

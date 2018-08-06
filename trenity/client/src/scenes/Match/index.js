@@ -32,11 +32,9 @@ class Match extends Component {
     this.trendingEntitiesInterval = null;
     this.emojisEntitiesInterval = null;
 
-    //Moved this interval to ReactionFeed
-    this.specificEntityPollingTweetsInterval = null;
-
     //Timeouts
     this.toggleTrendingOnVideo = null;
+    this.delayForPollingTweetTimeout = null;
 
     //MatchDataPacket
     this.match = {};
@@ -101,11 +99,15 @@ class Match extends Component {
 
   componentWillUnmount() {
     this.socket.close();
+
+    //Clearing Timeouts
+    clearTimeout(this.delayForPollingTweetTimeout);
+
+    //Clearing Intervals
     clearInterval(this.simulationMatchIntervalTimer);
     clearInterval(this.eventsInterval);
     clearInterval(this.trendingEntitiesInterval);
     clearInterval(this.emojisEntitiesInterval);
-    clearInterval(this.specificEntityPollingTweetsInterval);
   }
 
   firstTimeFire = () => {
@@ -164,7 +166,13 @@ class Match extends Component {
     });
 
     this.socket.on("entity tweets", tweets => {
-      if (!isEmpty(tweets)) {
+      if (isEmpty(tweets)) {
+        console.log("Empty Result, poll again");
+        this.delayForPollingTweetTimeout = setTimeout(
+          this.pollEntityTweets,
+          2000
+        );
+      } else {
         this.setState(({ selectedEntity }) => ({
           selectedEntity: {
             ...selectedEntity,
@@ -233,59 +241,53 @@ class Match extends Component {
     }
   };
 
-  pollEntityTweets = entity => {
+  pollEntityTweets = () => {
     const { matchId } = this.match;
-    const { timeInsideMatch } = this.state;
-    this.socket.emit("get entity tweets", timeInsideMatch, matchId, entity);
+    const { timeInsideMatch, selectedEntity } = this.state;
+
+    const gap = 2;
+
+    this.socket.emit(
+      "get entity tweets",
+      timeInsideMatch,
+      matchId,
+      selectedEntity.name,
+      gap
+    );
   };
 
-  delay = (fn, timeout) => {
-    clearTimeout(this.toggleTrendingOnVideo);
-    this.toggleTrendingOnVideo = setTimeout(() => {
-      fn();
-    }, timeout);
+  changeSpecificEntityState = entity => {
+    const entityData = this.match.allEntities.find(
+      data => entity === data.entityName
+    );
+
+    //Move Poll Entity to ComponentDidUpdate
+    this.setState(
+      {
+        selectedEntity: {
+          name: entity,
+          tweets: [],
+          image: entityData.entityImageURL
+        }
+      },
+      () => this.pollEntityTweets()
+    );
   };
 
-  hideTrending = () => {
+  resetSpecificEntityState = () => {
+    clearTimeout(this.delayForPollingTweetTimeout);
     this.setState({
-      trending: {
-        ...this.state.trending,
-        visible: false
-      }
-    });
-  };
-
-  showTrending = () => {
-    this.setState({
-      trending: {
-        ...this.state.trending,
-        visible: true
+      selectedEntity: {
+        name: "",
+        tweets: [],
+        image: ""
       }
     });
   };
 
   //Click Handlers
   handleSpecificEntityClick = entity => {
-    console.log(entity);
-    const entityData = this.match.allEntities.find(
-      data => entity === data.entityName
-    );
-    this.setState({
-      selectedEntity: {
-        name: entity,
-        tweets: [],
-        image: entityData.entityImageURL
-      }
-    });
-
-    clearInterval(this.specificEntityPollingTweetsInterval);
-
-    this.specificEntityPollingTweetsInterval = setInterval(() => {
-      console.log("getting called");
-      this.pollEntityTweets(entity);
-    }, 2000);
-
-    this.pollEntityTweets(entity);
+    this.changeSpecificEntityState(entity);
   };
 
   handleVideoStatus = status => {
@@ -319,26 +321,8 @@ class Match extends Component {
         }
       };
     });
-  };
 
-  handleExitEntityViewOnVideo = () => {
-    clearInterval(this.specificEntityPollingTweetsInterval);
-    this.setState({
-      selectedEntity: {
-        name: "",
-        tweets: [],
-        image: ""
-      }
-    });
-  };
-
-  showAndThenFadeTrending = () => {
-    this.showTrending();
-    this.delay(this.hideTrending, 5000);
-  };
-
-  handleVideoClickOrTap = () => {
-    this.showAndThenFadeTrending();
+    this.resetSpecificEntityState();
   };
 
   render() {
@@ -369,7 +353,7 @@ class Match extends Component {
           variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
           selectedEntity={this.state.selectedEntity}
           onPollEntityTweets={this.pollEntityTweets}
-          onExitEntityViewOnVideo={this.handleExitEntityViewOnVideo}
+          onResetSpecificEntityState={this.resetSpecificEntityState}
         />
       );
 
