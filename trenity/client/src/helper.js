@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 export const textToEmoji = emotion => {
   switch (emotion) {
@@ -238,4 +239,11 @@ const getArrayOfEntities = entityObj =>
 export const sampleData = {
   trendingEntities: getArrayOfEntities(FRA),
   tweets
+};
+
+export const checkImageExists = async imageUrl => {
+  return await axios
+    .get(imageUrl)
+    .then(() => true)
+    .catch(() => false);
 };
