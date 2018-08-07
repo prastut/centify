@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
@@ -13,19 +13,13 @@ const styles = {
   }
 };
 
-class MatchTile extends Component {
-  render() {
-    const { classes, image, index, handleClick } = this.props;
-
-    return (
-      <div
-        className={classes.root}
-        onClick={() => (handleClick ? handleClick(index) : null)}
-      >
-        <img src={image} className={classes.image} alt="" />
-      </div>
-    );
-  }
-}
+const MatchTile = ({ classes, image, index, handleClick }) => (
+  <div
+    className={classes.root}
+    onClick={() => (handleClick ? handleClick(index) : null)}
+  >
+    <img src={image} className={classes.image} alt="" />
+  </div>
+);
 
 export default withStyles(styles)(MatchTile);
