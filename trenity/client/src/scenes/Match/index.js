@@ -11,7 +11,6 @@ import SecondScreenExperience from "./SecondScreenExperience";
 import VideoComponent from "./VideoComponent";
 
 //UI Elements
-import MatchNavBar from "../../components/MatchNavBar";
 import EventsTimeline from "../../components/EventsTimeline";
 import TrendingEntities from "../../components/TrendingEntities";
 import ReactionFeed from "../../components/ReactionFeed";
