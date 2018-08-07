@@ -28,6 +28,9 @@ const styles = {
     justifyContent: "center",
     fontSize: "0.8em",
     alignItems: "center"
+  },
+  brand: {
+    fontSize: "1.5em"
   }
 };
 
@@ -61,7 +64,9 @@ class Home extends Component {
     return (
       <Grid container className={classes.root}>
         <Grid item xs={12}>
-          <Navbar text="Trenity" />
+          <Navbar>
+            <div className={classes.brand}>Trenity</div>
+          </Navbar>
         </Grid>
         <Grid item xs={12}>
           <Grid container>

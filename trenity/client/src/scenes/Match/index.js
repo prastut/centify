@@ -18,6 +18,8 @@ import ReactionFeed from "../../components/ReactionFeed";
 
 //Assets
 import "../../assets/css/swiper.min.css";
+import Navbar from "../../components/Navbar/index";
+import ScoreCard from "../../components/ScoreCard";
 // import video from "../../assets/video/sample_video.mp4";
 
 class Match extends Component {
@@ -328,11 +330,13 @@ class Match extends Component {
   render() {
     if (this.state.startSimulation) {
       const navbar = (
-        <MatchNavBar
-          teamOne={this.match.teamOneId}
-          teamTwo={this.match.teamTwoId}
-          timeInsideMatch={this.state.timeInsideMatch}
-        />
+        <Navbar>
+          <ScoreCard
+            teamOne={this.match.teamOneId}
+            teamTwo={this.match.teamTwoId}
+            timeInsideMatch={this.state.timeInsideMatch}
+          />
+        </Navbar>
       );
 
       const events = <EventsTimeline events={this.state.events} />;

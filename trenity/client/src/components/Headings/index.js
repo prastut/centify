@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
@@ -9,12 +9,8 @@ const styles = {
   }
 };
 
-class Headings extends Component {
-  render() {
-    const { classes, text } = this.props;
-
-    return <div className={classes.root}>{text}</div>;
-  }
-}
+const Headings = ({ classes, text }) => (
+  <div className={classes.root}>{text}</div>
+);
 
 export default withStyles(styles)(Headings);

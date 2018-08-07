@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { withStyles } from "@material-ui/core/styles";
 
-import { textToEmoji, checkImageExists } from "../../helper";
+import { textToEmoji, checkImageExists, SAMPLE_DATA } from "../../helper";
 
 const styles = {
   userContainer: {
@@ -52,8 +52,14 @@ class TwitterUser extends Component {
 
   render() {
     const { classes, index, viewing, tweet, onUserClick } = this.props;
+
     const viewingStyles =
       index === viewing ? classes.userSelected : classes.userFaded;
+
+    const imageSrc = this.state.imageExists
+      ? tweet.image
+      : SAMPLE_DATA.dummyTweetImage;
+
     return (
       <div
         className={classes.userContainer}
@@ -61,19 +67,11 @@ class TwitterUser extends Component {
       >
         <span className={viewingStyles}>
           <div className={classes.emoji}>{textToEmoji(tweet.emotion)}</div>
-          {this.state.imageExists ? (
-            <img
-              src={tweet.image}
-              className={classes.userImage}
-              alt="twitter-user-profile"
-            />
-          ) : (
-            <img
-              src="http://www.razzlesnightclub.com/sites/default/files/default_images/default_testimonial.png"
-              className={classes.userImage}
-              alt="twitter-user-profile"
-            />
-          )}
+          <img
+            src={imageSrc}
+            className={classes.userImage}
+            alt="twitter-user-profile"
+          />
         </span>
       </div>
     );
