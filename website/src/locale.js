@@ -4,16 +4,20 @@ const texts = {
     navLinks: ["Research", "Contact"],
     valueProp: [
       {
-        heading: "Value Prop #1",
-        subheading: "Sub-Heading",
-        description: "Two or three line description of the value proposition"
+        heading: "context is king.",
+        subheading: "focus, even in realtime."
       },
       {
-        heading: "Value Prop #2",
-        subheading: "Sub-Heading",
-        description: "Two or three line description of the value proposition"
+        heading: "value prop 2.",
+        subheading: "hocus focus"
       }
     ],
+    api: {
+      heading: "Power your apps with the realtime magic",
+      subtext:
+        "Centify’s full suite APIs enable teams to develop unique realtime context based applications. Everything your customers do sends a signal about what they want. Centify decodes that intent to deliver the right content - instantly."
+    },
+    productLineUp: "Product Lineup",
     usecase: {
       video: {
         heading: "Live Video",
