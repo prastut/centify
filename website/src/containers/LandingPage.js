@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 //Material Styles
-import { withStyles } from "@material-ui/core/styles";
+import injectSheet from "react-jss";
 
 //Text
 import texts from "../locale";
@@ -14,9 +14,7 @@ import Dot from "../components/Dot";
 
 const styles = {
   root: {
-    color: "white",
-    width: "calc(100vw*0.8)",
-    margin: "0 auto"
+    color: "white"
   },
   dots: {
     display: "flex",
@@ -88,4 +86,4 @@ class LandingPage extends Component {
   }
 }
 
-export default withStyles(styles)(LandingPage);
+export default injectSheet(styles)(LandingPage);

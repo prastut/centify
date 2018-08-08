@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import injectSheet from "react-jss";
 
 const styles = {
   root: {
@@ -26,4 +26,4 @@ const ValueProp = ({ classes, heading, subheading, description }) => (
   </div>
 );
 
-export default withStyles(styles)(ValueProp);
+export default injectSheet(styles)(ValueProp);

@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import injectSheet from "react-jss";
 
 const styles = {
   root: {
@@ -12,4 +12,4 @@ const ClientHeightContainer = ({ classes, children }) => (
   <div className={classes.root}>{children}</div>
 );
 
-export default withStyles(styles)(ClientHeightContainer);
+export default injectSheet(styles)(ClientHeightContainer);

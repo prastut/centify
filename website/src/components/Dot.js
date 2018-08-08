@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import injectSheet from "react-jss";
 
 const styles = {
   dot: {
@@ -25,4 +25,4 @@ const Dot = ({ classes, index, selected, onDotClick }) => (
   />
 );
 
-export default withStyles(styles)(Dot);
+export default injectSheet(styles)(Dot);
