@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
 import Swiper from "react-id-swiper";
-
+import { isEmpty } from "ramda";
 import { withStyles } from "@material-ui/core/styles";
 
-import TwitterUser from "./twitterUser";
 import TweetBox from "./tweetBox";
 
 import TopicCard from "../../components/TopicCard";
+import TwitterUser from "../../components/TwitterUser";
 
 const styles = {
   root: {
@@ -14,53 +14,55 @@ const styles = {
     flexDirection: "column",
     justifyContent: "space-evenly"
   },
-  onFullScreenRoot: {
+  onFSRoot: {
     height: "100%",
     width: "100%",
     position: "absolute"
   },
-  onFullScreenleftContainer: {
+  onFSleftContainer: {
     position: "absolute",
     left: "0",
     top: "0",
-    width: "calc(100%*0.08)",
+    width: "calc(100%*0.10)",
     height: "100%",
     background: "rgba(0,0,0,0.41)"
   },
-  onFullScreenEntityMenuContainer: {
+  onFSEntityMenuContainer: {
     display: "flex",
     flexDirection: "column",
     height: "100%"
   },
-  onFullScreenEntity: {
+  onFSEntity: {
     height: "calc(100%*0.20)",
     width: "100%"
   },
-  onFullScreenEmojis: {
-    display: "flex",
-    height: "calc(100%*0.80)",
-    width: "100%"
+  onFSEmojisContainer: {
+    height: "calc(100%*0.70)",
+    width: "100%",
+    display: "flex"
   },
-  onFullScreenTweet: {
-    flex: "1 0 auto",
-    margin: "20px 0",
-    width: "100%"
+  emojiInsideEmojisContainer: {
+    fontSize: "14px"
   },
-  onFullScreenTweetTextContainer: {
+  onFSSelectedTweetContainer: {
+    fontSize: "14px",
     position: "absolute",
-    bottom: "0",
     right: "0",
-    height: "calc(100%*0.15)",
-    width: "calc(100%*0.92)",
-    background: "rgba(0,0,0,0.41)",
-    transform: "translateY(-40%)",
-    display: "flex",
-    alignItems: "center",
+    height: "calc(100%*0.95)",
+    width: "calc(100%*0.90)",
     fontFamily: "Rubik"
   },
-  onFullScreenTweetText: {
-    width: "calc(100%*0.95)",
-    margin: "0 auto"
+  onFSEmojiPlusSelectedTweet: {
+    position: "absolute",
+    bottom: "0",
+    display: "flex"
+  },
+  emojiInsideEmojiPlusSelectedTweet: {
+    flex: "1 0 60px"
+  },
+  textInsideEmojiPlusSelectedTweet: {
+    flex: "1 0 calc(100% - 60px)",
+    padding: "20px 0"
   },
   exitCTA: {
     position: "absolute",
@@ -87,7 +89,8 @@ const PARAMS = {
 const VERTICICAL_PARAMS = {
   direction: "vertical",
   spaceBetween: 20,
-  slidesPerView: 4,
+  slidesPerView: 6,
+  freeMode: true,
   grabCursor: true
 };
 
@@ -96,80 +99,102 @@ class ReactionFeed extends PureComponent {
     super(props);
 
     this.swiper = null;
-    this.pollInterval = null;
+    this.automaticSwitchToNextTweetInterval = null;
 
     this.state = {
       viewing: 0
     };
   }
 
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.selectedEntity.name) {
-  //     //If entity is changed, so names will change, viewing = 0
-  //     if (this.props.selectedEntity.name !== prevProps.selectedEntity.name) {
-  //       this.setState({ viewing: 0 });
-  //       //Since new entity poll for tweets
-  //       this.props.onPollEntityTweets();
-  //     } else {
-  //       //If entity remains the same, poll tweets
-  //       const tweetsCount = this.props.selectedEntity.tweets.length;
+  componentDidUpdate(prevProps, prevState) {
+    //Previous
+    const prevViewing = prevState.viewing;
+    const prevSelectedEntity = prevProps.selectedEntity;
+    const prevName = prevSelectedEntity.name;
+    const prevTweets = prevSelectedEntity.tweets;
 
-  //       if (tweetsCount === 0) {
-  //         console.log("poll");
-  //         this.props.onPollEntityTweets();
-  //       } else if (this.state.viewing === tweetsCount - 1) {
-  //         this.props.onPollEntityTweets();
-  //       }
+    //Current
+    const currentViewing = this.state.viewing;
+    const currentSelectedEntity = this.props.selectedEntity;
+    const currentName = currentSelectedEntity.name;
+    const currentTweets = currentSelectedEntity.tweets;
 
-  //       //Add a condition to poll Tweets when the last viewing state didn't result in polling tweets;
-  //     }
-  //   }
-  // }
+    console.log("Current Tweets Length->", currentTweets.length);
+    console.log("Viewing->", currentViewing);
+    if (!isEmpty(currentTweets) && currentTweets.length !== prevTweets.length) {
+      clearInterval(this.automaticSwitchToNextTweetInterval);
+      this.automaticSwitchingLogic();
+    }
 
-  componentWillUnmount() {
-    clearInterval(this.pollInterval);
+    //Viewing has been updated, need to slide to that
+    if (currentViewing !== prevViewing) {
+      this.swiper.slideTo(currentViewing);
+    }
+
+    if (currentViewing === currentTweets.length - 1) {
+      clearInterval(this.automaticSwitchToNextTweetInterval);
+      this.props.onPollEntityTweets();
+    }
+
+    //If this happens, that means entity has changed, reset viewing to original state
+    if (currentName !== prevName) {
+      clearInterval(this.automaticSwitchToNextTweetInterval);
+      this.setState({ viewing: 0 });
+    }
   }
 
-  handleClick = index => {
-    this.swiper.slideTo(index);
-    this.setState({ viewing: index });
-    // this.autoSwitchToNextTweet(5);
-  };
+  componentWillUnmount() {
+    console.log("unmount");
+    clearInterval(this.automaticSwitchToNextTweetInterval);
+    this.props.onResetSpecificEntityState();
+  }
 
-  goNext = () => {
-    if (this.swiper) {
-      const { viewing } = this.state;
-      const nextViewing = viewing + 1;
-      this.swiper.slideTo(nextViewing);
-      this.setState({
-        viewing: nextViewing
-      });
+  automaticSwitchingLogic = () => {
+    if (this.state.viewing < this.props.selectedEntity.tweets.length - 1) {
+      this.switchToNext();
+    } else {
+      console.log("end");
+      //poll for more tweets
     }
   };
 
+  switchToNext = () => {
+    this.automaticSwitchToNextTweetInterval = setInterval(() => {
+      this.setState(({ viewing }) => {
+        return { viewing: viewing + 1 };
+      });
+    }, 2000);
+  };
+
+  handleClick = index => {
+    clearInterval(this.automaticSwitchToNextTweetInterval);
+    this.setState({ viewing: index }, this.automaticSwitchingLogic);
+    // this.setState({ viewing: index })
+  };
+
+  handleExitEntityViewOnVideo = () => {
+    clearInterval(this.automaticSwitchToNextTweetInterval);
+    this.props.onResetSpecificEntityState();
+  };
+
   render() {
-    const {
-      classes,
-      variant,
-      selectedEntity,
-      onExitEntityViewOnVideo
-    } = this.props;
+    const { classes, variant, selectedEntity } = this.props;
     const { tweets } = selectedEntity;
     const { viewing } = this.state;
 
     if (variant === "onVideo" && selectedEntity.name) {
       return (
         <React.Fragment>
-          <div className={classes.onFullScreenleftContainer}>
-            <div className={classes.onFullScreenEntityMenuContainer}>
-              <div className={classes.onFullScreenEntity}>
+          <div className={classes.onFSleftContainer}>
+            <div className={classes.onFSEntityMenuContainer}>
+              <div className={classes.onFSEntity}>
                 <TopicCard
                   variant="tile"
                   entityKey={selectedEntity.name}
                   entityImage={selectedEntity.image}
                 />
               </div>
-              <div className={classes.onFullScreenEmojis}>
+              <div className={classes.onFSEmojisContainer}>
                 <Swiper
                   shouldSwiperUpdate
                   {...VERTICICAL_PARAMS}
@@ -178,7 +203,10 @@ class ReactionFeed extends PureComponent {
                   }}
                 >
                   {tweets.map((tweet, index) => (
-                    <div key={index}>
+                    <div
+                      key={index}
+                      className={classes.emojiInsideEmojisContainer}
+                    >
                       <TwitterUser
                         index={index}
                         viewing={viewing}
@@ -191,16 +219,27 @@ class ReactionFeed extends PureComponent {
               </div>
             </div>
           </div>
-          <div className={classes.onFullScreenTweetTextContainer}>
-            <div className={classes.onFullScreenTweetText}>
-              {tweets[viewing] && tweets[viewing].tweet}
+          {tweets[viewing] && (
+            <div className={classes.onFSSelectedTweetContainer}>
+              <div className={classes.onFSEmojiPlusSelectedTweet}>
+                <div className={classes.emojiInsideEmojiPlusSelectedTweet}>
+                  <TwitterUser
+                    index={viewing}
+                    viewing={viewing}
+                    tweet={tweets[viewing]}
+                  />
+                </div>
+                <div className={classes.textInsideEmojiPlusSelectedTweet}>
+                  {tweets[viewing].tweet}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
           <div className={classes.exitCTA}>
             {/* <button onClick={exit}> X</button> */}
             <button
               className={classes.exitButton}
-              onClick={onExitEntityViewOnVideo}
+              onClick={this.handleExitEntityViewOnVideo}
             >
               {" "}
               X

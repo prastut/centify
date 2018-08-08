@@ -51,7 +51,7 @@ class SecondScreenExperience extends Component {
 
     return (
       <div className={classes.root}>
-        {!isFullScreen && <div className={classes.navbar}>{navbar}</div>}
+        {!isFullScreen && navbar}
         {children}
         {!isFullScreen && (
           <React.Fragment>

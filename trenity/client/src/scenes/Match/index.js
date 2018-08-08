@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import moment from "moment";
-import queryString from "query-string";
 import { isEmpty } from "ramda";
 
 //API
@@ -12,13 +11,14 @@ import SecondScreenExperience from "./SecondScreenExperience";
 import VideoComponent from "./VideoComponent";
 
 //UI Elements
-import MatchNavBar from "../../components/MatchNavBar";
 import EventsTimeline from "../../components/EventsTimeline";
 import TrendingEntities from "../../components/TrendingEntities";
 import ReactionFeed from "../../components/ReactionFeed";
 
 //Assets
 import "../../assets/css/swiper.min.css";
+import Navbar from "../../components/Navbar/index";
+import ScoreCard from "../../components/ScoreCard";
 // import video from "../../assets/video/sample_video.mp4";
 
 class Match extends Component {
@@ -33,11 +33,9 @@ class Match extends Component {
     this.trendingEntitiesInterval = null;
     this.emojisEntitiesInterval = null;
 
-    //Moved this interval to ReactionFeed
-    this.specificEntityPollingTweetsInterval = null;
-
     //Timeouts
     this.toggleTrendingOnVideo = null;
+    this.delayForPollingTweetTimeout = null;
 
     //MatchDataPacket
     this.match = {};
@@ -60,7 +58,7 @@ class Match extends Component {
         autoplay: true,
         playing: false,
         src:
-          "https://cdn-b-east.streamable.com/video/mp4/v8b3s_1.mp4?token=kCBECnX77Z5_C4LvonkWTw&expires=1533129111",
+          "https://s3-ap-southeast-1.amazonaws.com/centify-trenity/13'+-+23'.mp4",
         muted: true,
         userActive: true,
         fullScreen: false,
@@ -74,7 +72,8 @@ class Match extends Component {
     //http://localhost:3000/match/CROFRA_FINAL?link=bit.ly/2JUMWHl&matchStart=13&key=Mario_Mandzukic&throttleAt=20
     try {
       const { matchId } = this.props.match.params;
-      const { matchStart } = queryString.parse(this.props.location.search);
+      // const { matchStart } = queryString.parse(this.props.location.search);
+      const matchStart = 13;
 
       this.setupSocket();
       this.match = await api.getMatchData(matchId, matchStart);
@@ -101,11 +100,15 @@ class Match extends Component {
 
   componentWillUnmount() {
     this.socket.close();
+
+    //Clearing Timeouts
+    clearTimeout(this.delayForPollingTweetTimeout);
+
+    //Clearing Intervals
     clearInterval(this.simulationMatchIntervalTimer);
     clearInterval(this.eventsInterval);
     clearInterval(this.trendingEntitiesInterval);
     clearInterval(this.emojisEntitiesInterval);
-    clearInterval(this.specificEntityPollingTweetsInterval);
   }
 
   firstTimeFire = () => {
@@ -115,9 +118,9 @@ class Match extends Component {
   //Sockets
   setupSocket = () => {
     if (window.location.href.split("//")[1].split(":")[0] === "localhost") {
-      this.socket = openSocket("http://localhost:5000/");
+      this.socket = openSocket(api.socket.dev);
     } else {
-      this.socket = openSocket("https://trenity.me/");
+      this.socket = openSocket(api.socket.production);
     }
   };
 
@@ -164,7 +167,13 @@ class Match extends Component {
     });
 
     this.socket.on("entity tweets", tweets => {
-      if (!isEmpty(tweets)) {
+      if (isEmpty(tweets)) {
+        console.log("Empty Result, poll again");
+        this.delayForPollingTweetTimeout = setTimeout(
+          this.pollEntityTweets,
+          2000
+        );
+      } else {
         this.setState(({ selectedEntity }) => ({
           selectedEntity: {
             ...selectedEntity,
@@ -179,9 +188,12 @@ class Match extends Component {
 
   tick = () => {
     const { timeInsideMatch } = this.state;
-    const { key, throttleAt } = queryString.parse(this.props.location.search);
-
     //Any player throttle
+    // const { key, throttleAt } = queryString.parse(this.props.location.search);
+
+    const key = "Mario_Mandzukic";
+    const throttleAt = 20;
+
     const throttleSpecificEntityTime = moment.utc(
       `2018-07-15 15:${throttleAt}:00`
     );
@@ -230,59 +242,53 @@ class Match extends Component {
     }
   };
 
-  pollEntityTweets = entity => {
+  pollEntityTweets = () => {
     const { matchId } = this.match;
-    const { timeInsideMatch } = this.state;
-    this.socket.emit("get entity tweets", timeInsideMatch, matchId, entity);
+    const { timeInsideMatch, selectedEntity } = this.state;
+
+    const gap = 2;
+
+    this.socket.emit(
+      "get entity tweets",
+      timeInsideMatch,
+      matchId,
+      selectedEntity.name,
+      gap
+    );
   };
 
-  delay = (fn, timeout) => {
-    clearTimeout(this.toggleTrendingOnVideo);
-    this.toggleTrendingOnVideo = setTimeout(() => {
-      fn();
-    }, timeout);
+  changeSpecificEntityState = entity => {
+    const entityData = this.match.allEntities.find(
+      data => entity === data.entityName
+    );
+
+    //Move Poll Entity to ComponentDidUpdate
+    this.setState(
+      {
+        selectedEntity: {
+          name: entity,
+          tweets: [],
+          image: entityData.entityImageURL
+        }
+      },
+      () => this.pollEntityTweets()
+    );
   };
 
-  hideTrending = () => {
+  resetSpecificEntityState = () => {
+    clearTimeout(this.delayForPollingTweetTimeout);
     this.setState({
-      trending: {
-        ...this.state.trending,
-        visible: false
-      }
-    });
-  };
-
-  showTrending = () => {
-    this.setState({
-      trending: {
-        ...this.state.trending,
-        visible: true
+      selectedEntity: {
+        name: "",
+        tweets: [],
+        image: ""
       }
     });
   };
 
   //Click Handlers
   handleSpecificEntityClick = entity => {
-    console.log(entity);
-    const entityData = this.match.allEntities.find(
-      data => entity === data.entityName
-    );
-    this.setState({
-      selectedEntity: {
-        name: entity,
-        tweets: [],
-        image: entityData.entityImageURL
-      }
-    });
-
-    clearInterval(this.specificEntityPollingTweetsInterval);
-
-    this.specificEntityPollingTweetsInterval = setInterval(() => {
-      console.log("getting called");
-      this.pollEntityTweets(entity);
-    }, 2000);
-
-    this.pollEntityTweets(entity);
+    this.changeSpecificEntityState(entity);
   };
 
   handleVideoStatus = status => {
@@ -316,36 +322,20 @@ class Match extends Component {
         }
       };
     });
-  };
 
-  handleExitEntityViewOnVideo = () => {
-    clearInterval(this.specificEntityPollingTweetsInterval);
-    this.setState({
-      selectedEntity: {
-        name: "",
-        tweets: [],
-        image: ""
-      }
-    });
-  };
-
-  showAndThenFadeTrending = () => {
-    this.showTrending();
-    this.delay(this.hideTrending, 5000);
-  };
-
-  handleVideoClickOrTap = () => {
-    this.showAndThenFadeTrending();
+    this.resetSpecificEntityState();
   };
 
   render() {
     if (this.state.startSimulation) {
       const navbar = (
-        <MatchNavBar
-          teamOne={this.match.teamOneId}
-          teamTwo={this.match.teamTwoId}
-          timeInsideMatch={this.state.timeInsideMatch}
-        />
+        <Navbar>
+          <ScoreCard
+            teamOne={this.match.teamOneId}
+            teamTwo={this.match.teamTwoId}
+            timeInsideMatch={this.state.timeInsideMatch}
+          />
+        </Navbar>
       );
 
       const events = <EventsTimeline events={this.state.events} />;
@@ -366,7 +356,7 @@ class Match extends Component {
           variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
           selectedEntity={this.state.selectedEntity}
           onPollEntityTweets={this.pollEntityTweets}
-          onExitEntityViewOnVideo={this.handleExitEntityViewOnVideo}
+          onResetSpecificEntityState={this.resetSpecificEntityState}
         />
       );
 
