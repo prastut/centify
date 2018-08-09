@@ -31,11 +31,12 @@ const Navbar = ({ classes, brand, navLinks }) => (
         <h2 className={classes.brand}>{brand}</h2>
       </Link>
       <div>
-        {navLinks.map(link => (
-          <Link key={link} className={classes.links} to={link.toLowerCase()}>
-            {link}
-          </Link>
-        ))}
+        {navLinks &&
+          navLinks.map(link => (
+            <Link key={link} className={classes.links} to={link.toLowerCase()}>
+              {link}
+            </Link>
+          ))}
       </div>
     </div>
   </div>

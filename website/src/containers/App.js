@@ -2,16 +2,16 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 //Container ELements
-import LandingPage from "./LandingPage";
-import ResearchPage from "./ResearchPage";
-import ContactPage from "./ContactPage";
+import IterationDisplay from "./IterationDisplay";
+import ProductHuntLandingPage from "./ProductHunt";
+import Basic from "./Basic";
 
 const App = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path="/" component={LandingPage} />
-      <Route exact path="/research" component={ResearchPage} />
-      <Route exact path="/contact" component={ContactPage} />
+      <Route exact path="/" component={IterationDisplay} />
+      <Route exact path="/product-hunt" component={ProductHuntLandingPage} />
+      <Route exact path="/basic" component={Basic} />
     </Switch>
   </BrowserRouter>
 );
