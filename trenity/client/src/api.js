@@ -3,7 +3,7 @@ import moment from "moment";
 import { concat, isEmpty, toPairs, sort, fromPairs } from "ramda";
 
 const api = {
-  getMatchData: async (matchId, matchStart) => {
+  getMatchData: async (matchId, matchStartMinute, matchStartSecond) => {
     const matchPromise = await axios.get(`/api/match/data/${matchId}`);
     const { matchName, teamOneId, teamTwoId, isLive } = matchPromise.data;
 
@@ -21,7 +21,9 @@ const api = {
       isLive,
       teamOneId,
       teamTwoId,
-      startTime: moment.utc(`2018-07-15 15:${matchStart}:00`),
+      startTime: moment.utc(
+        `2018-07-15 15:${matchStartMinute}:${matchStartSecond}`
+      ),
       allEntities: concat(teamOne.data, teamTwo.data)
     };
     return match;

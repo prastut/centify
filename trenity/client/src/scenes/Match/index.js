@@ -58,7 +58,7 @@ class Match extends Component {
         autoplay: true,
         playing: false,
         src:
-          "https://s3-ap-southeast-1.amazonaws.com/centify-trenity/13'+-+23'.mp4",
+          "https://cdn-b-east.streamable.com/video/mp4/v8b3s_1.mp4?token=sHmCGrjaCaSPlcjt7rreYg&expires=1533839256",
         muted: true,
         userActive: true,
         fullScreen: false,
@@ -73,10 +73,15 @@ class Match extends Component {
     try {
       const { matchId } = this.props.match.params;
       // const { matchStart } = queryString.parse(this.props.location.search);
-      const matchStart = 13;
+      const matchStartMinute = 17;
+      const matchStartSecond = 48;
 
       this.setupSocket();
-      this.match = await api.getMatchData(matchId, matchStart);
+      this.match = await api.getMatchData(
+        matchId,
+        matchStartMinute,
+        matchStartSecond
+      );
       //Video Link
 
       if (this.match.isLive) {
