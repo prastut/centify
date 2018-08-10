@@ -39,7 +39,9 @@ const ScoreCard = ({ classes, teamOne, score, teamTwo, timeInsideMatch }) => (
     <div
       className={[classes.elements, classes.scoreAndTimeContainer].join(" ")}
     >
-      <span className={classes.score}> 0 - 0</span>
+      <span className={classes.score}>
+        {score[teamOne]} - {score[teamTwo]}
+      </span>
       <span className={classes.timeInsideMatch}>
         {timeInsideMatch.format("HH:mm:ss")}
       </span>

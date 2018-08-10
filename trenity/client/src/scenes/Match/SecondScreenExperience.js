@@ -15,11 +15,9 @@ const styles = {
   },
   events: {
     padding: "20px 0",
-    height: "calc(100%*0.10 - 20px)",
     minHeight: "95px"
   },
   trending: {
-    height: "calc(100%*0.40)",
     width: "calc(100%*0.8)",
     margin: "0px auto",
     display: "flex",
@@ -30,7 +28,6 @@ const styles = {
     margin: "0 auto"
   },
   reaction: {
-    height: "calc(100%*0.3)",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly"

@@ -44,6 +44,7 @@ class Match extends Component {
     this.state = {
       startSimulation: false,
       timeInsideMatch: "",
+      score: {},
       events: [],
       trending: {
         entities: {}
@@ -84,6 +85,8 @@ class Match extends Component {
       );
       //Video Link
 
+      console.log(this.match);
+
       if (this.match.isLive) {
         //match is live
       } else {
@@ -91,7 +94,11 @@ class Match extends Component {
 
         this.setState({
           startSimulation: true,
-          timeInsideMatch: this.match.startTime
+          timeInsideMatch: this.match.startTime,
+          score: {
+            [this.match.teamOneId]: 0,
+            [this.match.teamTwoId]: 0
+          }
         });
 
         this.setupSocketListeners();
@@ -221,7 +228,27 @@ class Match extends Component {
 
     const events = await api.getEventsTillNow(matchId, timeInsideMatch);
 
-    if (events) this.setState({ events });
+    if (events) {
+      if (events.length > this.state.events.length) {
+        const goalHappened = events.find(e => e.event === "Goal");
+
+        if (goalHappened) {
+          const { scoringTeam } = goalHappened;
+          console.log(scoringTeam);
+
+          this.setState(({ score }) => {
+            return {
+              score: {
+                ...score,
+                [scoringTeam]: score[scoringTeam] + 1
+              }
+            };
+          });
+        }
+      }
+
+      this.setState({ events });
+    }
   };
 
   //Trending Entities
@@ -338,6 +365,7 @@ class Match extends Component {
           <ScoreCard
             teamOne={this.match.teamOneId}
             teamTwo={this.match.teamTwoId}
+            score={this.state.score}
             timeInsideMatch={this.state.timeInsideMatch}
           />
         </Navbar>
