@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import injectSheet from "react-jss";
 import { breakPoints } from "../helper";
+import Video from "./Video";
+
+const mockSize = {
+  width: 280,
+  height: 580
+};
 
 const styles = {
   root: {
@@ -26,22 +32,35 @@ const styles = {
   descriptionItems: {
     flex: "1 0 100%"
   },
-  gifContainer: {
+  mockContainer: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    position: "relative"
   },
+  video: {
+    width: 238,
+    height: 516
+  },
+  mockDevice: props => ({
+    backgroundImage: `url(${props.mock})`,
+    width: mockSize.width,
+    height: mockSize.height,
+    position: "absolute",
+    backgroundSize: [[mockSize.width, mockSize.height]],
+    top: -45
+  }),
   [`@media (${breakPoints.sm})`]: {
     descriptionContainer: {
       flex: "1 0 100%",
       textAlign: "center"
     },
-    gifContainer: {
+    mockContainer: {
       flex: "1 0 100%"
     }
   },
   [`@media (${breakPoints.md})`]: {
-    gifContainer: {
+    mockContainer: {
       flex: "1 0 50%"
     },
     descriptionContainer: {
@@ -52,11 +71,12 @@ const styles = {
 
 class DisplayUseCaseBasic extends Component {
   render() {
-    const { classes, imagePosition, heading, subheading, image } = this.props;
+    const { classes, variant, video, heading, subheading } = this.props;
 
     const gif = (
-      <div className={classes.gifContainer}>
-        <img src={image} alt="" />
+      <div className={classes.mockContainer}>
+        <Video src={video} customStyles={classes.video} />
+        <div className={classes.mockDevice} />
       </div>
     );
 
@@ -70,7 +90,7 @@ class DisplayUseCaseBasic extends Component {
     return (
       <div className={classes.root}>
         <div className={classes.wrapper}>
-          {imagePosition === "right" || imagePosition === "bottom" ? (
+          {variant === "right" || variant === "bottom" ? (
             <React.Fragment>
               {description}
               {gif}

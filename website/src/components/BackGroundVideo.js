@@ -1,6 +1,8 @@
 import React from "react";
 import injectSheet from "react-jss";
 
+import Video from "./Video";
+
 const styles = {
   video: {
     height: "100%",
@@ -15,20 +17,7 @@ const styles = {
 };
 
 const BackGroundVideo = ({ classes, src }) => (
-  <div
-    dangerouslySetInnerHTML={{
-      __html: `
-<video
-  muted
-  autoplay
-  playsinline
-  loop
-  class="${classes.video}""
-  src="${src}"
-/>
-`
-    }}
-  />
+  <Video src={src} customStyles={classes.video} />
 );
 
 export default injectSheet(styles)(BackGroundVideo);

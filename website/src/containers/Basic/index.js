@@ -15,9 +15,10 @@ import BackGroundVideo from "../../components/BackGroundVideo";
 
 //Video
 import backgroundVideo from "../../assets/background.mp4";
+import verticalPhoneVideo from "../../assets/vertical-compressed.mp4";
 
 //Mocks
-import phoneVertical from "../../assets/phone-vertical.svg";
+import verticalPhoneMock from "../../assets/iphonex-big.svg";
 // import phoneHorizontal from "../../assets/phone-horizontal.svg";
 
 const styles = {
@@ -105,14 +106,15 @@ class Basic extends Component {
           <Media query={`(${breakPoints.sm})`}>
             {matches => (
               <DisplayUseCaseBasic
-                imagePosition={matches ? "bottom" : "left"}
-                image={phoneVertical}
+                variant={matches ? "bottom" : "left"}
+                video={verticalPhoneVideo}
+                mock={verticalPhoneMock}
                 {...texts.basic[language].usecase.socialTV}
               />
             )}
           </Media>
         </ClientHeightContainer>
-        <ClientHeightContainer>
+        {/* <ClientHeightContainer>
           <Media query={`(${breakPoints.sm})`}>
             {matches => (
               <DisplayUseCaseBasic
@@ -122,7 +124,7 @@ class Basic extends Component {
               />
             )}
           </Media>
-        </ClientHeightContainer>
+        </ClientHeightContainer> */}
       </div>
     );
   }
