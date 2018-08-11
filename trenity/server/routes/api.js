@@ -13,7 +13,17 @@ const db = require("../db");
 //Match Related Routes
 router.get("/match/all", async (req, res) => {
   const fixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
+  console.log(fixtures);
   res.json(fixtures);
+});
+
+router.get("/match/live", async (req, res) => {
+  currentTime = moment.utc();
+  const liveFixtures = await db.getLiveFixtures(
+    FIXTURES_COLLECTION,
+    currentTime
+  );
+  res.json(liveFixtures);
 });
 
 router.get("/match/endingTime/:matchId", async (req, res) => {
