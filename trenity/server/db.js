@@ -37,19 +37,26 @@ const close = done => {
   3. Match -> TrendingEntitiesCount are got until timeInsideMathc
   4. Match -> getTrendingEmojis for allTrendingEntities
   */
-const getAllEntitiesForTeam = async team => {
+const getAllEntitiesForMatch = async matchId => {
   try {
+    teams = state.db
+      .collection(matchId)
+      .find()
+      .toArray();
+    teamOne = teams["teamOne"];
+    teamTwo = teams["teamTwo"];
     return await state.db
-      .collection(ENTITIES_COLLECTION)
-      .find({ team })
+      .collection("entities")
+      .find({ $or: [{ teamOne }, { teamTwo }] })
       .toArray();
   } catch (err) {
     console.log(err);
   }
 };
 
-const getEventsUpto = async (t, collection) => {
+const getEventsUpto = async (t, matchId) => {
   try {
+    collection = matchId + "_events";
     // console.log(`TIME->${t}, Match->${collection}`);
     const paramsForFind = {
       timeStamp: {
@@ -84,7 +91,7 @@ const getTrendingEntitiesInTimeFrame = async (t, collection) => {
     };
 
     return await state.db
-      .collection(`TRENDING_${collection}`)
+      .collection(`${collection}_trending`)
       .findOne(paramsForFind, { sort: { timeStamp: -1 }, limit: 1 });
   } catch (err) {
     console.log(err);
@@ -198,7 +205,7 @@ module.exports = {
   connect,
   get,
   close,
-  getAllEntitiesForTeam,
+  getAllEntitiesForMatch,
   getEventsUpto,
   getTrendingEntitiesInTimeFrame,
   getTrendingEmojis,
