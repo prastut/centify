@@ -5,35 +5,15 @@ const express = require("express");
 const moment = require("moment");
 const router = express.Router();
 
-//Techical Debt
-const { BEL, FRA, CRO, ENG, SWE, MATCHES_LIST } = require("../entityList");
 const { FIXTURES_COLLECTION } = require("../variables");
 const helper = require("../helper");
 
 const db = require("../db");
 
-router.get("/events/:matchId", (req, res) => {
-  const matchId = req.params.matchId;
-
-  try {
-  } catch (err) {}
-});
-
 //Match Related Routes
 router.get("/match/all", async (req, res) => {
   const fixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
   res.json(fixtures);
-});
-
-router.get("/match/data/:matchId", (req, res) => {
-  const matchId = req.params.matchId;
-  const matchData = MATCHES_LIST.find(m => m.key === matchId);
-
-  if (matchData) {
-    res.json(matchData);
-  } else {
-    res.sendStatus(404);
-  }
 });
 
 router.get("/match/endingTime/:matchId", async (req, res) => {
@@ -44,6 +24,7 @@ router.get("/match/endingTime/:matchId", async (req, res) => {
 
 router.get("/match/trending/:matchId", async (req, res) => {
   const { matchId } = req.params;
+  console.log(req.query);
   const { timeInsideMatch } = req.query;
 
   try {
@@ -73,10 +54,10 @@ router.get("/match/events/:matchId", async (req, res) => {
 });
 
 //Team Related Routes
-router.get("/team/entities/:teamId", async (req, res) => {
-  const { teamId } = req.params;
+router.get("/match/entities/:matchId", async (req, res) => {
+  const { matchId } = req.params;
   try {
-    const entities = await db.getAllEntitiesForTeam(teamId);
+    const entities = await db.getAllEntitiesForMatch(matchId);
     res.json(entities);
   } catch (err) {
     console.log(err);
