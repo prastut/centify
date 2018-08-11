@@ -196,6 +196,24 @@ const getAllFixtures = async collection => {
   }
 };
 
+const getLiveFixtures = async (collection, t) => {
+  const timeStampSortAscending = { timeStamp: 1 };
+  try {
+    return await state.db
+      .collection(collection)
+      .find({
+        timeStamp: {
+          $gte: t.toDate(),
+          $lte: t.add(150, "minutes").toDate()
+        }
+      })
+      .sort(timeStampSortAscending)
+      .toArray();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   connect,
   get,
@@ -207,5 +225,6 @@ module.exports = {
   getSelectedEntityTweets,
   countTrendingEntities,
   getLastTweetForAPastMatch,
-  getAllFixtures
+  getAllFixtures,
+  getLiveFixtures
 };
