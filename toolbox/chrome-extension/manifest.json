@@ -11,8 +11,7 @@
       {
           "matches": ["*://*/*"],
           "run_at": "document_idle",
-          "js": ["build/static/js/main.js"],
-          "css": ["build/static/css/main.css"]
+          "js": ["contentScript.js"]
       }
   ],
   "permissions": ["contextMenus","webNavigation","tabs","activeTab","*://*/*"],

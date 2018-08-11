@@ -68,7 +68,8 @@ function attachToYoutube(){
     let relatedDiv = document.getElementById('related');
     let helloDiv = document.createElement('div');
     helloDiv.style.overflow = 'auto';
-    helloDiv.innerHTML = `<h1 style="height: 50vh;color:#fff;">Hello</h1>`;
+    // helloDiv.innerHTML = `<h1 style="height: 50vh;color:#fff;">Hello</h1>`;
+    helloDiv.innerHTML = `<iframe src="https://trenity.me" style="height: 50vh;"/>`;
     relatedDiv.insertBefore(helloDiv, relatedDiv.firstChild);
     setTimeout(() => {
         /**
@@ -98,12 +99,27 @@ function attachToYoutube(){
     },1500);//giving this timeout, so that youtube player is ready, hacky for now, needs a proper check until div is present using a watcher.
 }
 
+function attachToHotstar(){
+    let app = document.getElementById('app');
+    let iframeElement = document.createElement('iframe');
+    iframeElement.src = `https://trenity.me`;
+    iframeElement.style.height = '50vh';
+    iframeElement.style.position = `fixed`;
+    iframeElement.style.right = `0`;
+    iframeElement.style.zIndex = `999`;
+    app.insertBefore(iframeElement,app.firstChild);
+}
+
 chrome.runtime.onMessage.addListener((req,sender,res) => {
-    console.log('message received');
     if(req.action && req.action === 'attach_to_youtube_player' && !runOnce){
         runOnce = true;
         console.log('Attaching overlay on the youtube player');
         attachToYoutube();
         listenForFullscreenChanges();
+    }
+    else if(req.action && req.action === 'attach_to_hotstar_player'){
+        console.log('In contentscript');
+        console.log('Attaching iframe on hotstar player');
+        attachToHotstar();
     }
 });
