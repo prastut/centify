@@ -1,29 +1,78 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React, { Component } from "react";
+import injectSheet from "react-jss";
+import { breakPoints } from "../helper";
+import "animate.css";
 
 const styles = {
   root: {
-    height: "calc(100% - 30px)",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center"
   },
+  contentWrapper: {
+    width: "calc(100%*0.8)",
+    margin: "0 auto"
+  },
   heading: {
     margin: "10px 0",
-    fontSize: "3em"
+    fontSize: "3em",
+    fontWeight: "700"
   },
   subheading: {
     fontSize: "1.2em",
     margin: "10px 0"
+  },
+  [`@media (${breakPoints.sm})`]: {
+    root: {
+      textAlign: "center"
+    },
+    heading: {
+      fontSize: "2.5em"
+    }
   }
 };
 
-const ValueProp = ({ classes, heading, subheading, description }) => (
-  <div className={classes.root}>
-    <div className={classes.heading}>{heading}</div>
-    <div className={classes.subheading}>{subheading}</div>
-    <div>{description}</div>
-  </div>
-);
+class ValueProp extends Component {
+  state = { animation: false };
 
-export default withStyles(styles)(ValueProp);
+  timeout = null;
+
+  componentDidMount() {
+    this.setState({ animation: true });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.heading !== prevProps.heading) {
+      this.setState({ animation: false });
+      this.timeout = setTimeout(() => {
+        this.setState({ animation: true });
+        clearTimeout(this.timeout);
+      }, 200);
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
+  }
+
+  render() {
+    const { classes, heading, subheading, description } = this.props;
+    const { animation } = this.state;
+    return (
+      <div className={classes.root}>
+        {animation && (
+          <div
+            className={[classes.contentWrapper, "animated", "fadeIn"].join(" ")}
+          >
+            <div className={[classes.heading].join(" ")}>{heading}</div>
+            <div className={classes.subheading}>{subheading}</div>
+            <div>{description}</div>
+          </div>
+        )}
+      </div>
+    );
+  }
+}
+
+export default injectSheet(styles)(ValueProp);

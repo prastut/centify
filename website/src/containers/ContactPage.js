@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 //Material Styles
-import { withStyles } from "@material-ui/core/styles";
+import injectSheet from "react-jss";
 
 //Text
 import texts from "../locale";
@@ -57,4 +57,4 @@ class ContactPage extends Component {
   }
 }
 
-export default withStyles(styles)(ContactPage);
+export default injectSheet(styles)(ContactPage);
