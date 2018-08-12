@@ -24,7 +24,7 @@ router.get("/match/all", (req, res) => {
 });
 
 router.get("/match/data/:matchId", (req, res) => {
-  const matchId = req.params.matchId;
+  const { matchId } = req.params;
   const matchData = MATCHES_LIST.find(m => m.key === matchId);
 
   if (matchData) {
