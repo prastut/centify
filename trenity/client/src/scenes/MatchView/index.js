@@ -73,6 +73,7 @@ class Match extends Component {
     //http://localhost:3000/match/CROFRA_FINAL?link=bit.ly/2JUMWHl&matchStart=13&key=Mario_Mandzukic&throttleAt=20
     try {
       const { matchId } = this.props.match.params;
+      console.log("oy");
       // const { matchStart } = queryString.parse(this.props.location.search);
       const matchStartMinute = 17;
       const matchStartSecond = 48;
@@ -414,7 +415,7 @@ class Match extends Component {
       );
     }
 
-    return null;
+    return <h1>Hello World</h1>;
   }
 }
 

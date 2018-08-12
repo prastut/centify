@@ -1,22 +1,22 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
-//UI ELements
-import Home from "../Home";
-import Match from "../Match";
+//Scenes
+import FixturesDisplay from "../FixturesDisplay";
+
+import Demo from "../Demo";
+import Dashboard from "../Dashboard";
+import ErrorPage from "../ErrorPage";
 
 import "../../assets/css/swiper.min.css";
-import Dashboard from "../Dashboard";
 
 const App = () => (
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/dashboard" component={Dashboard} />
-      <Route path="/match/:matchId" component={Match} />
-      {/* <Route path="/video/:matchId" component={MatchViewWithVideo} /> */}
-    </Switch>
-  </BrowserRouter>
+  <Switch>
+    <Route exact path="/" component={FixturesDisplay} />
+    <Route exact path="/demo" component={Demo} />
+    <Route exact path="/dashboard" component={Dashboard} />
+    <Route component={ErrorPage} />
+  </Switch>
 );
 
 export default App;

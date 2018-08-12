@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { isEmpty } from "ramda";
 
 //Material Styles
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
+
+//API
+import api from "../../api";
 
 //UI ELements
 import Navbar from "../../components/Navbar";
@@ -34,7 +36,7 @@ const styles = {
   }
 };
 
-class Home extends Component {
+class View extends Component {
   constructor(props) {
     super(props);
 
@@ -44,18 +46,13 @@ class Home extends Component {
     };
   }
 
-  componentDidMount() {
-    axios
-      .get("/api/match/all")
-      .then(response => {
-        this.setState({
-          liveMatches: response.data.filter(m => m.isLive),
-          pastMatches: response.data.filter(m => !m.isLive)
-        });
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+  async componentDidMount() {
+    const fixtures = await api.getAllFixtures();
+
+    this.setState({
+      liveMatches: fixtures.filter(m => m.isLive),
+      pastMatches: fixtures.filter(m => !m.isLive)
+    });
   }
 
   render() {
@@ -100,4 +97,4 @@ class Home extends Component {
   }
 }
 
-export default withStyles(styles)(Home);
+export default withStyles(styles)(View);

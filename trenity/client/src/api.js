@@ -115,6 +115,11 @@ const api = {
     return events.data;
   },
 
+  getAllFixtures: async () => {
+    const fixtures = await axios.get("/api/match/all");
+    return fixtures.data;
+  },
+
   socket: {
     dev: "http://localhost:5000/",
     production: "https://trenity.me/"
