@@ -5,9 +5,9 @@ const express = require("express");
 const moment = require("moment");
 const router = express.Router();
 
-const { FIXTURES_COLLECTION } = require("../variables");
-const helper = require("../helper");
+const { FIXTURES_COLLECTION, ENTITIES_COLLECTION } = require("../variables");
 
+const helper = require("../helper");
 const db = require("../db");
 
 const matchStateUpdater = allFixtures => {
@@ -17,7 +17,7 @@ const matchStateUpdater = allFixtures => {
       Match can be: 
       1. Upcoming: currentTime is before startTime
       2. Live: Range [startTime, endTime]
-      3. Past: curerntTime is after endTime
+      3. Past: currentTime is after endTime
     */
 
   return allFixtures.map(fixture => {
@@ -66,6 +66,18 @@ router.get("/match/data/:matchId", async (req, res) => {
   }
 });
 
+router.get("/match/all-entities/:matchId", async (req, res) => {
+  const { matchId } = req.params;
+  console.log(matchId);
+
+  try {
+    const entities = await db.getAllEntitiesForMatch(matchId);
+    res.json(entities);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 router.get("/match/endingTime/:matchId", async (req, res) => {
   const matchId = req.params.matchId;
   const lastTweetData = await db.getLastTweetForAPastMatch(matchId);
@@ -74,7 +86,6 @@ router.get("/match/endingTime/:matchId", async (req, res) => {
 
 router.get("/match/trending/:matchId", async (req, res) => {
   const { matchId } = req.params;
-  console.log(req.query);
   const { timeInsideMatch } = req.query;
 
   try {
@@ -98,18 +109,6 @@ router.get("/match/events/:matchId", async (req, res) => {
       matchId
     );
     res.json(events);
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-router.get("/match/all-entities/:matchId", async (req, res) => {
-  const { matchId } = req.params;
-  console.log(matchId);
-
-  try {
-    const entities = await db.getAllEntitiesForMatch(matchId);
-    res.json(entities);
   } catch (err) {
     console.log(err);
   }

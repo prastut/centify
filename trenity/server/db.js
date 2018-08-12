@@ -1,4 +1,4 @@
-const MongoClient = require("mongodb").MongoClient;
+const { MongoClient, ObjectId } = require("mongodb");
 const { DATABASE } = require("./variables");
 const { ENTITIES_COLLECTION, FIXTURES_COLLECTION } = require("./variables");
 const state = {
@@ -44,45 +44,30 @@ const getAllFixtures = async collection => {
   }
 };
 
-const getLiveFixtures = async (collection, t) => {
-  const timeStampSortAscending = { timeStamp: 1 };
-  try {
-    return await state.db
-      .collection(collection)
-      .find({
-        timeStamp: {
-          $gte: t.toDate(),
-          $lte: t.add(150, "minutes").toDate()
-        }
-      })
-      .sort(timeStampSortAscending)
-      .toArray();
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 /*Data Getting Functions
   1. Entities for both teams are procured and merged
   2. Match -> events are got until timeInsideMatch
   3. Match -> TrendingEntitiesCount are got until timeInsideMathc
   4. Match -> getTrendingEmojis for allTrendingEntities
   */
+
+const getMatchData = async matchId => {
+  try {
+    return await state.db
+      .collection(FIXTURES_COLLECTION)
+      .findOne({ _id: ObjectId(matchId) });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const getAllEntitiesForMatch = async matchId => {
   try {
-    const teams = await state.db
-      .collection(matchId)
-      .find()
-      .toArray();
-
-    console.log(teams);
-
-    const teamOne = teams["teamOne"];
-    const teamTwo = teams["teamTwo"];
+    const { teamOne, teamTwo } = await getMatchData(matchId);
 
     return await state.db
-      .collection("entities")
-      .find({ $or: [{ teamOne }, { teamTwo }] })
+      .collection(ENTITIES_COLLECTION)
+      .find({ $or: [{ team: teamOne }, { team: teamTwo }] })
       .toArray();
   } catch (err) {
     console.log(err);
@@ -91,7 +76,7 @@ const getAllEntitiesForMatch = async matchId => {
 
 const getEventsUpto = async (t, matchId) => {
   try {
-    collection = matchId + "_events";
+    const collection = `${matchId}_events`;
     // console.log(`TIME->${t}, Match->${collection}`);
     const paramsForFind = {
       timeStamp: {
@@ -228,7 +213,6 @@ module.exports = {
   get,
   close,
   getAllFixtures,
-  getLiveFixtures,
   getAllEntitiesForMatch,
   getEventsUpto,
   getTrendingEntitiesInTimeFrame,

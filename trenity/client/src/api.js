@@ -1,5 +1,5 @@
 import axios from "axios";
-import { concat, isEmpty, toPairs, sort, fromPairs } from "ramda";
+import { isEmpty, toPairs, sort, fromPairs } from "ramda";
 import { DEMO_LIST } from "./sampleData";
 
 const api = {
@@ -15,21 +15,17 @@ const api = {
   getAllMatchDetails: async matchId => {
     const matchDetails = await api.getMatchData(matchId);
 
-    const { teamOne, teamTwoId, matchState } = matchDetails;
+    const { teamOne, teamTwo, matchState, startTime } = matchDetails;
 
     const allEntities = await api.getAllEntities(matchId);
 
-    console.log(allEntities);
-
-    // return {
-    //   matchId,
-    //   matchDetails: {
-    //     name: matchName,
-    //     isLive
-    //   },
-    //   teams: { teamOneId, teamTwoId },
-    //   allEntities: concat(teamOneData, teamTwoData)
-    // };
+    return {
+      matchId,
+      matchState,
+      startTime,
+      teams: { teamOne, teamTwo },
+      allEntities
+    };
   },
 
   getMatchData: async matchId => {

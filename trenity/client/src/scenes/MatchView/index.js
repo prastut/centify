@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { isEmpty } from "ramda";
+import moment from "moment";
 
 //API
 import api from "../../api";
@@ -68,14 +69,14 @@ class Match extends Component {
 
   async componentDidMount() {
     try {
-      console.log(this.props);
-
       const {
         url,
         params: { matchId }
       } = this.props.match;
 
       const isDemo = url.split("/")[1] === "demo";
+
+      let timeInsideMatch = null;
 
       if (isDemo) {
         const { search } = this.props.location;
@@ -90,32 +91,36 @@ class Match extends Component {
           ...demoDetails
         };
 
-        console.log(this.match);
-
         // this.match = api.getDemoData(matchId)
       } else {
         this.match = await api.getAllMatchDetails(matchId);
 
-        console.log(this.match);
+        if (this.match.matchState === "live") {
+          timeInsideMatch = moment.utc();
+        } else if (this.match.matchState === "past") {
+          timeInsideMatch = moment.utc(this.match.startTime);
+        } else {
+          timeInsideMatch = "";
+        }
       }
 
-      // this.setupSocket();
-      // this.setupSocketListeners();
+      this.setupSocket();
+      this.setupSocketListeners();
 
-      // this.setState(prevState => {
-      //   return {
-      //     matchStarted: true,
-      //     timeInsideMatch: this.match.time.start,
-      //     score: {
-      //       [this.match.teams.teamOneId]: 0,
-      //       [this.match.teams.teamTwoId]: 0
-      //     },
-      //     video: {
-      //       ...prevState.video,
-      //       src: this.match.video ? this.match.video : ""
-      //     }
-      //   };
-      // });
+      this.setState(prevState => {
+        return {
+          matchStarted: true,
+          timeInsideMatch,
+          score: {
+            [this.match.teams.teamOne]: 0,
+            [this.match.teams.teamTwo]: 0
+          },
+          video: {
+            ...prevState.video,
+            src: this.match.video ? this.match.video : ""
+          }
+        };
+      });
     } catch (e) {
       console.log(e);
     }
@@ -382,8 +387,8 @@ class Match extends Component {
       const navbar = (
         <Navbar>
           <ScoreCard
-            teamOne={this.match.teams.teamOneId}
-            teamTwo={this.match.teams.teamTwoId}
+            teamOne={this.match.teams.teamOne}
+            teamTwo={this.match.teams.teamTwo}
             score={this.state.score}
             timeInsideMatch={this.state.timeInsideMatch}
           />
