@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 import { withStyles } from "@material-ui/core/styles";
 
-import { textToEmoji, checkImageExists, SAMPLE_DATA } from "../../helper";
+import { textToEmoji, checkImageExists } from "../../helper";
+import { DUMMY_TWEET_IMAGE } from "../../sampleData";
 
 const styles = {
   userContainer: {
@@ -56,9 +57,7 @@ class TwitterUser extends Component {
     const viewingStyles =
       index === viewing ? classes.userSelected : classes.userFaded;
 
-    const imageSrc = this.state.imageExists
-      ? tweet.image
-      : SAMPLE_DATA.dummyTweetImage;
+    const imageSrc = this.state.imageExists ? tweet.image : DUMMY_TWEET_IMAGE;
 
     return (
       <div

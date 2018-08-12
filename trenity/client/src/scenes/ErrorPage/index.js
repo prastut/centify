@@ -39,7 +39,9 @@ class ErrorPage extends Component {
       <Grid container className={classes.root}>
         <Grid item xs={12}>
           <Navbar>
-            <div className={classes.brand}>Trenity</div>
+            <Link to="/">
+              <div className={classes.brand}>Trenity</div>
+            </Link>
           </Navbar>
         </Grid>
         <Grid item xs={12}>

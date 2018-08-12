@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import moment from "moment";
 import { isEmpty } from "ramda";
 
 //API
@@ -19,7 +18,6 @@ import ReactionFeed from "../../components/ReactionFeed";
 import "../../assets/css/swiper.min.css";
 import Navbar from "../../components/Navbar/index";
 import ScoreCard from "../../components/ScoreCard";
-// import video from "../../assets/video/sample_video.mp4";
 
 class Match extends Component {
   constructor(props) {
@@ -42,7 +40,7 @@ class Match extends Component {
 
     //State
     this.state = {
-      startSimulation: false,
+      matchStarted: false,
       timeInsideMatch: "",
       score: {},
       events: [],
@@ -58,8 +56,7 @@ class Match extends Component {
       video: {
         autoplay: true,
         playing: false,
-        src:
-          "https://cdn-b-east.streamable.com/video/mp4/v8b3s_1.mp4?token=sHmCGrjaCaSPlcjt7rreYg&expires=1533839256",
+        src: "",
         muted: true,
         userActive: true,
         fullScreen: false,
@@ -70,44 +67,63 @@ class Match extends Component {
   }
 
   async componentDidMount() {
-    //http://localhost:3000/match/CROFRA_FINAL?link=bit.ly/2JUMWHl&matchStart=13&key=Mario_Mandzukic&throttleAt=20
     try {
-      const { matchId } = this.props.match.params;
-      console.log("oy");
-      // const { matchStart } = queryString.parse(this.props.location.search);
-      const matchStartMinute = 17;
-      const matchStartSecond = 48;
+      console.log(this.props);
+
+      const {
+        url,
+        params: { matchId }
+      } = this.props.match;
+
+      const isDemo = url.split("/")[1] === "demo";
+
+      if (isDemo) {
+        const { search } = this.props.location;
+
+        const variant = search.split("=")[1];
+
+        const matchDetails = await api.getAllMatchDetails(matchId);
+        const demoDetails = api.getDemoDetails(matchId, variant);
+
+        this.match = {
+          ...matchDetails,
+          ...demoDetails
+        };
+
+        console.log(this.match);
+
+        // this.match = api.getDemoData(matchId)
+      } else {
+        this.match = await api.getAllMatchDetails(matchId);
+      }
 
       this.setupSocket();
-      this.match = await api.getMatchData(
-        matchId,
-        matchStartMinute,
-        matchStartSecond
-      );
-      //Video Link
+      this.setupSocketListeners();
 
-      console.log(this.match);
-
-      if (this.match.isLive) {
-        //match is live
-      } else {
-        //match is in the past, simulate it.
-
-        this.setState({
-          startSimulation: true,
-          timeInsideMatch: this.match.startTime,
+      this.setState(prevState => {
+        return {
+          matchStarted: true,
+          timeInsideMatch: this.match.time.start,
           score: {
-            [this.match.teamOneId]: 0,
-            [this.match.teamTwoId]: 0
+            [this.match.teams.teamOneId]: 0,
+            [this.match.teams.teamTwoId]: 0
+          },
+          video: {
+            ...prevState.video,
+            src: this.match.video ? this.match.video : ""
           }
-        });
-
-        this.setupSocketListeners();
-        this.setupIntervals();
-        this.firstTimeFire();
-      }
+        };
+      });
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.matchStarted !== prevState.matchStarted) {
+      //First Time Run
+      this.setupIntervals();
+      this.firstTimeFire();
     }
   }
 
@@ -201,19 +217,19 @@ class Match extends Component {
 
   tick = () => {
     const { timeInsideMatch } = this.state;
-    //Any player throttle
-    // const { key, throttleAt } = queryString.parse(this.props.location.search);
+    // //Any player throttle
+    // // const { key, throttleAt } = queryString.parse(this.props.location.search);
 
-    const key = "Mario_Mandzukic";
-    const throttleAt = 20;
+    // const key = "Mario_Mandzukic";
+    // const throttleAt = 20;
 
-    const throttleSpecificEntityTime = moment.utc(
-      `2018-07-15 15:${throttleAt}:00`
-    );
+    // const throttleSpecificEntityTime = moment.utc(
+    //   `2018-07-15 15:${throttleAt}:00`
+    // );
 
-    if (timeInsideMatch.isSame(throttleSpecificEntityTime)) {
-      this.handleSpecificEntityClick(key);
-    }
+    // if (timeInsideMatch.isSame(throttleSpecificEntityTime)) {
+    //   this.handleSpecificEntityClick(key);
+    // }
 
     this.setState({
       timeInsideMatch: timeInsideMatch.clone().add(1, "s")
@@ -360,12 +376,12 @@ class Match extends Component {
   };
 
   render() {
-    if (this.state.startSimulation) {
+    if (this.state.matchStarted) {
       const navbar = (
         <Navbar>
           <ScoreCard
-            teamOne={this.match.teamOneId}
-            teamTwo={this.match.teamTwoId}
+            teamOne={this.match.teams.teamOneId}
+            teamTwo={this.match.teams.teamTwoId}
             score={this.state.score}
             timeInsideMatch={this.state.timeInsideMatch}
           />
@@ -402,15 +418,17 @@ class Match extends Component {
           trending={trending}
           reaction={reaction}
         >
-          <VideoComponent
-            stateOfVideo={this.state.video}
-            isSpecificEntityView={this.state.selectedEntity.name}
-            trendingOnVideo={trending}
-            reactionOnVideo={reaction}
-            onVideoStatus={this.handleVideoStatus}
-            onVideoUserStatus={this.handleVideoUserStatus}
-            onVideoFullScreen={this.handleVideoFullScreen}
-          />
+          {this.state.video.src && (
+            <VideoComponent
+              stateOfVideo={this.state.video}
+              isSpecificEntityView={this.state.selectedEntity.name}
+              trendingOnVideo={trending}
+              reactionOnVideo={reaction}
+              onVideoStatus={this.handleVideoStatus}
+              onVideoUserStatus={this.handleVideoUserStatus}
+              onVideoFullScreen={this.handleVideoFullScreen}
+            />
+          )}
         </SecondScreenExperience>
       );
     }

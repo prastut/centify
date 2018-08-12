@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 //Scenes
 import FixturesDisplay from "../FixturesDisplay";
@@ -12,8 +12,9 @@ import "../../assets/css/swiper.min.css";
 
 const App = () => (
   <Switch>
-    <Route exact path="/" component={FixturesDisplay} />
-    <Route exact path="/demo" component={Demo} />
+    <Route exact path="/" render={() => <Redirect to="/fixtures" />} />
+    <Route path="/fixtures" component={FixturesDisplay} />
+    <Route path="/demo" component={Demo} />
     <Route exact path="/dashboard" component={Dashboard} />
     <Route component={ErrorPage} />
   </Switch>

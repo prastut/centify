@@ -1,17 +1,15 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { isEmpty } from "ramda";
 
 //Material Styles
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 
-//API
-import api from "../../api";
-
 //UI ELements
 import Navbar from "../../components/Navbar";
-import MatchTile from "../../components/MatchTile";
+
+//Demo Data
+import { DEMO_LIST } from "../../sampleData";
 
 const styles = {
   root: {
@@ -20,81 +18,54 @@ const styles = {
     margin: "0 auto",
     color: "white"
   },
+  brand: {
+    fontSize: "1.5em"
+  },
   headings: {
     fontSize: "0.8em",
     letterSpacing: "5px"
   },
-  noLiveMatches: {
-    height: 150,
-    display: "flex",
-    justifyContent: "center",
-    fontSize: "0.8em",
-    alignItems: "center"
+  demoListContainer: {
+    paddingTop: "20px"
   },
-  brand: {
-    fontSize: "1.5em"
+  demo: {
+    padding: "10px 0"
+  },
+  demoLink: {
+    color: "white"
   }
 };
 
-class View extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      liveMatches: [],
-      pastMatches: []
-    };
-  }
-
-  async componentDidMount() {
-    const fixtures = await api.getAllFixtures();
-
-    this.setState({
-      liveMatches: fixtures.filter(m => m.isLive),
-      pastMatches: fixtures.filter(m => !m.isLive)
-    });
-  }
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Grid container className={classes.root}>
-        <Grid item xs={12}>
-          <Navbar>
-            <div className={classes.brand}>Trenity</div>
-          </Navbar>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container>
-            <Grid item xs={12}>
-              <div className={classes.headings}> LIVE </div>
-              {isEmpty(this.state.liveMatches) ? (
-                <div className={classes.noLiveMatches}>
-                  No live matches at the moment.
-                </div>
-              ) : (
-                this.state.liveMatches.map((match, index) => (
-                  <Link key={match.key} to={`/match/${match.key}`}>
-                    <MatchTile image={match.matchTileImage} />
+const View = ({ classes }) => {
+  return (
+    <Grid container className={classes.root}>
+      <Grid item xs={12}>
+        <Navbar>
+          <div className={classes.brand}>Trenity</div>
+        </Navbar>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container>
+          <Grid item xs={12}>
+            <div className={classes.headings}> DEMO LIST </div>
+            <div className={classes.demoListContainer}>
+              {DEMO_LIST.map(demo => (
+                <div key={demo.variant} className={classes.demo}>
+                  <Link
+                    className={classes.demoLink}
+                    to={`/demo/match/${demo.matchId}?variant=${demo.variant}`}
+                  >
+                    {demo.title}
                   </Link>
-                ))
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <div className={classes.headings}> PAST MATCHES </div>
-              {this.state.pastMatches.map((match, index) => (
-                <Link key={match.key} to={`/match/${match.key}`}>
-                  <MatchTile image={match.matchTileImage} />
-                </Link>
+                </div>
               ))}
-            </Grid>
+            </div>
           </Grid>
         </Grid>
-        <Grid item xs={12} />
       </Grid>
-    );
-  }
-}
+      <Grid item xs={12} />
+    </Grid>
+  );
+};
 
 export default withStyles(styles)(View);

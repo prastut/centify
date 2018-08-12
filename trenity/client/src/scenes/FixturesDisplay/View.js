@@ -36,7 +36,7 @@ const styles = {
   }
 };
 
-class FixturesDisplay extends Component {
+class View extends Component {
   constructor(props) {
     super(props);
 
@@ -56,10 +56,7 @@ class FixturesDisplay extends Component {
   }
 
   render() {
-    const { classes, match } = this.props;
-
-    console.log(match);
-
+    const { classes } = this.props;
     return (
       <Grid container className={classes.root}>
         <Grid item xs={12}>
@@ -77,7 +74,7 @@ class FixturesDisplay extends Component {
                 </div>
               ) : (
                 this.state.liveMatches.map((match, index) => (
-                  <Link key={match.key} to={`/match/${match.key}`}>
+                  <Link key={match.key} to={`/fixtures/match/${match.key}`}>
                     <MatchTile image={match.matchTileImage} />
                   </Link>
                 ))
@@ -86,7 +83,7 @@ class FixturesDisplay extends Component {
             <Grid item xs={12}>
               <div className={classes.headings}> PAST MATCHES </div>
               {this.state.pastMatches.map((match, index) => (
-                <Link key={match.key} to={`/match/${match.key}`}>
+                <Link key={match.key} to={`/fixtures/match/${match.key}`}>
                   <MatchTile image={match.matchTileImage} />
                 </Link>
               ))}
@@ -99,4 +96,4 @@ class FixturesDisplay extends Component {
   }
 }
 
-export default withStyles(styles)(FixturesDisplay);
+export default withStyles(styles)(View);
