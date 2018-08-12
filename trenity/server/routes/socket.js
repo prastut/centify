@@ -50,6 +50,24 @@ exports = module.exports = io => {
           socket.emit("entity tweets", tweets);
         }
       );
+
+      socket.on("events", async (timeInsideMatch, matchId) => {
+        const events = await db.getEventsUpto(
+          moment.utc(JSON.parse(timeInsideMatch)),
+          matchId
+        );
+
+        const eventsMapped = events.map(i => {
+          return {
+            id: i._id,
+            event: i.event,
+            eventId: i.eventId,
+            title: i.title,
+            timeStamp: i.timeStamp
+          };
+        });
+        socket.emit("match events", eventsMapped);
+      });
     } catch (err) {
       console.log(err);
     }
