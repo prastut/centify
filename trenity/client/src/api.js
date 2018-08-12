@@ -13,24 +13,25 @@ const api = {
   },
 
   getAllMatchDetails: async matchId => {
-    const { matchName, teamOneId, teamTwoId, isLive } = await api.getMatchData(
-      matchId
-    );
+    const matchDetails = await api.getMatchData(matchId);
 
-    const [teamOneData, teamTwoData] = await Promise.all([
-      api.getTeamData(teamOneId),
-      api.getTeamData(teamTwoId)
-    ]);
+    console.log(matchDetails);
 
-    return {
-      matchId,
-      matchDetails: {
-        name: matchName,
-        isLive
-      },
-      teams: { teamOneId, teamTwoId },
-      allEntities: concat(teamOneData, teamTwoData)
-    };
+    // const { matchName, teamOneId, teamTwoId, isLive } =
+    // const [teamOneData, teamTwoData] = await Promise.all([
+    //   api.getTeamData(teamOneId),
+    //   api.getTeamData(teamTwoId)
+    // ]);
+
+    // return {
+    //   matchId,
+    //   matchDetails: {
+    //     name: matchName,
+    //     isLive
+    //   },
+    //   teams: { teamOneId, teamTwoId },
+    //   allEntities: concat(teamOneData, teamTwoData)
+    // };
   },
 
   getMatchData: async matchId => {

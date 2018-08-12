@@ -10,56 +10,54 @@ const helper = require("../helper");
 
 const db = require("../db");
 
-//Fixtures
-router.get("/fixtures", async (req, res) => {
-  const allFixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
-  /*
-      Match can be: 
-      1. Upcoming. startTime is after currentTime
-      2. Live. Range [startTime, endTime]
-      3. Past
-    */
-
+const matchStateUpdater = allFixtures => {
   const currentTime = moment.utc();
 
-  const allFixturesWithMatchState = allFixtures.map(fixture => {
-    const matchStartTime = moment.utc(fixture.timeStamp);
-    const matchEndingTime = matchStartTime.clone().add(150, "minutes");
+  /*
+      Match can be: 
+      1. Upcoming: currentTime is before startTime
+      2. Live: Range [startTime, endTime]
+      3. Past: curerntTime is after endTime
+    */
+
+  return allFixtures.map(fixture => {
+    const startTime = moment.utc(fixture.timeStamp);
+    const endTime = startTime.clone().add(150, "minutes");
 
     let matchState = null;
 
-    if (currentTime.isBefore(matchStartTime)) {
+    if (currentTime.isBefore(startTime)) {
       matchState = "upcoming";
-    } else if (currentTime.isBetween(matchStartTime, matchEndingTime)) {
+    } else if (currentTime.isBetween(startTime, endTime)) {
       matchState = "live";
-    } else if (currentTime.isAfter(matchEndingTime)) {
+    } else if (currentTime.isAfter(endTime)) {
       matchState = "past";
     }
 
     return {
       ...fixture,
-      startTime: matchStartTime,
-      endTime: matchEndingTime,
+      startTime,
+      endTime,
       matchState
     };
   });
+};
 
-  res.json(allFixturesWithMatchState);
-});
-
-router.get("/match/live", async (req, res) => {
-  currentTime = moment.utc();
-  const liveFixtures = await db.getLiveFixtures(
-    FIXTURES_COLLECTION,
-    currentTime
-  );
-  res.json(liveFixtures);
+//Fixtures
+router.get("/fixtures", async (req, res) => {
+  const allFixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
+  res.json(matchStateUpdater(allFixtures));
 });
 
 //Match Related Routes
-router.get("/match/data/:matchId", (req, res) => {
+router.get("/match/data/:matchId", async (req, res) => {
   const { matchId } = req.params;
-  const matchData = MATCHES_LIST.find(m => m.key === matchId);
+
+  const allFixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
+
+  const matchData = matchStateUpdater(allFixtures).find(
+    m => m._id.toString() === matchId
+  );
 
   if (matchData) {
     res.json(matchData);

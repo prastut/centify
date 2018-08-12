@@ -99,23 +99,23 @@ class Match extends Component {
         console.log(this.match);
       }
 
-      this.setupSocket();
-      this.setupSocketListeners();
+      // this.setupSocket();
+      // this.setupSocketListeners();
 
-      this.setState(prevState => {
-        return {
-          matchStarted: true,
-          timeInsideMatch: this.match.time.start,
-          score: {
-            [this.match.teams.teamOneId]: 0,
-            [this.match.teams.teamTwoId]: 0
-          },
-          video: {
-            ...prevState.video,
-            src: this.match.video ? this.match.video : ""
-          }
-        };
-      });
+      // this.setState(prevState => {
+      //   return {
+      //     matchStarted: true,
+      //     timeInsideMatch: this.match.time.start,
+      //     score: {
+      //       [this.match.teams.teamOneId]: 0,
+      //       [this.match.teams.teamTwoId]: 0
+      //     },
+      //     video: {
+      //       ...prevState.video,
+      //       src: this.match.video ? this.match.video : ""
+      //     }
+      //   };
+      // });
     } catch (e) {
       console.log(e);
     }
