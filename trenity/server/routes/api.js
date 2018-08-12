@@ -26,6 +26,17 @@ router.get("/match/live", async (req, res) => {
   res.json(liveFixtures);
 });
 
+router.get("/match/data/:matchId", (req, res) => {
+  const { matchId } = req.params;
+  const matchData = MATCHES_LIST.find(m => m.key === matchId);
+
+  if (matchData) {
+    res.json(matchData);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
 router.get("/match/endingTime/:matchId", async (req, res) => {
   const matchId = req.params.matchId;
   const lastTweetData = await db.getLastTweetForAPastMatch(matchId);

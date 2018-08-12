@@ -1,29 +1,8 @@
 import React, { Component } from "react";
-import moment from "moment";
 import { isEmpty } from "ramda";
-import { withStyles } from "@material-ui/core/styles";
 import Swiper from "react-id-swiper";
 
-import { eventsToEmoji } from "../../helper";
-
-const styles = {
-  root: {
-    display: "flex",
-    alignItems: "center",
-    overflowX: "scroll",
-    whiteSpace: "nowrap"
-  },
-  eachEventContainer: {
-    textAlign: "center"
-  },
-  eventEmoji: {
-    fontSize: "1.5em",
-    margin: "0 0 5px 0"
-  },
-  eventTime: {
-    margin: 0
-  }
-};
+import Event from "../../components/Event";
 
 const PARAMS = {
   slidesPerView: 4,
@@ -36,7 +15,6 @@ const PARAMS = {
 class EventsTimeline extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
     this.eventsAnimation = null;
   }
 
@@ -68,7 +46,6 @@ class EventsTimeline extends Component {
   };
 
   render() {
-    const { classes, events } = this.props;
     return (
       <Swiper
         shouldSwiperUpdate
@@ -77,14 +54,9 @@ class EventsTimeline extends Component {
           if (node) this.swiper = node.swiper;
         }}
       >
-        {events.map(e => (
-          <div key={e._id} className={classes.eachEventContainer}>
-            <div className={classes.eventEmoji}>
-              {eventsToEmoji(e.event.toUpperCase())}
-            </div>
-            <div className={classes.eventTime}>
-              {moment.utc(e.timeStamp).format("m")}'
-            </div>
+        {this.props.events.map(eventObj => (
+          <div key={eventObj._id}>
+            <Event eventObj={eventObj} />
           </div>
         ))}
       </Swiper>
@@ -92,4 +64,4 @@ class EventsTimeline extends Component {
   }
 }
 
-export default withStyles(styles)(EventsTimeline);
+export default EventsTimeline;

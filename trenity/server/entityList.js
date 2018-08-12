@@ -255,17 +255,17 @@ const MATCHES_LIST = [
     teamOneId: "CRO",
     teamTwoId: "FRA",
     startTime: moment.utc("2018-07-15 15:18:30")
-  },
-  {
-    key: "BELFRA_SEMI",
-    matchName: "Belgium vs France",
-    matchTileImage:
-      "https://i.ytimg.com/vi/D_hu6xpwn4Q/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCqRPhweDAYucAxelwQqhrTO1qJbQ",
-    isLive: false,
-    teamOneId: "BEL",
-    teamTwoId: "FRA",
-    startTime: moment.utc("2018-07-10 18:00:00")
   }
+  // {
+  //   key: "BELFRA_SEMI",
+  //   matchName: "Belgium vs France",
+  //   matchTileImage:
+  //     "https://i.ytimg.com/vi/D_hu6xpwn4Q/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCqRPhweDAYucAxelwQqhrTO1qJbQ",
+  //   isLive: false,
+  //   teamOneId: "BEL",
+  //   teamTwoId: "FRA",
+  //   startTime: moment.utc("2018-07-10 18:00:00")
+  // }
 ];
 
 module.exports = {

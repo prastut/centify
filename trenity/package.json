@@ -8,11 +8,14 @@
     "server": "cd server && node index.js",
     "dev-server": "cd server && yarn sf",
     "client": "cd client && yarn start",
-    "build-client": "cd client && yarn build",
+    "build": "cd client && yarn build",
     "dev": "concurrently --kill-others-on-fail \"yarn dev-server\" \"yarn client\""
   },
   "devDependencies": {
     "concurrently": "^3.6.0"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "react-jss": "^8.6.1"
+  }
 }

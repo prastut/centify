@@ -1,12 +1,14 @@
-import React from "react";
+import React, { Component } from "react";
 
 import { withStyles } from "@material-ui/core/styles";
 
-import { textToEmoji } from "../../helper";
+import { textToEmoji, checkImageExists } from "../../helper";
+import { DUMMY_TWEET_IMAGE } from "../../sampleData";
 
 const styles = {
   userContainer: {
     height: "60px",
+    width: "60px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
@@ -32,20 +34,47 @@ const styles = {
   }
 };
 
-const TwitterUser = ({ classes, index, viewing, tweet, onUserClick }) => {
-  const viewingStyles =
-    index === viewing ? classes.userSelected : classes.userFaded;
-  return (
-    <div className={classes.userContainer} onClick={() => onUserClick(index)}>
-      <span className={viewingStyles}>
-        <div className={classes.emoji}>{textToEmoji(tweet.emotion)}</div>
-        <img
-          src={tweet.image}
-          className={classes.userImage}
-          alt="twitter-user"
-        />
-      </span>
-    </div>
-  );
-};
+class TwitterUser extends Component {
+  state = { imageExists: false };
+
+  async componentDidMount() {
+    const doesImageExist = await checkImageExists(this.props.tweet.image);
+    if (doesImageExist) {
+      this.setState({ imageExists: true });
+    }
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (this.props.tweet.id !== prevProps.tweet.id) {
+      const doesImageExist = await checkImageExists(this.props.tweet.image);
+      this.setState({ imageExists: doesImageExist });
+    }
+  }
+
+  render() {
+    const { classes, index, viewing, tweet, onUserClick } = this.props;
+
+    const viewingStyles =
+      index === viewing ? classes.userSelected : classes.userFaded;
+
+    const imageSrc = this.state.imageExists ? tweet.image : DUMMY_TWEET_IMAGE;
+
+    return (
+      <div
+        className={classes.userContainer}
+        onClick={() => (onUserClick ? onUserClick(index) : null)}
+      >
+        <span className={viewingStyles}>
+          <div className={classes.emoji}>{textToEmoji(tweet.emotion)}</div>
+          <img
+            src={imageSrc}
+            className={classes.userImage}
+            alt="twitter-user-profile"
+          />
+        </span>
+      </div>
+    );
+  }
+}
+
 export default withStyles(styles)(TwitterUser);

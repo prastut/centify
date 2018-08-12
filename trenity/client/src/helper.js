@@ -1,4 +1,6 @@
 import React from "react";
+import axios from "axios";
+import { toPairs, sort } from "ramda";
 
 export const textToEmoji = emotion => {
   switch (emotion) {
@@ -111,131 +113,55 @@ export const eventsToEmoji = event => {
   }
 };
 
-const FRA = {
-  Nabil_Fekir:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/401458_sq-300_jpg?allowDefaultPicture=true",
-  Ousmane_Dembele:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/398680_sq-300_jpg?allowDefaultPicture=true",
-  Benjamin_Pavard:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/411471_sq-300_jpg?allowDefaultPicture=true",
-  Benjamin_Mendy:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/335995_sq-300_jpg?allowDefaultPicture=true",
-  Olivier_Giroud:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/358015_sq-300_jpg?allowDefaultPicture=true",
-  Djibril_Sidibe:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/398682_sq-300_jpg?allowDefaultPicture=true",
-  Blaise_Matuidi:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/358014_sq-300_jpg?allowDefaultPicture=true",
-  Paul_Pogba:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/367388_sq-300_jpg?allowDefaultPicture=true",
-  Ngolo_Kante:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/398681_sq-300_jpg?allowDefaultPicture=true",
-  Antoine_Griezmann:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/336435_sq-300_jpg?allowDefaultPicture=true",
-  Presnel_Kimpembe:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/401459_sq-300_jpg?allowDefaultPicture=true",
-  Steven_Nzonzi:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/319327_sq-300_jpg?allowDefaultPicture=true",
-  Lucas_Hernandez:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/411470_sq-300_jpg?allowDefaultPicture=true",
-  Steve_Mandanda:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/254133_sq-300_jpg?allowDefaultPicture=true",
-  Adil_Rami:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/299876_sq-300_jpg?allowDefaultPicture=true",
-  Hugo_Lloris:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/297105_sq-300_jpg?allowDefaultPicture=true",
-  Corentin_Tolisso:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/404566_sq-300_jpg?allowDefaultPicture=true",
-  Deschamps_Didier:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/48455_sq-300_jpg?allowDefaultPicture=true",
-  Florian_Thauvin:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/368965_sq-300_jpg?allowDefaultPicture=true",
-  Thomas_Lemar:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/402049_sq-300_jpg?allowDefaultPicture=true",
-  Samuel_Umtiti:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/368846_sq-300_jpg?allowDefaultPicture=true",
-  Raphael_Varane:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/359440_sq-300_jpg?allowDefaultPicture=true",
-  Alphonse_Areola:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/368840_sq-300_jpg?allowDefaultPicture=true",
-  Kylian_Mbappe:
-    "https://api.fifa.com/api/v1/picture/players/2018fwc/389867_sq-300_jpg?allowDefaultPicture=true"
+//Technical Debt
+export const entitiesDictToSortedEntitiesArray = (
+  entitiesDict,
+  allEntities
+) => {
+  const sortedEntitiesArray = sort(
+    (a, b) => b[1].difference - a[1].difference,
+    toPairs(entitiesDict)
+  ).map(i => {
+    const entity = i[0];
+    const sentiment = i[1].sentiment;
+
+    const refinedSentiment = {};
+
+    if (sentiment) {
+      if ("positive" in sentiment && "negative" in sentiment) {
+        refinedSentiment["positive"] = Math.round(sentiment.positive * 100);
+        refinedSentiment["negative"] = Math.round(sentiment.negative * 100);
+      } else {
+        if ("positive" in sentiment) {
+          refinedSentiment["positive"] = Math.round(sentiment.positive * 100);
+          refinedSentiment["negative"] = 0;
+        }
+
+        if ("negative" in sentiment) {
+          refinedSentiment["negative"] = Math.round(sentiment.negative * 100);
+          refinedSentiment["positive"] = 0;
+        }
+      }
+    } else {
+      refinedSentiment["positive"] = 50;
+      refinedSentiment["negative"] = 50;
+    }
+
+    const entityData = allEntities.find(data => entity === data.entityName);
+
+    return {
+      entity,
+      image: entityData.entityImageURL,
+      sentiment: refinedSentiment
+    };
+  });
+  return sortedEntitiesArray;
 };
 
-const tweets = [
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-
-  {
-    emotion: "anger",
-    entity_name: "Olivier_Giroud",
-    tweet:
-      "RT @WhoScored: #FRA 0-0 #BEL HT:\n\nOlivier Giroud has now had 10 shots at the 2018 #WorldCup without hitting the target \n\nFull match statist…",
-    image:
-      "https://pbs.twimg.com/profile_images/957804463565299713/4zz1wGCg_normal.jpg"
-  },
-  {
-    emotion: "fear",
-    text: "Olivier Giroud",
-    tweet:
-      "Olivier Giroud has now played over 7\nhours of football at the 2018 #WorldCup\nwithout managing a single shot on targ… https://t.co/X50bv6CV64",
-    image:
-      "https://pbs.twimg.com/profile_images/804489457172971520/s20h0MPs_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  }
-];
-
-const getArrayOfEntities = entityObj =>
-  Object.keys(entityObj).map(entity => {
-    return { entity, image: entityObj[entity] };
-  });
-
-export const sampleData = {
-  trendingEntities: getArrayOfEntities(FRA),
-  tweets
+//Technical Debt
+export const checkImageExists = async imageUrl => {
+  return await axios
+    .get(imageUrl)
+    .then(() => true)
+    .catch(() => false);
 };
