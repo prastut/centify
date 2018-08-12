@@ -70,12 +70,16 @@ const getLiveFixtures = async (collection, t) => {
   */
 const getAllEntitiesForMatch = async matchId => {
   try {
-    teams = state.db
+    const teams = await state.db
       .collection(matchId)
       .find()
       .toArray();
-    teamOne = teams["teamOne"];
-    teamTwo = teams["teamTwo"];
+
+    console.log(teams);
+
+    const teamOne = teams["teamOne"];
+    const teamTwo = teams["teamTwo"];
+
     return await state.db
       .collection("entities")
       .find({ $or: [{ teamOne }, { teamTwo }] })

@@ -15,13 +15,11 @@ const api = {
   getAllMatchDetails: async matchId => {
     const matchDetails = await api.getMatchData(matchId);
 
-    console.log(matchDetails);
+    const { teamOne, teamTwoId, matchState } = matchDetails;
 
-    // const { matchName, teamOneId, teamTwoId, isLive } =
-    // const [teamOneData, teamTwoData] = await Promise.all([
-    //   api.getTeamData(teamOneId),
-    //   api.getTeamData(teamTwoId)
-    // ]);
+    const allEntities = await api.getAllEntities(matchId);
+
+    console.log(allEntities);
 
     // return {
     //   matchId,
@@ -35,16 +33,18 @@ const api = {
   },
 
   getMatchData: async matchId => {
-    const match = await axios.get(`/api/match/data/${matchId}`);
-    return match.data;
+    try {
+      const match = await axios.get(`/api/match/data/${matchId}`);
+      return match.data;
+    } catch (error) {
+      console.log(error);
+    }
   },
 
-  getTeamData: async teamId => {
+  getAllEntities: async matchId => {
     try {
-      console.log(teamId);
-      const team = await axios.get(`/api/team/entities/${teamId}`);
-
-      return team.data;
+      const allEntities = await axios.get(`/api/match/all-entities/${matchId}`);
+      return allEntities.data;
     } catch (error) {
       console.log(error);
     }

@@ -103,9 +103,10 @@ router.get("/match/events/:matchId", async (req, res) => {
   }
 });
 
-//Team Related Routes
-router.get("/match/entities/:matchId", async (req, res) => {
+router.get("/match/all-entities/:matchId", async (req, res) => {
   const { matchId } = req.params;
+  console.log(matchId);
+
   try {
     const entities = await db.getAllEntitiesForMatch(matchId);
     res.json(entities);
