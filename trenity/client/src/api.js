@@ -3,6 +3,15 @@ import { concat, isEmpty, toPairs, sort, fromPairs } from "ramda";
 import { DEMO_LIST } from "./sampleData";
 
 const api = {
+  getAllFixtures: async () => {
+    try {
+      const fixtures = await axios.get("/api/fixtures/");
+      return fixtures.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   getAllMatchDetails: async matchId => {
     const { matchName, teamOneId, teamTwoId, isLive } = await api.getMatchData(
       matchId
@@ -133,15 +142,6 @@ const api = {
       });
 
       return events.data;
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
-  getAllFixtures: async () => {
-    try {
-      const fixtures = await axios.get("/api/match/all");
-      return fixtures.data;
     } catch (error) {
       console.log(error);
     }

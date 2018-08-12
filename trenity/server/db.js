@@ -31,6 +31,37 @@ const close = done => {
   }
 };
 
+const getAllFixtures = async collection => {
+  const timeStampSortAscending = { timeStamp: 1 };
+  try {
+    return await state.db
+      .collection(collection)
+      .find()
+      .sort(timeStampSortAscending)
+      .toArray();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getLiveFixtures = async (collection, t) => {
+  const timeStampSortAscending = { timeStamp: 1 };
+  try {
+    return await state.db
+      .collection(collection)
+      .find({
+        timeStamp: {
+          $gte: t.toDate(),
+          $lte: t.add(150, "minutes").toDate()
+        }
+      })
+      .sort(timeStampSortAscending)
+      .toArray();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 /*Data Getting Functions
   1. Entities for both teams are procured and merged
   2. Match -> events are got until timeInsideMatch
@@ -188,48 +219,17 @@ const getLastTweetForAPastMatch = async collection => {
   }
 };
 
-const getAllFixtures = async collection => {
-  const timeStampSortAscending = { timeStamp: 1 };
-  try {
-    return await state.db
-      .collection(collection)
-      .find()
-      .sort(timeStampSortAscending)
-      .toArray();
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getLiveFixtures = async (collection, t) => {
-  const timeStampSortAscending = { timeStamp: 1 };
-  try {
-    return await state.db
-      .collection(collection)
-      .find({
-        timeStamp: {
-          $gte: t.toDate(),
-          $lte: t.add(150, "minutes").toDate()
-        }
-      })
-      .sort(timeStampSortAscending)
-      .toArray();
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 module.exports = {
   connect,
   get,
   close,
+  getAllFixtures,
+  getLiveFixtures,
   getAllEntitiesForMatch,
   getEventsUpto,
   getTrendingEntitiesInTimeFrame,
   getTrendingEmojis,
   getSelectedEntityTweets,
   countTrendingEntities,
-  getLastTweetForAPastMatch,
-  getAllFixtures,
-  getLiveFixtures
+  getLastTweetForAPastMatch
 };

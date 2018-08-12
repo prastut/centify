@@ -33,6 +33,12 @@ const styles = {
   },
   brand: {
     fontSize: "1.5em"
+  },
+  matchLinkContainer: {
+    margin: "20px 0"
+  },
+  matchLink: {
+    color: "white"
   }
 };
 
@@ -41,6 +47,7 @@ class View extends Component {
     super(props);
 
     this.state = {
+      upcomingMatches: [],
       liveMatches: [],
       pastMatches: []
     };
@@ -49,11 +56,26 @@ class View extends Component {
   async componentDidMount() {
     const fixtures = await api.getAllFixtures();
 
+    console.log(fixtures);
+
     this.setState({
-      liveMatches: fixtures.filter(m => m.isLive),
-      pastMatches: fixtures.filter(m => !m.isLive)
+      upcomingMatches: fixtures.filter(m => m.matchState === "upcoming"),
+      liveMatches: fixtures.filter(m => m.matchState === "live"),
+      pastMatches: fixtures.filter(m => m.matchState === "past")
     });
   }
+
+  generateLink = match => {
+    const { classes } = this.props;
+
+    return (
+      <div key={match._id} className={classes.matchLinkContainer}>
+        <Link className={classes.matchLink} to={`/fixtures/match/${match._id}`}>
+          {match.teamOne} vs {match.teamTwo}
+        </Link>
+      </div>
+    );
+  };
 
   render() {
     const { classes } = this.props;
@@ -73,20 +95,31 @@ class View extends Component {
                   No live matches at the moment.
                 </div>
               ) : (
-                this.state.liveMatches.map((match, index) => (
-                  <Link key={match.key} to={`/fixtures/match/${match.key}`}>
-                    <MatchTile image={match.matchTileImage} />
-                  </Link>
-                ))
+                this.state.liveMatches.map((match, index) =>
+                  this.generateLink(match)
+                )
               )}
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <div className={classes.headings}> PAST MATCHES </div>
               {this.state.pastMatches.map((match, index) => (
                 <Link key={match.key} to={`/fixtures/match/${match.key}`}>
                   <MatchTile image={match.matchTileImage} />
                 </Link>
               ))}
+            </Grid> */}
+            <Grid item xs={12}>
+              <div className={classes.headings}> UPCOMING MATCHES </div>
+              {this.state.upcomingMatches.map((match, index) =>
+                this.generateLink(match)
+              )}
+            </Grid>
+
+            <Grid item xs={12}>
+              <div className={classes.headings}> PAST MATCHES </div>
+              {this.state.pastMatches.map((match, index) =>
+                this.generateLink(match)
+              )}
             </Grid>
           </Grid>
         </Grid>

@@ -95,6 +95,8 @@ class Match extends Component {
         // this.match = api.getDemoData(matchId)
       } else {
         this.match = await api.getAllMatchDetails(matchId);
+
+        console.log(this.match);
       }
 
       this.setupSocket();

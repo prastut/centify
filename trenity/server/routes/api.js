@@ -10,11 +10,41 @@ const helper = require("../helper");
 
 const db = require("../db");
 
-//Match Related Routes
-router.get("/match/all", async (req, res) => {
-  const fixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
-  console.log(fixtures);
-  res.json(fixtures);
+//Fixtures
+router.get("/fixtures", async (req, res) => {
+  const allFixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
+  /*
+      Match can be: 
+      1. Upcoming. startTime is after currentTime
+      2. Live. Range [startTime, endTime]
+      3. Past
+    */
+
+  const currentTime = moment.utc();
+
+  const allFixturesWithMatchState = allFixtures.map(fixture => {
+    const matchStartTime = moment.utc(fixture.timeStamp);
+    const matchEndingTime = matchStartTime.clone().add(150, "minutes");
+
+    let matchState = null;
+
+    if (currentTime.isBefore(matchStartTime)) {
+      matchState = "upcoming";
+    } else if (currentTime.isBetween(matchStartTime, matchEndingTime)) {
+      matchState = "live";
+    } else if (currentTime.isAfter(matchEndingTime)) {
+      matchState = "past";
+    }
+
+    return {
+      ...fixture,
+      startTime: matchStartTime,
+      endTime: matchEndingTime,
+      matchState
+    };
+  });
+
+  res.json(allFixturesWithMatchState);
 });
 
 router.get("/match/live", async (req, res) => {
@@ -26,6 +56,7 @@ router.get("/match/live", async (req, res) => {
   res.json(liveFixtures);
 });
 
+//Match Related Routes
 router.get("/match/data/:matchId", (req, res) => {
   const { matchId } = req.params;
   const matchData = MATCHES_LIST.find(m => m.key === matchId);
