@@ -76,8 +76,6 @@ const getAllEntitiesForMatch = async matchId => {
 
 const getEventsUpto = async (t, matchId) => {
   try {
-    const collection = `${matchId}_events`;
-    // console.log(`TIME->${t}, Match->${collection}`);
     const paramsForFind = {
       timeStamp: {
         $lt: t.toDate()
@@ -85,7 +83,7 @@ const getEventsUpto = async (t, matchId) => {
     };
 
     return await state.db
-      .collection(`${collection}_EVENTS`)
+      .collection(`${matchId}_events`)
       .find(paramsForFind)
       .sort({ timeStamp: 1 })
       .toArray();

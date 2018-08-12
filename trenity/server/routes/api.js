@@ -108,6 +108,7 @@ router.get("/match/events/:matchId", async (req, res) => {
       moment.utc(JSON.parse(timeInsideMatch)),
       matchId
     );
+
     res.json(events);
   } catch (err) {
     console.log(err);
