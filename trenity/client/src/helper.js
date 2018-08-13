@@ -147,11 +147,14 @@ export const entitiesDictToSortedEntitiesArray = (
       refinedSentiment["negative"] = 50;
     }
 
-    const entityData = allEntities.find(data => entity === data.entityName);
+    console.log(entity);
+    console.log(allEntities);
+
+    const entityData = allEntities.find(data => data.entityName === entity);
 
     return {
       entity,
-      image: entityData.entityImageURL,
+      image: entityData.imageURL,
       sentiment: refinedSentiment
     };
   });

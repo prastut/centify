@@ -61,7 +61,7 @@ const api = {
         }
       );
 
-      // console.log(dataForTrendingEntitiesCount);
+      console.log(dataForTrendingEntitiesCount);
 
       const data = dataForTrendingEntitiesCount.data;
       if (!data) {

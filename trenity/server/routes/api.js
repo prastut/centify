@@ -7,7 +7,6 @@ const router = express.Router();
 
 const { FIXTURES_COLLECTION, ENTITIES_COLLECTION } = require("../variables");
 
-const helper = require("../helper");
 const db = require("../db");
 
 const matchStateUpdater = allFixtures => {
@@ -68,7 +67,6 @@ router.get("/match/data/:matchId", async (req, res) => {
 
 router.get("/match/all-entities/:matchId", async (req, res) => {
   const { matchId } = req.params;
-  console.log(matchId);
 
   try {
     const entities = await db.getAllEntitiesForMatch(matchId);

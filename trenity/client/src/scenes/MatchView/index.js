@@ -98,7 +98,8 @@ class Match extends Component {
         if (this.match.matchState === "live") {
           timeInsideMatch = moment.utc();
         } else if (this.match.matchState === "past") {
-          timeInsideMatch = moment.utc(this.match.startTime);
+          // timeInsideMatch = moment.utc(this.match.startTime);
+          timeInsideMatch = moment.utc("2018-07-15T15:17:00.000Z");
         } else {
           timeInsideMatch = "";
         }
@@ -285,6 +286,8 @@ class Match extends Component {
       timeInsideMatch,
       this.state.trending.entities
     );
+
+    // console.log(entities);
 
     if (entities) {
       this.setState(({ trending }) => {
