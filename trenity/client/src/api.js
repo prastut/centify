@@ -12,18 +12,23 @@ const api = {
     }
   },
 
-  getAllMatchDetails: async matchId => {
-    const matchDetails = await api.getMatchData(matchId);
-
-    const { teamOne, teamTwo, matchState, startTime } = matchDetails;
+  getMatchVerboseDetails: async matchId => {
+    const { teamOne, teamTwo, matchState, timeStamp } = await api.getMatchData(
+      matchId
+    );
 
     const allEntities = await api.getAllEntities(matchId);
+
+    const [teamOneData, teamTwoData] = await Promise.all([
+      api.getEntityData(teamOne),
+      api.getEntityData(teamTwo)
+    ]);
 
     return {
       matchId,
       matchState,
-      startTime,
-      teams: { teamOne, teamTwo },
+      startTime: timeStamp,
+      teams: { teamOne: teamOneData, teamTwo: teamTwoData },
       allEntities
     };
   },
@@ -41,6 +46,15 @@ const api = {
     try {
       const allEntities = await axios.get(`/api/match/all-entities/${matchId}`);
       return allEntities.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getEntityData: async key => {
+    try {
+      const entity = await axios.get(`/api/entities/${key}`);
+      return entity.data;
     } catch (error) {
       console.log(error);
     }

@@ -21,24 +21,11 @@ for entity_object in db[entities_old].find({}):
             entity_key = key
 
     print entity_key
-
     new_entity = entity_object.copy()
 
-    try:
-        first_name = entity_object[entity_key][0]
-        last_name = entity_object[entity_key][1]
-        full_name = entity_object[entity_key][2]
-
-        new_entity.update({
-            'entity': {
-                'key': entity_key,
-                'firstName': first_name,
-                'lastName': last_name,
-                'fullName': full_name
-            }})
-
-    except IndexError as e:
-        print e
-        continue
+    new_entity.update({
+        'key': entity_key,
+        'type': "Player"
+    })
 
     db[entities_new].insert(new_entity)

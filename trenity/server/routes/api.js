@@ -12,6 +12,15 @@ const db = require("../db");
 const matchStateUpdater = allFixtures => {
   const currentTime = moment.utc();
 
+  return allFixtures.map(fixture => {
+    return {
+      ...fixture,
+      matchState: getMatchState(fixture.timeStamp)
+    };
+  });
+};
+
+const getMatchState = timeStamp => {
   /*
       Match can be: 
       1. Upcoming: currentTime is before startTime
@@ -19,49 +28,46 @@ const matchStateUpdater = allFixtures => {
       3. Past: currentTime is after endTime
     */
 
-  return allFixtures.map(fixture => {
-    const startTime = moment.utc(fixture.timeStamp);
-    const endTime = startTime.clone().add(150, "minutes");
+  console.log(timeStamp);
 
-    let matchState = null;
+  const currentTime = moment.utc();
+  const startTime = moment.utc(timeStamp);
+  const endTime = startTime.clone().add(150, "minutes");
 
-    if (currentTime.isBefore(startTime)) {
-      matchState = "upcoming";
-    } else if (currentTime.isBetween(startTime, endTime)) {
-      matchState = "live";
-    } else if (currentTime.isAfter(endTime)) {
-      matchState = "past";
-    }
-
-    return {
-      ...fixture,
-      startTime,
-      endTime,
-      matchState
-    };
-  });
+  if (currentTime.isBefore(startTime)) {
+    return "upcoming";
+  } else if (currentTime.isBetween(startTime, endTime)) {
+    return "live";
+  } else if (currentTime.isAfter(endTime)) {
+    return "past";
+  }
 };
 
 //Fixtures
 router.get("/fixtures", async (req, res) => {
-  const allFixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
-  res.json(matchStateUpdater(allFixtures));
+  try {
+    const allFixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
+    res.json(matchStateUpdater(allFixtures));
+  } catch (e) {
+    console.log("get /fixtures error", e);
+  }
 });
 
 //Match Related Routes
 router.get("/match/data/:matchId", async (req, res) => {
-  const { matchId } = req.params;
+  try {
+    const { matchId } = req.params;
 
-  const allFixtures = await db.getAllFixtures(FIXTURES_COLLECTION);
+    const matchData = await db.getMatchData(matchId);
+    const matchState = getMatchState(matchData.timeStamp);
 
-  const matchData = matchStateUpdater(allFixtures).find(
-    m => m._id.toString() === matchId
-  );
-
-  if (matchData) {
-    res.json(matchData);
-  } else {
-    res.sendStatus(404);
+    if (matchData) {
+      res.json({ ...matchData, matchState });
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (e) {
+    console.log("get /match/data/:matchId error", e);
   }
 });
 
@@ -110,6 +116,19 @@ router.get("/match/events/:matchId", async (req, res) => {
     res.json(events);
   } catch (err) {
     console.log(err);
+  }
+});
+
+//Entities Route
+router.get("/entities/:key", async (req, res) => {
+  const { key } = req.params;
+
+  try {
+    const entityData = await db.getEntityData(key);
+
+    res.json(entityData);
+  } catch (e) {
+    console.log("get /entities/:key error", e);
   }
 });
 

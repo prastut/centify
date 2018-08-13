@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { toPairs, sort } from "ramda";
+import moment from "moment";
 
 export const textToEmoji = emotion => {
   switch (emotion) {
@@ -147,10 +148,10 @@ export const entitiesDictToSortedEntitiesArray = (
       refinedSentiment["negative"] = 50;
     }
 
-    console.log(entity);
-    console.log(allEntities);
+    const entityData = allEntities.find(data => data.entity.key === entity);
 
-    const entityData = allEntities.find(data => data.entityName === entity);
+    console.log(entity);
+    console.log(entityData);
 
     return {
       entity,
@@ -167,4 +168,15 @@ export const checkImageExists = async imageUrl => {
     .get(imageUrl)
     .then(() => true)
     .catch(() => false);
+};
+
+export const timeInsideMatchBasedOnMatchState = matchState => {
+  if (matchState === "live") {
+    return moment.utc();
+  } else if (matchState === "past") {
+    // timeInsideMatch = moment.utc(this.match.startTime);
+    return moment.utc("2018-07-15T15:17:00.000Z");
+  } else {
+    return "";
+  }
 };

@@ -54,15 +54,17 @@ class View extends Component {
   }
 
   async componentDidMount() {
-    const fixtures = await api.getAllFixtures();
+    try {
+      const fixtures = await api.getAllFixtures();
 
-    console.log(fixtures);
-
-    this.setState({
-      upcomingMatches: fixtures.filter(m => m.matchState === "upcoming"),
-      liveMatches: fixtures.filter(m => m.matchState === "live"),
-      pastMatches: fixtures.filter(m => m.matchState === "past")
-    });
+      this.setState({
+        upcomingMatches: fixtures.filter(m => m.matchState === "upcoming"),
+        liveMatches: fixtures.filter(m => m.matchState === "live"),
+        pastMatches: fixtures.filter(m => m.matchState === "past")
+      });
+    } catch (e) {
+      console.log("Error inside getting fixtures", e);
+    }
   }
 
   generateLink = match => {

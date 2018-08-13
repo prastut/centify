@@ -31,6 +31,7 @@ const close = done => {
   }
 };
 
+//Fixtures related DB CRUD
 const getAllFixtures = async collection => {
   const timeStampSortAscending = { timeStamp: 1 };
   try {
@@ -44,13 +45,7 @@ const getAllFixtures = async collection => {
   }
 };
 
-/*Data Getting Functions
-  1. Entities for both teams are procured and merged
-  2. Match -> events are got until timeInsideMatch
-  3. Match -> TrendingEntitiesCount are got until timeInsideMathc
-  4. Match -> getTrendingEmojis for allTrendingEntities
-  */
-
+//Match Related DB CRUD
 const getMatchData = async matchId => {
   try {
     return await state.db
@@ -206,16 +201,28 @@ const getLastTweetForAPastMatch = async collection => {
   }
 };
 
+//Entitity related DB CRUD
+
+const getEntityData = async key => {
+  try {
+    return await state.db.collection(ENTITIES_COLLECTION).findOne({ key });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   connect,
   get,
   close,
   getAllFixtures,
+  getMatchData,
   getAllEntitiesForMatch,
   getEventsUpto,
   getTrendingEntitiesInTimeFrame,
   getTrendingEmojis,
   getSelectedEntityTweets,
   countTrendingEntities,
-  getLastTweetForAPastMatch
+  getLastTweetForAPastMatch,
+  getEntityData
 };

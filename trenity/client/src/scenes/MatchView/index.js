@@ -20,6 +20,9 @@ import "../../assets/css/swiper.min.css";
 import Navbar from "../../components/Navbar/index";
 import ScoreCard from "../../components/ScoreCard";
 
+//Helper Utitilies
+import { timeInsideMatchBasedOnMatchState } from "../../helper";
+
 class Match extends Component {
   constructor(props) {
     super(props);
@@ -93,16 +96,12 @@ class Match extends Component {
 
         // this.match = api.getDemoData(matchId)
       } else {
-        this.match = await api.getAllMatchDetails(matchId);
+        this.match = await api.getMatchVerboseDetails(matchId);
 
-        if (this.match.matchState === "live") {
-          timeInsideMatch = moment.utc();
-        } else if (this.match.matchState === "past") {
-          // timeInsideMatch = moment.utc(this.match.startTime);
-          timeInsideMatch = moment.utc("2018-07-15T15:17:00.000Z");
-        } else {
-          timeInsideMatch = "";
-        }
+        console.log(this.match);
+        timeInsideMatch = timeInsideMatchBasedOnMatchState(
+          this.match.matchState
+        );
       }
 
       this.setupSocket();
@@ -113,8 +112,8 @@ class Match extends Component {
           matchStarted: true,
           timeInsideMatch,
           score: {
-            [this.match.teams.teamOne]: 0,
-            [this.match.teams.teamTwo]: 0
+            [this.match.teams.teamOne.key]: 0,
+            [this.match.teams.teamTwo.key]: 0
           },
           video: {
             ...prevState.video,
@@ -130,8 +129,8 @@ class Match extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.matchStarted !== prevState.matchStarted) {
       //First Time Run
-      this.setupIntervals();
-      this.firstTimeFire();
+      // this.setupIntervals();
+      // this.firstTimeFire();
     }
   }
 
@@ -387,60 +386,56 @@ class Match extends Component {
 
   render() {
     if (this.state.matchStarted) {
-      const navbar = (
-        <Navbar>
-          <ScoreCard
-            teamOne={this.match.teams.teamOne}
-            teamTwo={this.match.teams.teamTwo}
-            score={this.state.score}
-            timeInsideMatch={this.state.timeInsideMatch}
-          />
-        </Navbar>
-      );
-
-      const events = <EventsTimeline events={this.state.events} />;
-
-      const trending = (
-        <TrendingEntities
-          variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
-          selected={this.state.selectedEntity.name}
-          trending={this.state.trending}
-          emojis={this.state.emojis}
-          allEntities={this.match.allEntities}
-          onSpecificEntityClick={this.handleSpecificEntityClick}
-        />
-      );
-
-      const reaction = (
-        <ReactionFeed
-          variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
-          selectedEntity={this.state.selectedEntity}
-          onPollEntityTweets={this.pollEntityTweets}
-          onResetSpecificEntityState={this.resetSpecificEntityState}
-        />
-      );
-
-      return (
-        <SecondScreenExperience
-          isFullScreen={this.state.video.fullScreen}
-          navbar={navbar}
-          events={events}
-          trending={trending}
-          reaction={reaction}
-        >
-          {this.state.video.src && (
-            <VideoComponent
-              stateOfVideo={this.state.video}
-              isSpecificEntityView={this.state.selectedEntity.name}
-              trendingOnVideo={trending}
-              reactionOnVideo={reaction}
-              onVideoStatus={this.handleVideoStatus}
-              onVideoUserStatus={this.handleVideoUserStatus}
-              onVideoFullScreen={this.handleVideoFullScreen}
-            />
-          )}
-        </SecondScreenExperience>
-      );
+      // const navbar = (
+      //   <Navbar>
+      //     <ScoreCard
+      //       teamOne={this.match.teams.teamOne}
+      //       teamTwo={this.match.teams.teamTwo}
+      //       score={this.state.score}
+      //       timeInsideMatch={this.state.timeInsideMatch}
+      //     />
+      //   </Navbar>
+      // );
+      // const events = <EventsTimeline events={this.state.events} />;
+      // const trending = (
+      //   <TrendingEntities
+      //     variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
+      //     selected={this.state.selectedEntity.name}
+      //     trending={this.state.trending}
+      //     emojis={this.state.emojis}
+      //     allEntities={this.match.allEntities}
+      //     onSpecificEntityClick={this.handleSpecificEntityClick}
+      //   />
+      // );
+      // const reaction = (
+      //   <ReactionFeed
+      //     variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
+      //     selectedEntity={this.state.selectedEntity}
+      //     onPollEntityTweets={this.pollEntityTweets}
+      //     onResetSpecificEntityState={this.resetSpecificEntityState}
+      //   />
+      // );
+      // return (
+      //   <SecondScreenExperience
+      //     isFullScreen={this.state.video.fullScreen}
+      //     navbar={navbar}
+      //     events={events}
+      //     trending={trending}
+      //     reaction={reaction}
+      //   >
+      //     {this.state.video.src && (
+      //       <VideoComponent
+      //         stateOfVideo={this.state.video}
+      //         isSpecificEntityView={this.state.selectedEntity.name}
+      //         trendingOnVideo={trending}
+      //         reactionOnVideo={reaction}
+      //         onVideoStatus={this.handleVideoStatus}
+      //         onVideoUserStatus={this.handleVideoUserStatus}
+      //         onVideoFullScreen={this.handleVideoFullScreen}
+      //       />
+      //     )}
+      //   </SecondScreenExperience>
+      // );
     }
 
     return <h1>Hello World</h1>;

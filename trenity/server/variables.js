@@ -11,7 +11,7 @@ const DB_URL =
 
 const DATABASE = "EPL";
 
-const ENTITIES_COLLECTION = "entities";
+const ENTITIES_COLLECTION = "entities_new";
 
 const FIXTURES_COLLECTION = "fixtures";
 
