@@ -19,7 +19,7 @@ import ReactionFeed from "../../components/ReactionFeed";
 import "../../assets/css/swiper.min.css";
 import Navbar from "../../components/Navbar/index";
 import ScoreCard from "../../components/ScoreCard";
-// import video from "../../assets/video/sample_video.mp4";
+import video from "../../assets/videos/temp-video.mp4";
 
 class Match extends Component {
   constructor(props) {
@@ -57,8 +57,7 @@ class Match extends Component {
       video: {
         autoplay: true,
         playing: false,
-        src:
-          "https://s3-ap-southeast-1.amazonaws.com/centify-trenity/13'+-+23'.mp4",
+        src: video,
         muted: true,
         userActive: true,
         fullScreen: false,
