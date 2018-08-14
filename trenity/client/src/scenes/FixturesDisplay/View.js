@@ -11,7 +11,7 @@ import api from "../../api";
 
 //UI ELements
 import Navbar from "../../components/Navbar";
-import MatchTile from "../../components/MatchTile";
+// import MatchTile from "../../components/MatchTile";
 
 const styles = {
   root: {

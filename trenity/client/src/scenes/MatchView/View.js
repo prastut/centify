@@ -20,9 +20,6 @@ import "../../assets/css/swiper.min.css";
 import Navbar from "../../components/Navbar/index";
 import ScoreCard from "../../components/ScoreCard";
 
-//Helper Utitilies
-import { timeInsideMatchBasedOnMatchState } from "../../helper";
-
 class View extends Component {
   constructor(props) {
     super(props);
