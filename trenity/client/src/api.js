@@ -61,7 +61,9 @@ const api = {
   },
 
   getDemoDetails: (matchId, variant) => {
-    return DEMO_LIST.find(demo => demo.variant === variant);
+    return DEMO_LIST.find(
+      demo => demo.matchId === matchId && demo.variant === variant
+    );
   },
 
   getTrendingEntities: async (matchId, timeInsideMatch, prevEntities) => {
@@ -142,12 +144,11 @@ const api = {
     }
   },
 
-  getEvents: async (matchId, timeInsideMatch, variant) => {
+  getEvents: async (matchId, timeInsideMatch) => {
     try {
       const events = await axios.get(`/api/match/events/${matchId}`, {
         params: {
-          timeInsideMatch,
-          variant
+          timeInsideMatch
         }
       });
 

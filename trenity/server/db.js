@@ -78,30 +78,17 @@ const getAllEntitiesForMatch = async matchId => {
 
 const getEvents = async (t, matchId, variant) => {
   try {
-    if (variant === "all") {
-      const paramsForFind = {
-        timeStamp: {
-          $lt: t.toDate()
-        }
-      };
+    const paramsForFind = {
+      timeStamp: {
+        $lt: t.toDate()
+      }
+    };
 
-      return await state.db
-        .collection(`${matchId}_events`)
-        .find(paramsForFind)
-        .sort({ timeStamp: 1 })
-        .toArray();
-    }
-
-    if (variant === "last") {
-      console.log("last");
-      console.log(Timestamp(t.toDate()));
-      const last = await state.db
-        .collection(`${matchId}_events`)
-        .findOne({ timeStamp: Timestamp(t.toDate()) });
-
-      console.log(last);
-      return last;
-    }
+    return await state.db
+      .collection(`${matchId}_events`)
+      .find(paramsForFind)
+      .sort({ timeStamp: 1 })
+      .toArray();
   } catch (err) {
     console.log(err);
   }
