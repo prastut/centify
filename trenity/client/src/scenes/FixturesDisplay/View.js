@@ -11,6 +11,7 @@ import api from "../../api";
 
 //UI ELements
 import Navbar from "../../components/Navbar";
+import moment from "moment";
 // import MatchTile from "../../components/MatchTile";
 
 const styles = {
@@ -39,8 +40,15 @@ const styles = {
   },
   matchLink: {
     color: "white"
+  },
+  upcomingMatchStatus: {
+    fontSize: "0.7em",
+    padding: "5px 0",
+    color: "#9fa4ad"
   }
 };
+
+const prettyName = team => team.split("_").join(" ");
 
 class View extends Component {
   constructor(props) {
@@ -112,16 +120,24 @@ class View extends Component {
             </Grid> */}
             <Grid item xs={12}>
               <div className={classes.headings}> UPCOMING MATCHES </div>
-              {this.state.upcomingMatches.map((match, index) =>
-                this.generateLink(match)
-              )}
+              {this.state.upcomingMatches.map(match => (
+                <div key={match._id} className={classes.matchLinkContainer}>
+                  <div>
+                    {prettyName(match.teamOne)} vs {prettyName(match.teamTwo)}
+                  </div>
+                  <div className={classes.upcomingMatchStatus}>
+                    Will go live on{" "}
+                    {moment
+                      .utc(match.timeStamp)
+                      .format("dddd, MMM Do YYYY [at] HH:mm")}
+                  </div>
+                </div>
+              ))}
             </Grid>
 
             <Grid item xs={12}>
               <div className={classes.headings}> PAST MATCHES </div>
-              {this.state.pastMatches.map((match, index) =>
-                this.generateLink(match)
-              )}
+              {this.state.pastMatches.map(match => this.generateLink(match))}
             </Grid>
           </Grid>
         </Grid>

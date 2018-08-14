@@ -28,8 +28,6 @@ const getMatchState = timeStamp => {
       3. Past: currentTime is after endTime
     */
 
-  console.log(timeStamp);
-
   const currentTime = moment.utc();
   const startTime = moment.utc(timeStamp);
   const endTime = startTime.clone().add(150, "minutes");
