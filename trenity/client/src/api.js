@@ -1,47 +1,69 @@
 import axios from "axios";
-import { concat, isEmpty, toPairs, sort, fromPairs } from "ramda";
+import { isEmpty, toPairs, sort, fromPairs } from "ramda";
 import { DEMO_LIST } from "./sampleData";
 
 const api = {
-  getAllMatchDetails: async matchId => {
-    const { matchName, teamOneId, teamTwoId, isLive } = await api.getMatchData(
+  getAllFixtures: async () => {
+    try {
+      const fixtures = await axios.get("/api/fixtures/");
+      return fixtures.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getMatchVerboseDetails: async matchId => {
+    const { teamOne, teamTwo, matchState, timeStamp } = await api.getMatchData(
       matchId
     );
 
+    const allEntities = await api.getAllEntities(matchId);
+
     const [teamOneData, teamTwoData] = await Promise.all([
-      api.getTeamData(teamOneId),
-      api.getTeamData(teamTwoId)
+      api.getEntityData(teamOne),
+      api.getEntityData(teamTwo)
     ]);
 
     return {
       matchId,
-      matchDetails: {
-        name: matchName,
-        isLive
-      },
-      teams: { teamOneId, teamTwoId },
-      allEntities: concat(teamOneData, teamTwoData)
+      matchState,
+      startTime: timeStamp,
+      teams: { teamOne: teamOneData, teamTwo: teamTwoData },
+      allEntities
     };
   },
 
   getMatchData: async matchId => {
-    const match = await axios.get(`/api/match/data/${matchId}`);
-    return match.data;
+    try {
+      const match = await axios.get(`/api/match/data/${matchId}`);
+      return match.data;
+    } catch (error) {
+      console.log(error);
+    }
   },
 
-  getTeamData: async teamId => {
+  getAllEntities: async matchId => {
     try {
-      console.log(teamId);
-      const team = await axios.get(`/api/team/entities/${teamId}`);
+      const allEntities = await axios.get(`/api/match/all-entities/${matchId}`);
+      return allEntities.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
-      return team.data;
+  getEntityData: async key => {
+    try {
+      const entity = await axios.get(`/api/entities/${key}`);
+      return entity.data;
     } catch (error) {
       console.log(error);
     }
   },
 
   getDemoDetails: (matchId, variant) => {
-    return DEMO_LIST.find(demo => demo.variant === variant);
+    return DEMO_LIST.find(
+      demo => demo.matchId === matchId && demo.variant === variant
+    );
   },
 
   getTrendingEntities: async (matchId, timeInsideMatch, prevEntities) => {
@@ -54,8 +76,6 @@ const api = {
           }
         }
       );
-
-      // console.log(dataForTrendingEntitiesCount);
 
       const data = dataForTrendingEntitiesCount.data;
       if (!data) {
@@ -124,7 +144,7 @@ const api = {
     }
   },
 
-  getEventsTillNow: async (matchId, timeInsideMatch) => {
+  getEvents: async (matchId, timeInsideMatch) => {
     try {
       const events = await axios.get(`/api/match/events/${matchId}`, {
         params: {
@@ -133,15 +153,6 @@ const api = {
       });
 
       return events.data;
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
-  getAllFixtures: async () => {
-    try {
-      const fixtures = await axios.get("/api/match/all");
-      return fixtures.data;
     } catch (error) {
       console.log(error);
     }

@@ -1,5 +1,6 @@
-const MongoClient = require("mongodb").MongoClient;
+const { MongoClient, ObjectId, Timestamp } = require("mongodb");
 const { DATABASE } = require("./variables");
+const { ENTITIES_COLLECTION, FIXTURES_COLLECTION } = require("./variables");
 const state = {
   db: null
 };
@@ -12,7 +13,7 @@ const connect = (url, done) => {
     { useNewUrlParser: true },
     (err, database) => {
       if (err) return done(err);
-      state.db = database.db("Bubble");
+      state.db = database.db(DATABASE);
       done();
     }
   );
@@ -30,26 +31,53 @@ const close = done => {
   }
 };
 
-/*Data Getting Functions
-  1. Entities for both teams are procured and merged
-  2. Match -> events are got until timeInsideMatch
-  3. Match -> TrendingEntitiesCount are got until timeInsideMathc
-  4. Match -> getTrendingEmojis for allTrendingEntities
-  */
-const getAllEntitiesForTeam = async team => {
+//Fixtures related DB CRUD
+const getAllFixtures = async collection => {
+  const timeStampSortAscending = { timeStamp: 1 };
   try {
     return await state.db
-      .collection(`${team}_ENTITIES`)
+      .collection(collection)
       .find()
+      .sort(timeStampSortAscending)
       .toArray();
   } catch (err) {
     console.log(err);
   }
 };
 
-const getEventsUpto = async (t, collection) => {
+//Match Related DB CRUD
+const getMatchData = async matchId => {
   try {
-    // console.log(`TIME->${t}, Match->${collection}`);
+    return await state.db
+      .collection(FIXTURES_COLLECTION)
+      .findOne({ _id: ObjectId(matchId) });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAllEntitiesForMatch = async matchId => {
+  try {
+    const { teamOne, teamTwo } = await getMatchData(matchId);
+
+    return await state.db
+      .collection(ENTITIES_COLLECTION)
+      .find({
+        $or: [
+          { team: teamOne },
+          { team: teamTwo },
+          { key: teamOne },
+          { key: teamTwo }
+        ]
+      })
+      .toArray();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getEvents = async (t, matchId, variant) => {
+  try {
     const paramsForFind = {
       timeStamp: {
         $lt: t.toDate()
@@ -57,7 +85,7 @@ const getEventsUpto = async (t, collection) => {
     };
 
     return await state.db
-      .collection(`${collection}_EVENTS`)
+      .collection(`${matchId}_events`)
       .find(paramsForFind)
       .sort({ timeStamp: 1 })
       .toArray();
@@ -83,7 +111,7 @@ const getTrendingEntitiesInTimeFrame = async (t, collection) => {
     };
 
     return await state.db
-      .collection(`TRENDING_${collection}`)
+      .collection(`${collection}_trending`)
       .findOne(paramsForFind, { sort: { timeStamp: -1 }, limit: 1 });
   } catch (err) {
     console.log(err);
@@ -180,15 +208,28 @@ const getLastTweetForAPastMatch = async collection => {
   }
 };
 
+//Entitity related DB CRUD
+
+const getEntityData = async key => {
+  try {
+    return await state.db.collection(ENTITIES_COLLECTION).findOne({ key });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   connect,
   get,
   close,
-  getAllEntitiesForTeam,
-  getEventsUpto,
+  getAllFixtures,
+  getMatchData,
+  getAllEntitiesForMatch,
+  getEvents,
   getTrendingEntitiesInTimeFrame,
   getTrendingEmojis,
   getSelectedEntityTweets,
   countTrendingEntities,
-  getLastTweetForAPastMatch
+  getLastTweetForAPastMatch,
+  getEntityData
 };

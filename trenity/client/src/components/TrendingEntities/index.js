@@ -64,7 +64,7 @@ class TrendingEntities extends PureComponent {
     return (
       <div className={rootStyles}>
         {entitiesDictToSortedEntitiesArray(trending.entities, allEntities)
-          .slice(0, 3)
+          .slice(0, 6)
           .map(e => (
             <div key={e.entity} className={entityStyles}>
               <TopicCard
