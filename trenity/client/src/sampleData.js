@@ -1,5 +1,6 @@
 import moment from "moment";
 import videoFranceVsCroatiaFrom17to20 from "./assets/videos/FRA-vs-CRO-17-20.mp4";
+import videoFranceVsCroatiaFrom13to23 from "./assets/videos/FRA-VS-CRO-13-23.mp4";
 
 export const DEMO_LIST = [
   {
@@ -11,19 +12,12 @@ export const DEMO_LIST = [
     video: videoFranceVsCroatiaFrom17to20
   },
   {
-    _id: "5b6efa5989d81053b5621f66",
+    matchId: "5b6efa5989d81053b5621f66",
     variant: "13_23",
     title: "Croatia vs France - FIFA WC 2018 FINAL - 13'-23'",
-    time: {
-      start: moment.utc("2018-07-15 15:13:00"),
-      end: moment.utc("2018-07-15 15:23:00")
-    },
-    throttle: [
-      {
-        key: "Mario_Mandzukic",
-        at: moment.utc("2018-07-15 15:20:00")
-      }
-    ]
+    demoStartTime: moment.utc("2018-07-15 15:13:00"),
+    demoEndTime: moment.utc("2018-07-15 15:23:00"),
+    video: videoFranceVsCroatiaFrom13to23
   }
 ];
 
