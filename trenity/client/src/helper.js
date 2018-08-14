@@ -148,10 +148,7 @@ export const entitiesDictToSortedEntitiesArray = (
       refinedSentiment["negative"] = 50;
     }
 
-    const entityData = allEntities.find(data => data.entity.key === entity);
-
-    console.log(entity);
-    console.log(entityData);
+    const entityData = allEntities.find(e => e.key === entity);
 
     return {
       entity,
@@ -175,7 +172,7 @@ export const timeInsideMatchBasedOnMatchState = matchState => {
     return moment.utc();
   } else if (matchState === "past") {
     // timeInsideMatch = moment.utc(this.match.startTime);
-    return moment.utc("2018-07-15T15:17:00.000Z");
+    return moment.utc("2018-07-15T15:17:55.000Z");
   } else {
     return "";
   }

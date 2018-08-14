@@ -1,4 +1,4 @@
-const { MongoClient, ObjectId } = require("mongodb");
+const { MongoClient, ObjectId, Timestamp } = require("mongodb");
 const { DATABASE } = require("./variables");
 const { ENTITIES_COLLECTION, FIXTURES_COLLECTION } = require("./variables");
 const state = {
@@ -62,26 +62,46 @@ const getAllEntitiesForMatch = async matchId => {
 
     return await state.db
       .collection(ENTITIES_COLLECTION)
-      .find({ $or: [{ team: teamOne }, { team: teamTwo }] })
+      .find({
+        $or: [
+          { team: teamOne },
+          { team: teamTwo },
+          { key: teamOne },
+          { key: teamTwo }
+        ]
+      })
       .toArray();
   } catch (err) {
     console.log(err);
   }
 };
 
-const getEventsUpto = async (t, matchId) => {
+const getEvents = async (t, matchId, variant) => {
   try {
-    const paramsForFind = {
-      timeStamp: {
-        $lt: t.toDate()
-      }
-    };
+    if (variant === "all") {
+      const paramsForFind = {
+        timeStamp: {
+          $lt: t.toDate()
+        }
+      };
 
-    return await state.db
-      .collection(`${matchId}_events`)
-      .find(paramsForFind)
-      .sort({ timeStamp: 1 })
-      .toArray();
+      return await state.db
+        .collection(`${matchId}_events`)
+        .find(paramsForFind)
+        .sort({ timeStamp: 1 })
+        .toArray();
+    }
+
+    if (variant === "last") {
+      console.log("last");
+      console.log(Timestamp(t.toDate()));
+      const last = await state.db
+        .collection(`${matchId}_events`)
+        .findOne({ timeStamp: Timestamp(t.toDate()) });
+
+      console.log(last);
+      return last;
+    }
   } catch (err) {
     console.log(err);
   }
@@ -218,7 +238,7 @@ module.exports = {
   getAllFixtures,
   getMatchData,
   getAllEntitiesForMatch,
-  getEventsUpto,
+  getEvents,
   getTrendingEntitiesInTimeFrame,
   getTrendingEmojis,
   getSelectedEntityTweets,

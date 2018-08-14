@@ -105,12 +105,13 @@ router.get("/match/trending/:matchId", async (req, res) => {
 
 router.get("/match/events/:matchId", async (req, res) => {
   const { matchId } = req.params;
-  const { timeInsideMatch } = req.query;
+  const { timeInsideMatch, variant } = req.query;
 
   try {
-    const events = await db.getEventsUpto(
+    const events = await db.getEvents(
       moment.utc(JSON.parse(timeInsideMatch)),
-      matchId
+      matchId,
+      variant
     );
 
     res.json(events);

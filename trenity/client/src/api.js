@@ -75,8 +75,6 @@ const api = {
         }
       );
 
-      console.log(dataForTrendingEntitiesCount);
-
       const data = dataForTrendingEntitiesCount.data;
       if (!data) {
         return null;
@@ -144,11 +142,12 @@ const api = {
     }
   },
 
-  getEventsTillNow: async (matchId, timeInsideMatch) => {
+  getEvents: async (matchId, timeInsideMatch, variant) => {
     try {
       const events = await axios.get(`/api/match/events/${matchId}`, {
         params: {
-          timeInsideMatch
+          timeInsideMatch,
+          variant
         }
       });
 
