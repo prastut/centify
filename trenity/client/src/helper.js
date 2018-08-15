@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { toPairs, sort } from "ramda";
+import moment from "moment";
 
 export const textToEmoji = emotion => {
   switch (emotion) {
@@ -113,81 +114,6 @@ export const eventsToEmoji = event => {
   }
 };
 
-const tweets = [
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-
-  {
-    emotion: "anger",
-    entity_name: "Olivier_Giroud",
-    tweet:
-      "RT @WhoScored: #FRA 0-0 #BEL HT:\n\nOlivier Giroud has now had 10 shots at the 2018 #WorldCup without hitting the target \n\nFull match statist…",
-    image:
-      "https://pbs.twimg.com/profile_images/957804463565299713/4zz1wGCg_normal.jpg"
-  },
-  {
-    emotion: "fear",
-    text: "Olivier Giroud",
-    tweet:
-      "Olivier Giroud has now played over 7\nhours of football at the 2018 #WorldCup\nwithout managing a single shot on targ… https://t.co/X50bv6CV64",
-    image:
-      "https://pbs.twimg.com/profile_images/804489457172971520/s20h0MPs_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  },
-  {
-    emotion: "joy",
-    entity_name: "Paul_Pogba",
-    tweet:
-      "RT @premierleague: Tonight's #WorldCup semi-final contains a compelling midfield battle 🤜🤛\n\nOn one side, Paul Pogba of @ManUtd and #FRA...…",
-    image:
-      "https://pbs.twimg.com/profile_images/994424349858902017/BnIwDZFW_normal.jpg"
-  }
-];
-
-//Technical Debt
-export const SAMPLE_DATA = {
-  tweets,
-  dummyTweetImage:
-    "http://www.razzlesnightclub.com/sites/default/files/default_images/default_testimonial.png"
-};
-
 //Technical Debt
 export const entitiesDictToSortedEntitiesArray = (
   entitiesDict,
@@ -222,11 +148,11 @@ export const entitiesDictToSortedEntitiesArray = (
       refinedSentiment["negative"] = 50;
     }
 
-    const entityData = allEntities.find(data => entity === data.entityName);
+    const entityData = allEntities.find(e => e.key === entity);
 
     return {
       entity,
-      image: entityData.entityImageURL,
+      image: entityData.imageURL,
       sentiment: refinedSentiment
     };
   });
@@ -239,4 +165,15 @@ export const checkImageExists = async imageUrl => {
     .get(imageUrl)
     .then(() => true)
     .catch(() => false);
+};
+
+export const timeInsideMatchBasedOnMatchState = matchState => {
+  if (matchState === "live") {
+    return moment.utc();
+  } else if (matchState === "past") {
+    // timeInsideMatch = moment.utc(this.match.startTime);
+    return moment.utc("2018-07-15T15:17:55.000Z");
+  } else {
+    return "";
+  }
 };

@@ -19,15 +19,18 @@ const styles = {
   },
   scoreAndTimeContainer: {
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    flexWrap: "wrap",
+    textAlign: "center"
   },
   score: {
-    fontSize: "2em"
+    fontSize: "2em",
+    flex: "1 1 100%"
   },
   timeInsideMatch: {
-    fontSize: "0.8em"
+    fontSize: "0.8em",
+    flex: "1 1 100%"
   }
 };
 
@@ -36,13 +39,13 @@ const ScoreCard = ({ classes, teamOne, score, teamTwo, timeInsideMatch }) => (
     <div className={[classes.elements, classes.textRight].join(" ")}>
       {teamOne}
     </div>
-    <div
-      className={[classes.elements, classes.scoreAndTimeContainer].join(" ")}
-    >
-      <span className={classes.score}> 0 - 0</span>
-      <span className={classes.timeInsideMatch}>
+    <div className={classes.scoreAndTimeContainer}>
+      <div className={classes.score}>
+        {score[teamOne]} - {score[teamTwo]}
+      </div>
+      <div className={classes.timeInsideMatch}>
         {timeInsideMatch.format("HH:mm:ss")}
-      </span>
+      </div>
     </div>
     <div className={classes.elements}>{teamTwo}</div>
   </div>
