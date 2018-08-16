@@ -32,23 +32,21 @@ function sendMessageForHotstar(){
     });
 }
 
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-        const youtubeRegex = new RegExp(/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/);
-        const hotstarRegex = new RegExp(/^(https?\:\/\/)?(www\.)?(hotstar\.com)\/sports\/football\/([A-Za-z-0-9])*\/([0-9])+\/?/)
-        if(changeInfo.url && changeInfo.url.match(youtubeRegex)){
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    const youtubeRegex = new RegExp(/^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/);
+    const hotstarRegex = new RegExp(/^(https?\:\/\/)?(www\.)?(hotstar\.com)\/sports\/football\/([A-Za-z-0-9])*\/([0-9])+\/?/)
+    if(changeInfo.url && changeInfo.url.match(youtubeRegex)){
+        sendMessageForYoutube();
+    }
+    else if(changeInfo.url && changeInfo.url.match(hotstarRegex)){
+        sendMessageForHotstar();
+    }
+    if(!(changeInfo.url)){
+        if(tab.url.match(youtubeRegex)){
             sendMessageForYoutube();
         }
-        else if(changeInfo.url && changeInfo.url.match(hotstarRegex)){
+        else if(tab.url.match(hotstarRegex)){
             sendMessageForHotstar();
         }
-        if(!(changeInfo.url)){
-            if(tab.url.match(youtubeRegex)){
-                sendMessageForYoutube();
-            }
-            else if(tab.url.match(hotstarRegex)){
-                sendMessageForHotstar();
-            }
-        }
-    });
+    }
 });
