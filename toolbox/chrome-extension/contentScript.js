@@ -65,11 +65,14 @@ function listenForFullscreenChanges(){
 
 
 function attachToYoutube(){
+    if(document.getElementById('trenity-youtube-view') !== null){
+        return;
+    }
     let relatedDiv = document.getElementById('related');
     let helloDiv = document.createElement('div');
     helloDiv.style.overflow = 'auto';
     // helloDiv.innerHTML = `<h1 style="height: 50vh;color:#fff;">Hello</h1>`;
-    helloDiv.innerHTML = `<iframe src="https://trenity.me" style="height: 50vh;"/>`;
+    helloDiv.innerHTML = `<iframe src="https://trenity.me" id="trenity-youtube-view" style="height: 50vh;"/>`;
     relatedDiv.insertBefore(helloDiv, relatedDiv.firstChild);
     setTimeout(() => {
         /**
@@ -100,6 +103,9 @@ function attachToYoutube(){
 }
 
 function attachToHotstar(){
+    if(document.getElementById('trenity-hotstar-view') !== null){
+        return;
+    }
     let app = document.getElementById('app');
     let iframeElement = document.createElement('iframe');
     iframeElement.src = `https://trenity.me`;
@@ -107,9 +113,13 @@ function attachToHotstar(){
     iframeElement.style.position = `fixed`;
     iframeElement.style.right = `0`;
     iframeElement.style.zIndex = `999`;
+    iframeElement.id = 'trenity-hotstar-view';
     app.insertBefore(iframeElement,app.firstChild);
 }
 
+/**
+ * Only run ContentScript when background js sends appropriate message
+ */
 chrome.runtime.onMessage.addListener((req,sender,res) => {
     if(req.action && req.action === 'attach_to_youtube_player' && !runOnce){
         runOnce = true;

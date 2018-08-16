@@ -1,10 +1,9 @@
 {
   "name": "Trenity.me",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "The Chrome extension for Trenity",
   "manifest_version": 2,
   "background": {
-      "persistent": false,
       "scripts": ["background.js"]
   },
   "content_scripts": [
