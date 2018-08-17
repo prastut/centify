@@ -115,6 +115,10 @@ function attachToHotstar(){
     iframeElement.style.zIndex = `999`;
     iframeElement.id = 'trenity-hotstar-view';
     app.insertBefore(iframeElement,app.firstChild);
+    setTimeout(() => {
+        const masterInnerContainer = document.getElementsByClassName('master-container-inner');
+        masterInnerContainer[0].style.marginLeft = '12%';
+    },1000);
 }
 
 /**
