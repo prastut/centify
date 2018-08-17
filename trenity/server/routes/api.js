@@ -56,8 +56,9 @@ router.get("/match/data/:matchId", async (req, res) => {
     const { matchId } = req.params;
 
     const matchData = await db.getMatchData(matchId);
-    const matchState = getMatchState(matchData.timeStamp);
+    const matchState = getMatchState(matchData.startTime);
 
+    console.log(matchData);
     if (matchData) {
       res.json({ ...matchData, matchState });
     } else {
@@ -117,15 +118,16 @@ router.get("/match/events/:matchId", async (req, res) => {
 });
 
 //Entities Route
-router.get("/entities/:key", async (req, res) => {
+router.get("/entity/data/:key", async (req, res) => {
   const { key } = req.params;
 
+  console.log(key);
   try {
     const entityData = await db.getEntityData(key);
 
     res.json(entityData);
   } catch (e) {
-    console.log("get /entities/:key error", e);
+    console.log("get /entity/data/:key error", e);
   }
 });
 
