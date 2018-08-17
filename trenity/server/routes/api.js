@@ -15,7 +15,7 @@ const matchStateUpdater = allFixtures => {
   return allFixtures.map(fixture => {
     return {
       ...fixture,
-      matchState: getMatchState(fixture.timeStamp)
+      matchState: getMatchState(fixture.startTime)
     };
   });
 };
@@ -27,7 +27,6 @@ const getMatchState = timeStamp => {
       2. Live: Range [startTime, endTime]
       3. Past: currentTime is after endTime
     */
-
   const currentTime = moment.utc();
   const startTime = moment.utc(timeStamp);
   const endTime = startTime.clone().add(150, "minutes");
