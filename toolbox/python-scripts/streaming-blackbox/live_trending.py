@@ -1,18 +1,26 @@
-import pymongo
+from pymongo import MongoClient
 import datetime
 from bson import ObjectId
 from collections import defaultdict
 from itertools import chain
 
-client = pymongo.MongoClient(
-    "mongodb://bubble:bubble@104.196.215.99:27017/Bubble")
+
+# ===== CONFIG ## 
+fixture_collection = "fixtures"
+entities_collection = "entities_new"
+
+fixture_id = None
+events_collection = None
+team_one_acronym = None
+team_two_acronym = None
+## ===== ##
+
+MONGO_URL = os.getenv(
+    'MONGODB_URI', "mongodb://bubble:bubble@104.196.215.99:27017/Bubble")
+    
+client = MongoClient(MONGO_URL)
 db = client["EPL"]
 
-"""
-    Fetching the collection names for:
-        1. fixture info.
-        2. resolving trending collection's name.
-"""
 
 fixture_id = raw_input("Please enter the fixture id: \n")
 trending_collection = fixture_id + "_trending"
@@ -83,3 +91,29 @@ while starting_time <= finishing_time:
     del doc_to_be_inserted
     del final_count
     starting_time = ten_seconds_later
+
+
+if __name__ == "__main__":
+    
+    fixture_id = raw_input("Enter fixture id: ")
+    events_collection = fixture_id + "_events"
+
+    fixture_details = db[fixture_collection].find_one({"_id": ObjectId(fixture_id)})
+    
+    if fixture_details:
+        team_one_key = fixture_details['teamOne']
+        team_two_key = fixture_details['teamTwo']
+
+        team_one_details = db[entities_collection].find_one({'key': team_one_key})
+        team_two_details = db[entities_collection].find_one({'key': team_two_key})
+
+        team_one_acronym = team_one_details['acronym']
+        team_two_acronym = team_two_details['acronym']
+
+        global_score_state = {team_one_acronym: 0, team_two_acronym: 0}
+        
+        print global_score_state
+        try_several()
+    else:
+        print "Fixture not present inside " + fixture_collection + "collection"
+        exit()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# def call_watson_pickably(tweet):
-#     call_watson(tweet)
+def call_watson_pickably(tweet):
+    call_watson(tweet)
 
 
 from collections import defaultdict
@@ -30,49 +30,55 @@ import tweepy
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions, CategoriesOptions
 
+## ===== CONFIG ## 
+fixture_collection = "fixtures"
+entities_collection = "entities_new"
 
+fixture_id = None
+## ===== ##
+
+## ===  Kafka Config
 producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
 producer = KafkaProducer(retries=5)
 response_batch = []
+## 
 
-# Variables
-MONGO_DB_URL = 'mongodb://bubble:bubble@104.196.215.99:27017/Bubble'
-FIXTURE_COLLECTION = 'fixtures'
-ENTITY_COLLECTION = 'entities_new'
-SAMPLE_MATCH_ID = "5b75f46c73dbef8460d1de89"
+## === Mongo Config
+MONGO_URL = os.getenv(
+    'MONGODB_URI', "mongodb://bubble:bubble@104.196.215.99:27017/Bubble")
+    
+client = MongoClient(MONGO_URL)
+db = client["EPL"]
+## 
 
-db = MongoClient(MONGO_DB_URL, 27017)["EPL"]
-#match_id = raw_input("Please enter the match_id: \n")
-match_id = SAMPLE_MATCH_ID
-match_collection = ObjectId(match_id)
-
-fixture = db[FIXTURE_COLLECTION].find_one({"_id": match_collection})
+fixture_id = raw_input("Enter fixture id: ")
+fixture = db[fixture_collection].find_one({"_id": ObjectId(fixture_id)})
 team_one = fixture["teamOne"]
 team_two = fixture["teamTwo"]
 
-entities_find_params = {
-    "$or": [
-        {"team": team_one}, {"team": team_two}, {"key": team_one}, {"key": team_two}
-    ]
-}
+entities_cursor = db[entities_collection].find(
+    {
+        "$or": [
+            {"team": team_one}, {"team": team_two}, {
+                "key": team_one}, {"key": team_two}
+        ]
+    }
+)
 
-all_entities_corresponding_to_match = db[ENTITY_COLLECTION].find(
-    entities_find_params)
+entities = []
+document_to_be_appended = {}
+for entity in entities_cursor:
+    splitted_key = entity["key"].split("_")
+    full_name = ""
+    for x in range(0, len(splitted_key) - 1):
+        full_name += splitted_key[x] + " "
+    full_name += splitted_key[-1]
+    splitted_key.append(full_name)
+    document_to_be_appended[entity["key"]] = splitted_key
 
-
-# Calculating ALL PNC for entities go here:
-
-
-# entities = {}
-# for entity in all_entities_corresponding_to_match:
-#     for k in entity["entityName"].keys():
-#         entities[k] = entity[k]
-
-# print entities
-# entity_dict_final = defaultdict(list)
-# for k, v in chain(entities.items()):
-#     entity_dict_final[k].append(v)
-# print entity_dict_final
+entity_dict_final = defaultdict(list)
+for k, v in chain(document_to_be_appended.items()):
+    entity_dict_final[k].append(v)
 
 natural_language_understanding = NaturalLanguageUnderstandingV1(
     username=settings_watson.username,
@@ -143,7 +149,6 @@ tweets_batch = []
 
 
 def main():
-    print "Yo"
     p = Pool(4)
     consumer = KafkaConsumer(
         topic, bootstrap_servers='localhost:9092', auto_offset_reset='earliest')
