@@ -92,17 +92,22 @@ const api = {
           (a, b) => b[1] - a[1],
           toPairs(trendingEntitiesCount)
         ).reduce((accumulator, currentValue, index) => {
+          console.log(currentValue);
           return {
             ...accumulator,
             [currentValue[0]]: {
               count: currentValue[1],
               difference: 0,
-              sentiment: trendingEntitiesSentiment[currentValue[0]]
+              sentiment: trendingEntitiesSentiment
+                ? trendingEntitiesSentiment[currentValue[0]]
+                : null
             }
           };
         }, {});
 
-        // console.log("Intial Dict Set->", sortedTrendingEntities);
+        // console.log("Initial emptysortedTrendingEntities);
+
+        console.log("Intial Dict Set->", sortedTrendingEntities);
       } else {
         const unsortedTrendingEntities = {};
 
@@ -118,13 +123,17 @@ const api = {
               ...prevDataForEntity,
               count: newCount,
               difference,
-              sentiment: trendingEntitiesSentiment[entity]
+              sentiment: trendingEntitiesSentiment
+                ? trendingEntitiesSentiment[entity]
+                : null
             };
           } else {
             unsortedTrendingEntities[entity] = {
               count: trendingEntitiesCount[entity],
               difference: 0,
-              sentiment: trendingEntitiesSentiment[entity]
+              sentiment: trendingEntitiesSentiment
+                ? trendingEntitiesSentiment[entity]
+                : null
             };
           }
         });
@@ -137,7 +146,7 @@ const api = {
         );
       }
 
-      // console.log(sortedTrendingEntities);
+      console.log(sortedTrendingEntities);
       return sortedTrendingEntities;
     } catch (error) {
       console.log(error);

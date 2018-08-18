@@ -253,8 +253,12 @@ class View extends Component {
 
     const events = await api.getEvents(matchId, timeInsideMatch);
 
-    if (this.state.events.length < events.length) {
-      this.setState({ events });
+    const updatedEvents = events.filter(e => e.event);
+
+    console.log(updatedEvents);
+
+    if (this.state.events.length < updatedEvents.length) {
+      this.setState({ events: updatedEvents });
     }
   };
 

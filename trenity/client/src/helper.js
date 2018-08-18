@@ -93,9 +93,9 @@ export const eventsToEmoji = event => {
   switch (event) {
     case "GOAL":
       return "⚽";
-    case "YELLOW CARD":
+    case "YELLOW":
       return "📒";
-    case "RED CARD":
+    case "RED":
       return (
         <img
           src="https://media1.tenor.com/images/980c4915a1436d7c13cafc9845dfd20e/tenor.gif?itemid=12053171"
@@ -105,10 +105,34 @@ export const eventsToEmoji = event => {
       );
     case "CHANCE":
       return "🤯";
+    case "CROSS":
+      return "🤯";
+    case "CORNER":
+      return "🤯";
+    case "SAVE":
+      return "🤯";
+    case "CLOSE":
+      return "🤯";
+    case "WIDE":
+      return "🤯";
+    case "PENALTY-MISSED":
+      return "🤯";
     case "FOUL":
+      return "🤬";
+    case "OUCH":
       return "🤬";
     case "START HALF":
       return "🏁";
+    case "START-SECOND-HALF":
+      return "🏁";
+    case "HALF-TIME":
+      return "🏁";
+    case "FULL-TIME":
+      return "🏁";
+    case "INJURY":
+      return "🤕";
+    case "SUBSTITUTION":
+      return "🏃🏻‍♂️";
     default:
       return "";
   }
