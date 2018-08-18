@@ -58,7 +58,6 @@ router.get("/match/data/:matchId", async (req, res) => {
     const matchData = await db.getMatchData(matchId);
     const matchState = getMatchState(matchData.startTime);
 
-    console.log(matchData);
     if (matchData) {
       res.json({ ...matchData, matchState });
     } else {
@@ -121,7 +120,6 @@ router.get("/match/events/:matchId", async (req, res) => {
 router.get("/entity/data/:key", async (req, res) => {
   const { key } = req.params;
 
-  console.log(key);
   try {
     const entityData = await db.getEntityData(key);
 

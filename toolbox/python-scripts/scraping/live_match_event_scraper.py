@@ -3,96 +3,143 @@ import datetime
 from pymongo import MongoClient
 import time
 import sys
+import json
+import re
+from bs4 import BeautifulSoup
+
+## ===== CONFIG ## 
+collection = raw_input("Enter fixture id")
+events_collection = collection + "_events"
+
+fixture_collection = "fixtures"
+team_one = "ARS"
+team_two = "MC"
+## ===== ##
 
 client = MongoClient("mongodb://bubble:bubble@104.196.215.99:27017/Bubble")
 db = client["EPL"]
-collection = raw_input("Please enter the destination collection. \n")
 
-events = ["GOAL", "YELLOW", "RED", "Goal", "Yellow", "Red"]
-cards = ["Yellow", "Red", "YELLOW", "RED", "yellow", "red"]
+fixture_details = db[fixture_collection].find({'_id': collection})
 
+print fixture_details
+
+recorded_time_stamps = set()
+global_score_state = { team_one: 0, team_two: 0}
+
+
+def make_sense_from_raw_html(raw_event_info):
+    return BeautifulSoup(raw_event_info, 'html.parser')
+    
+def parse_goal(title):
+    try:
+        score_state_string = re.search(r'[0-9]-[0-9]', title).group()
+        score_state = [int(x) for x in score_state_string.split("-")]
+
+        global_score_state[team_one] = score_state[0]
+        global_score_state[team_two] = score_state[1]
+    except AttributeError as e:
+        pass
+
+def parse_major_event(raw_major_event, c):
+    major_event = raw_major_event[0].split("icon-")[-1]
+
+    switch_major_event_dict = {
+        'goal': "GOAL",
+        'full-time': "FULL-TIME",
+        'half-time': "HALF-TIME",
+        'yellow-card': "YELLOW",
+        'red-card': "RED",
+        'penalty-missed': "PENALTY-MISSED",
+        'injury': "INJURY", 
+        'substitution': "SUBSTITUTION", 
+        'whistle': "START-SECOND-HALF", 
+    }
+
+    return switch_major_event_dict.get(major_event, None)
+
+
+
+def parse_minor_event(commentary):
+    major_events_inside_minor_events = ["SAVE", "OUCH", "WIDE", "NO GOAL", "CLOSE"]
+    minor_events_inside_minor_events = [
+        {'text': "cross", 'event': "CROSS"}, 
+        {'text': "foul", 'event': "FOUL"}, 
+        {'text': "corner", 'event': "CORNER"}
+        
+    ]
+
+    for event in major_events_inside_minor_events:
+        if event in commentary:
+           return event
+
+    for event in minor_events_inside_minor_events:
+        if event['text'] in commentary:
+            return event['event']
+
+    return None
 
 def get(url, name='?'):
+    raw_data = requests.get(url).json()
+    formatted_raw_data = None
 
-    print('---', name, '---')
-
-    r = requests.get(url)
-
-    data = r.json()
-    # print(data.keys())
-    # print(data['headDocument'].keys())
-    # print(data['featured'].keys())
-    # print(data['featured']['content'][0])
-    # print(data['networkSettings'].keys())
-    # print(data['siteSettings'].keys())
-    # print(data['collectionSettings'].keys())
-
-    if 'headDocument' in data:
-        data = data['headDocument']['content']
+    if 'headDocument' in raw_data:
+        formatted_raw_data = raw_data['headDocument']['content']
     else:
-        data = data['content'][::-1]
+        formatted_raw_data = raw_data['content'][::-1]
 
-    for item in data:
-        annotations = None
-        if not 'bodyHtml' in item['content'].keys():
-            continue
-        # print item['content']['bodyHtml']
-        dt = datetime.datetime.fromtimestamp(item['content']['createdAt'])
-        if "annotations" in item['content'].keys():
-            if "messagetag" in item['content']['annotations'].keys():
-                annotations = str(
-                    item['content']['annotations']['messagetag'][0])
-        time = dt.strftime('%Y.%m.%d %H:%M')
-        time = datetime.datetime.strptime(time, '%Y.%m.%d %H:%M')
-        time = time - datetime.timedelta(hours=5, minutes=30)
-        title = item['content']['bodyHtml']
-        try:
-            commentary = title.split("<p>")[-1]
-            title = title.split('</strong>')[0].split('<strong>')[1]
-            event_id = item['event']
-            # print "event_id"
-            save(time, title, event_id, annotations)
-            # print(time, title)
-            # print event_id
-        except Exception as e:
-            # print e
-            continue
+    for item in formatted_raw_data:
+            event_timestamp = datetime.datetime.fromtimestamp(item['content']['createdAt'])
+            
+            if event_timestamp not in recorded_time_stamps:
+                
+                event_packet = {}
+                event = None
 
 
-def save(time, title, event_id, annotations):
-    # print "save called."
-    doc_to_be_inserted = {}
-    doc_to_be_inserted["timeStamp"] = time
-    event_occured = None
-    for event in events:
-        if event in title:
-            # print title
-            event_occured = event
-            break
-    doc_to_be_inserted["title"] = title
-    doc_to_be_inserted["event"] = event_occured if event_occured is not None else False
-    
-    if annotations is not None:
-        if "yellow" in annotations:
-            doc_to_be_inserted["event"] = "YELLOW"
-            doc_to_be_inserted["card"] = "YELLOW"
-        if "red" in annotations:
-            doc_to_be_inserted["event"] = "RED"
-            doc_to_be_inserted["card"] = "RED"
-    else:
-        doc_to_be_inserted["card"] = False
-   
-    doc_to_be_inserted["eventId"] = event_id
-    
-    # if doc_to_be_inserted["event"] == "GOAL":
-    if doc_to_be_inserted["event"]:
-        print doc_to_be_inserted
+                recorded_time_stamps.add(event_timestamp)
+                try:
+                    raw_content = item['content']
 
-    # try:
-    #     db[collection].insert(doc_to_be_inserted)
-    #     # print doc_to_be_inserted
-    # except Exception as e:
-    #     return
+                    annotations = raw_content.get('annotations', None)
+                    raw_event_info = raw_content.get('bodyHtml', None) 
+                    raw_major_event = annotations.get('messagetag', None)
+                    
+                    sensible_event_info = make_sense_from_raw_html(raw_event_info)
+                    title = sensible_event_info.find("strong").get_text()
+                    commentary = " ".join([paragraph.get_text() for paragraph in sensible_event_info.find_all("p")[1:] ])
+ 
+                    if raw_major_event:
+                        event = parse_major_event(raw_major_event, sensible_event_info)
+                    else:
+                        #event not inside annotations
+                        event = parse_minor_event(commentary)
+
+                    #Logging Purposes
+                    print event
+
+                    # Update global store state
+                    parse_goal(title)
+                    
+                    #Batch all info together
+                    event_packet['event'] = event
+                    event_packet['title'] = title
+                    event_packet['commentary'] = commentary
+                    event_packet['score'] = global_score_state
+                    event_packet['timeStamp'] = event_timestamp
+
+                    save(event_packet)
+                
+                except AttributeError as e:
+                    print e
+            else:
+                # Repeated tweet
+                pass
+
+def save(event_packet):
+    try:
+        db[events_collection].insert(event_packet)
+    except Exception as e:
+        return
 
         # requests.get('http://www.skysports.com/football/france-vs-croatia/live/385232')
         #get('https://data.livefyre.com/bs3/v3.1/bskyb.fyre.co/363166/MTE0MDIxNTE=/init', 'init')
@@ -114,4 +161,6 @@ def try_several():
 #     time.sleep(5)
 #     try_several()
 
-try_several()
+# try_several()
+
+			
