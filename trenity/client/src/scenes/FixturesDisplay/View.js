@@ -128,7 +128,7 @@ class View extends Component {
                   <div className={classes.upcomingMatchStatus}>
                     Will go live on{" "}
                     {moment
-                      .utc(match.timeStamp)
+                      .utc(match.startTime)
                       .format("dddd, MMM Do YYYY [at] HH:mm")}
                   </div>
                 </div>

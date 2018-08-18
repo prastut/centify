@@ -13,7 +13,7 @@ const api = {
   },
 
   getMatchVerboseDetails: async matchId => {
-    const { teamOne, teamTwo, matchState, timeStamp } = await api.getMatchData(
+    const { teamOne, teamTwo, matchState, startTime } = await api.getMatchData(
       matchId
     );
 
@@ -27,7 +27,7 @@ const api = {
     return {
       matchId,
       matchState,
-      startTime: timeStamp,
+      startTime,
       teams: { teamOne: teamOneData, teamTwo: teamTwoData },
       allEntities
     };
@@ -53,7 +53,7 @@ const api = {
 
   getEntityData: async key => {
     try {
-      const entity = await axios.get(`/api/entities/${key}`);
+      const entity = await axios.get(`/api/entity/data/${key}`);
       return entity.data;
     } catch (error) {
       console.log(error);

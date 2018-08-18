@@ -370,6 +370,14 @@ class View extends Component {
   render() {
     const { matchDetails } = this.props;
 
+    const generalUIVariant = this.state.video.fullScreen ? "onVideo" : "tiles";
+    const trendingUIVariant =
+      generalUIVariant === "onVideo"
+        ? "onVideo"
+        : this.state.video.src
+          ? "carousel"
+          : "tiles";
+
     if (this.state.startRendering) {
       const navbar = (
         <Navbar>
@@ -386,7 +394,7 @@ class View extends Component {
 
       const trending = (
         <TrendingEntities
-          variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
+          variant={trendingUIVariant}
           selected={this.state.selectedEntity.name}
           trending={this.state.trending}
           emojis={this.state.emojis}
@@ -396,7 +404,7 @@ class View extends Component {
       );
       const reaction = (
         <ReactionFeed
-          variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
+          variant={generalUIVariant}
           selectedEntity={this.state.selectedEntity}
           onPollEntityTweets={this.pollEntityTweets}
           onResetSpecificEntityState={this.resetSpecificEntityState}
