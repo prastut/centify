@@ -87,7 +87,7 @@ class View extends Component {
       if (matchState === "past") {
         timeInsideMatch = moment.utc(startTime);
       } else if (matchState === "live") {
-        timeInsideMatch = moment.utc();
+        timeInsideMatch = moment.utc(startTime);
       }
     }
 
@@ -248,14 +248,21 @@ class View extends Component {
   };
 
   getEventsUntilNow = async () => {
-    const { matchId } = this.props.matchDetails;
+    const { matchId, startTime } = this.props.matchDetails;
     const { timeInsideMatch } = this.state;
+
+    const UTCStartTime = moment.utc(startTime);
 
     const events = await api.getEvents(matchId, timeInsideMatch);
 
-    const updatedEvents = events.filter(e => e.event);
+    const filteredNullEvents = events.filter(e => e.event);
 
-    console.log(updatedEvents);
+    const updatedEvents = filteredNullEvents.map(e => {
+      return {
+        ...e,
+        relativeTime: moment.utc(e.timeStamp).diff(UTCStartTime, "M")
+      };
+    });
 
     if (this.state.events.length < updatedEvents.length) {
       this.setState({ events: updatedEvents });
