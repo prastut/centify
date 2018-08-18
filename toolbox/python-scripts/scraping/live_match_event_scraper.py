@@ -2,6 +2,7 @@ import requests
 import datetime
 from pymongo import MongoClient
 from bson import ObjectId
+import os
 import time
 import sys
 import json
