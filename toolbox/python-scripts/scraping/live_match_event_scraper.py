@@ -18,7 +18,10 @@ team_one_acronym = None
 team_two_acronym = None
 ## ===== ##
 
-client = MongoClient("mongodb://bubble:bubble@104.196.215.99:27017/Bubble")
+MONGO_URL = os.getenv(
+    'MONGODB_URI', "mongodb://bubble:bubble@104.196.215.99:27017/Bubble")
+    
+client = MongoClient(MONGO_URL)
 db = client["EPL"]
 
 recorded_time_stamps = set()
