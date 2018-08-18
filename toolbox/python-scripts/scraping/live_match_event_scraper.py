@@ -1,6 +1,7 @@
 import requests
 import datetime
 from pymongo import MongoClient
+from bson import ObjectId
 import time
 import sys
 import json
@@ -8,23 +9,20 @@ import re
 from bs4 import BeautifulSoup
 
 ## ===== CONFIG ## 
-collection = raw_input("Enter fixture id")
-events_collection = collection + "_events"
-
 fixture_collection = "fixtures"
-team_one = "ARS"
-team_two = "MC"
+entities_collection = "entities_new"
+
+fixture_id = None
+events_collection = None
+team_one_acronym = None
+team_two_acronym = None
 ## ===== ##
 
 client = MongoClient("mongodb://bubble:bubble@104.196.215.99:27017/Bubble")
 db = client["EPL"]
 
-fixture_details = db[fixture_collection].find({'_id': collection})
-
-print fixture_details
-
 recorded_time_stamps = set()
-global_score_state = { team_one: 0, team_two: 0}
+global_score_state = {}
 
 
 def make_sense_from_raw_html(raw_event_info):
@@ -35,8 +33,8 @@ def parse_goal(title):
         score_state_string = re.search(r'[0-9]-[0-9]', title).group()
         score_state = [int(x) for x in score_state_string.split("-")]
 
-        global_score_state[team_one] = score_state[0]
-        global_score_state[team_two] = score_state[1]
+        global_score_state[team_one_acronym] = score_state[0]
+        global_score_state[team_two_acronym] = score_state[1]
     except AttributeError as e:
         pass
 
@@ -156,6 +154,33 @@ def try_several():
     # # get('https://data.livefyre.com/bs3/v3.1/bskyb.fyre.co/363166/MTE0MDIxNTE=/{}.json'.format(x), x)
     # get('https://data.livefyre.com/bs3/v3.1/bskyb.fyre.co/363166/MTE0NjUwMjg=/{}.json'.format(x), x)
 
+if __name__ == "__main__":
+    
+    fixture_id = raw_input("Enter fixture id: ")
+    events_collection = fixture_id + "_events"
+
+    fixture_details = db[fixture_collection].find_one({"_id": ObjectId(fixture_id)})
+    
+    if fixture_details:
+        team_one_key = fixture_details['teamOne']
+        team_two_key = fixture_details['teamTwo']
+
+        team_one_details = db[entities_collection].find_one({'key': team_one_key})
+        team_two_details = db[entities_collection].find_one({'key': team_two_key})
+
+        team_one_acronym = team_one_details['acronym']
+        team_two_acronym = team_two_details['acronym']
+
+        global_score_state = {team_one_acronym: 0, team_two_acronym: 0}
+        
+        print global_score_state
+        try_several()
+    else:
+        print "Fixture not present inside " + fixture_collection + "collection"
+        exit()
+
+
+   
 
 # while True:
 #     time.sleep(5)
