@@ -85,9 +85,9 @@ class View extends Component {
       const { matchState, startTime } = matchDetails;
 
       if (matchState === "past") {
-        timeInsideMatch = moment.utc(startTime);
+        timeInsideMatch = moment.utc("2018-08-18T14:05:00.000Z");
       } else if (matchState === "live") {
-        timeInsideMatch = moment.utc(startTime);
+        timeInsideMatch = moment.utc();
       }
     }
 
