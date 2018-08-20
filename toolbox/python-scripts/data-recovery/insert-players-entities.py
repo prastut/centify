@@ -83,6 +83,7 @@ for url in urls:
         doc_to_be_inserted["teamSquadURL"] = url
         doc_to_be_inserted["imageURL"] = a.get("src")
         doc_to_be_inserted["key"] = key
+        doc_to_be_inserted["type"] = "Player"
 
         print doc_to_be_inserted
         db[ENTITIES_COLLECTION].insert(doc_to_be_inserted)
