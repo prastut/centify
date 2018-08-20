@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-client = MongoClient('mongodb://bubble:bubble@104.196.215.99:27017/Bubble')
+client = MongoClient('localhost', 27017)
 db = client['EPL']
 
 teams = ['Manchester_United', 'Manchester_City', 'Chelsea',
@@ -34,12 +34,12 @@ image_urls = [
 for i in range(0, len(teams)):
     print '---------------------'
     doc_to_be_inserted = {}
-    doc_to_be_inserted['entityName'] = teams[i]
+    doc_to_be_inserted['key'] = teams[i]
     doc_to_be_inserted['acronym'] = acronym[i]
     doc_to_be_inserted['league'] = 'EPL'
     doc_to_be_inserted['imageURL'] = image_urls[i]
     doc_to_be_inserted['type'] = 'Team'
     print doc_to_be_inserted
-    db["entities_temp"].insert(doc_to_be_inserted)
+    db["entities"].insert(doc_to_be_inserted)
     del doc_to_be_inserted
 print '---------------------'
