@@ -33,7 +33,7 @@ const close = done => {
 
 //Fixtures related DB CRUD
 const getAllFixtures = async collection => {
-  const timeStampSortAscending = { timeStamp: 1 };
+  const timeStampSortAscending = { startTime: 1 };
   try {
     return await state.db
       .collection(collection)

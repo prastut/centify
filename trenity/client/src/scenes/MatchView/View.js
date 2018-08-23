@@ -248,13 +248,24 @@ class View extends Component {
   };
 
   getEventsUntilNow = async () => {
-    const { matchId } = this.props.matchDetails;
+    const { matchId, startTime } = this.props.matchDetails;
     const { timeInsideMatch } = this.state;
+
+    const UTCStartTime = moment.utc(startTime);
 
     const events = await api.getEvents(matchId, timeInsideMatch);
 
-    if (this.state.events.length < events.length) {
-      this.setState({ events });
+    const filteredNullEvents = events.filter(e => e.event);
+
+    const updatedEvents = filteredNullEvents.map(e => {
+      return {
+        ...e,
+        relativeTime: moment.utc(e.timeStamp).diff(UTCStartTime, "M")
+      };
+    });
+
+    if (this.state.events.length < updatedEvents.length) {
+      this.setState({ events: updatedEvents });
     }
   };
 
@@ -370,6 +381,14 @@ class View extends Component {
   render() {
     const { matchDetails } = this.props;
 
+    const generalUIVariant = this.state.video.fullScreen ? "onVideo" : "tiles";
+    const trendingUIVariant =
+      generalUIVariant === "onVideo"
+        ? "onVideo"
+        : this.state.video.src
+          ? "carousel"
+          : "tiles";
+
     if (this.state.startRendering) {
       const navbar = (
         <Navbar>
@@ -386,7 +405,7 @@ class View extends Component {
 
       const trending = (
         <TrendingEntities
-          variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
+          variant={trendingUIVariant}
           selected={this.state.selectedEntity.name}
           trending={this.state.trending}
           emojis={this.state.emojis}
@@ -396,7 +415,7 @@ class View extends Component {
       );
       const reaction = (
         <ReactionFeed
-          variant={this.state.video.fullScreen ? "onVideo" : "tiles"}
+          variant={generalUIVariant}
           selectedEntity={this.state.selectedEntity}
           onPollEntityTweets={this.pollEntityTweets}
           onResetSpecificEntityState={this.resetSpecificEntityState}

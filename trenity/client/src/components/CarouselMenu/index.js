@@ -6,12 +6,6 @@ import TopicCard from "../TopicCard";
 
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = {
-  root: {
-    height: "calc(100vh*0.25)"
-  }
-};
-
 class CarouselMenu extends Component {
   render() {
     const params = {

@@ -15,7 +15,7 @@ const matchStateUpdater = allFixtures => {
   return allFixtures.map(fixture => {
     return {
       ...fixture,
-      matchState: getMatchState(fixture.timeStamp)
+      matchState: getMatchState(fixture.startTime)
     };
   });
 };
@@ -27,7 +27,6 @@ const getMatchState = timeStamp => {
       2. Live: Range [startTime, endTime]
       3. Past: currentTime is after endTime
     */
-
   const currentTime = moment.utc();
   const startTime = moment.utc(timeStamp);
   const endTime = startTime.clone().add(150, "minutes");
@@ -57,7 +56,7 @@ router.get("/match/data/:matchId", async (req, res) => {
     const { matchId } = req.params;
 
     const matchData = await db.getMatchData(matchId);
-    const matchState = getMatchState(matchData.timeStamp);
+    const matchState = getMatchState(matchData.startTime);
 
     if (matchData) {
       res.json({ ...matchData, matchState });
@@ -118,7 +117,7 @@ router.get("/match/events/:matchId", async (req, res) => {
 });
 
 //Entities Route
-router.get("/entities/:key", async (req, res) => {
+router.get("/entity/data/:key", async (req, res) => {
   const { key } = req.params;
 
   try {
@@ -126,7 +125,7 @@ router.get("/entities/:key", async (req, res) => {
 
     res.json(entityData);
   } catch (e) {
-    console.log("get /entities/:key error", e);
+    console.log("get /entity/data/:key error", e);
   }
 });
 

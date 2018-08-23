@@ -13,7 +13,7 @@ const api = {
   },
 
   getMatchVerboseDetails: async matchId => {
-    const { teamOne, teamTwo, matchState, timeStamp } = await api.getMatchData(
+    const { teamOne, teamTwo, matchState, startTime } = await api.getMatchData(
       matchId
     );
 
@@ -27,7 +27,7 @@ const api = {
     return {
       matchId,
       matchState,
-      startTime: timeStamp,
+      startTime,
       teams: { teamOne: teamOneData, teamTwo: teamTwoData },
       allEntities
     };
@@ -53,7 +53,7 @@ const api = {
 
   getEntityData: async key => {
     try {
-      const entity = await axios.get(`/api/entities/${key}`);
+      const entity = await axios.get(`/api/entity/data/${key}`);
       return entity.data;
     } catch (error) {
       console.log(error);
@@ -92,17 +92,22 @@ const api = {
           (a, b) => b[1] - a[1],
           toPairs(trendingEntitiesCount)
         ).reduce((accumulator, currentValue, index) => {
+          console.log(currentValue);
           return {
             ...accumulator,
             [currentValue[0]]: {
               count: currentValue[1],
               difference: 0,
-              sentiment: trendingEntitiesSentiment[currentValue[0]]
+              sentiment: trendingEntitiesSentiment
+                ? trendingEntitiesSentiment[currentValue[0]]
+                : null
             }
           };
         }, {});
 
-        // console.log("Intial Dict Set->", sortedTrendingEntities);
+        // console.log("Initial emptysortedTrendingEntities);
+
+        console.log("Intial Dict Set->", sortedTrendingEntities);
       } else {
         const unsortedTrendingEntities = {};
 
@@ -118,13 +123,17 @@ const api = {
               ...prevDataForEntity,
               count: newCount,
               difference,
-              sentiment: trendingEntitiesSentiment[entity]
+              sentiment: trendingEntitiesSentiment
+                ? trendingEntitiesSentiment[entity]
+                : null
             };
           } else {
             unsortedTrendingEntities[entity] = {
               count: trendingEntitiesCount[entity],
               difference: 0,
-              sentiment: trendingEntitiesSentiment[entity]
+              sentiment: trendingEntitiesSentiment
+                ? trendingEntitiesSentiment[entity]
+                : null
             };
           }
         });
@@ -137,7 +146,7 @@ const api = {
         );
       }
 
-      // console.log(sortedTrendingEntities);
+      console.log(sortedTrendingEntities);
       return sortedTrendingEntities;
     } catch (error) {
       console.log(error);
