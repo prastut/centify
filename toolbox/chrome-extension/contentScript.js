@@ -106,18 +106,21 @@ function attachToHotstar(){
     if(document.getElementById('trenity-hotstar-view') !== null){
         return;
     }
-    let app = document.getElementById('app');
+    let app = document.getElementsByClassName('master-container')[0];
     let iframeElement = document.createElement('iframe');
     iframeElement.src = `https://trenity.me`;
     iframeElement.style.height = '50vh';
-    iframeElement.style.position = `fixed`;
-    iframeElement.style.right = `0`;
+    iframeElement.style.position = `sticky`;
     iframeElement.style.zIndex = `999`;
     iframeElement.id = 'trenity-hotstar-view';
-    app.insertBefore(iframeElement,app.firstChild);
     setTimeout(() => {
-        const masterInnerContainer = document.getElementsByClassName('master-container-inner');
-        masterInnerContainer[0].style.marginLeft = '12%';
+        if(document.getElementById('trenity-hotstar-view') !== null){
+            return;
+        }
+        app.insertBefore(iframeElement,app.firstChild);
+        app.style.display = 'flex';
+        app.style.justifyContent = 'space-between';
+        scroll(0,0);
     },1000);
 }
 
