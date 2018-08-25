@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { isEmpty } from "ramda";
-
+import { isEmpty, reverse } from "ramda";
 //Material Styles
 import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
@@ -68,7 +67,7 @@ class View extends Component {
       this.setState({
         upcomingMatches: fixtures.filter(m => m.matchState === "upcoming"),
         liveMatches: fixtures.filter(m => m.matchState === "live"),
-        pastMatches: fixtures.filter(m => m.matchState === "past")
+        pastMatches: reverse(fixtures.filter(m => m.matchState === "past"))
       });
     } catch (e) {
       console.log("Error inside getting fixtures", e);
@@ -137,7 +136,21 @@ class View extends Component {
 
             <Grid item xs={12}>
               <div className={classes.headings}> PAST MATCHES </div>
-              {this.state.pastMatches.map(match => this.generateLink(match))}
+              {this.state.pastMatches.map(match => (
+                <div key={match._id} className={classes.matchLinkContainer}>
+                  <Link
+                    className={classes.matchLink}
+                    to={`/fixtures/match/${match._id}`}
+                  >
+                    {prettyName(match.teamOne)} vs {prettyName(match.teamTwo)}
+                  </Link>
+                  <div className={classes.upcomingMatchStatus}>
+                    {`Finished on ${moment
+                      .utc(match.startTime)
+                      .format("dddd, MMM Do YYYY [at] HH:mm")}`}
+                  </div>
+                </div>
+              ))}
             </Grid>
           </Grid>
         </Grid>

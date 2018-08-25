@@ -14,7 +14,6 @@ const connect = (url, done) => {
     (err, database) => {
       if (err) return done(err);
       state.db = database.db(DATABASE);
-      console.log(state.db);
       done();
     }
   );
