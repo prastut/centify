@@ -18,7 +18,7 @@ FIXTURE_ID = "5b814e20cb67141dfdf05308"
 
 
 # === Mongo Config
-db = MongoClient("localhost", 27017)["EPL"]
+db = MongoClient("mongodb://root:root@localhost:27017/")["EPL"]
 
 natural_language_understanding = NaturalLanguageUnderstandingV1(
     username=settings_watson.username,
