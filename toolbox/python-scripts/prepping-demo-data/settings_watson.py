@@ -1,3 +1,3 @@
 url = "https://gateway.watsonplatform.net/natural-language-understanding/api"
-username = "ba65b1eb-b4d4-4e44-bd43-26b62b0ba3aa"
-password = "FdSmofP3EAvA"
+username = "53657046-0701-4274-8821-4f8b7b590155"
+password = "4WeBNFj0kYAd"
