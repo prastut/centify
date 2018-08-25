@@ -15,4 +15,4 @@ for tweet_object in tweets_cursor:
     if sequence not in unique_tweets:
         unique_tweets.add(sequence)
     else:
-        print tweet_object
+        print sequence
