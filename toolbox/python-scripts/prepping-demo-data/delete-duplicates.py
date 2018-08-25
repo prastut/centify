@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson import ObjectId
 
 ## ===== CONFIG ##
 WATSON_PROCESSED_COLLECTION = "CROFRA_FINAL_PROCESSED_TWEETS"
@@ -15,4 +16,5 @@ for tweet_object in tweets_cursor:
     if sequence not in unique_tweets:
         unique_tweets.add(sequence)
     else:
-        print sequence
+        db[WATSON_PROCESSED_COLLECTION].delete_one(
+            {"_id": ObjectId(tweet_object["_id"])})
