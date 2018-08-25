@@ -33,7 +33,7 @@ def merge_two_dicts(x, y):
 
 
 def create_connect():
-    return MongoClient("mongodb://localhost:27017/", maxPoolSize=20)
+    return MongoClient("mongodb://root:root@localhost:27017/", maxPoolSize=20)
 
 
 def analyze_tweet_from_watson(raw_tweet_object):
@@ -61,12 +61,13 @@ def analyze_tweet_from_watson(raw_tweet_object):
 
 def consumer(raw_tweet_object):
     if int(raw_tweet_object['sequence']) > last_sequence_in_processed_collection:
-        db = create_connect()['EPL']
         print ""
         print raw_tweet_object['tweet']
+        print raw_tweet_object['sequence']
         analyzed_tweet_object = analyze_tweet_from_watson(raw_tweet_object)
         if analyzed_tweet_object:
-            db["TEMP"].insert(analyzed_tweet_object)
+            db = create_connect()['EPL']
+            db[WATSON_PROCESSED_COLLECTION].insert(analyzed_tweet_object)
         else:
             print "Watson finished"
 
