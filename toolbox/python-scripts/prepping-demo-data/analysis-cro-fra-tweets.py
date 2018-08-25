@@ -99,4 +99,3 @@ if __name__ == "__main__":
 
         pool.map(consumer, raw_tweets_cursor)
         skipped = skipped + limited
-        break
