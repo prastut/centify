@@ -33,7 +33,7 @@ def merge_two_dicts(x, y):
 
 
 def create_connect():
-    return MongoClient("mongodb://localhost:27017/", maxPoolSize=20)
+    return MongoClient("mongodb://root:root@localhost:27017/", maxPoolSize=20)
 
 
 def analyze_tweet_from_watson(raw_tweet_object):
