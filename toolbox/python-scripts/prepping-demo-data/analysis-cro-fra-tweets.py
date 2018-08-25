@@ -33,7 +33,7 @@ def merge_two_dicts(x, y):
 
 
 def create_connect():
-    return MongoClient("mongodb://root:root@localhost:27017/", maxPoolSize=20)
+    return MongoClient("mongodb://localhost:27017/", maxPoolSize=20)
 
 
 def analyze_tweet_from_watson(raw_tweet_object):
@@ -61,12 +61,12 @@ def analyze_tweet_from_watson(raw_tweet_object):
 
 def consumer(raw_tweet_object):
     if int(raw_tweet_object['sequence']) > last_sequence_in_processed_collection:
-        print ""
-        print raw_tweet_object['tweet']
-        print raw_tweet_object['sequence']
+
         analyzed_tweet_object = analyze_tweet_from_watson(raw_tweet_object)
+
         if analyzed_tweet_object:
             db = create_connect()['EPL']
+            print raw_tweet_object['sequence']
             db[WATSON_PROCESSED_COLLECTION].insert(analyzed_tweet_object)
         else:
             print "Watson finished"
@@ -74,20 +74,21 @@ def consumer(raw_tweet_object):
         print ""
 
 
-if __name__ == "__main__":
-    # multiprocessing_config
-    tweets_batch = []
-    pool = Pool(10)
-    limited = 100
-    skipped = 0
-
+def initializer():
     db = create_connect()['EPL']
-    raw_tweets_count = db[RAW_TWEETS_COLLECTION].count()
-
+    global last_sequence_in_processed_collection
     last_sequence_in_processed_collection = int(list(
         db[WATSON_PROCESSED_COLLECTION].find().sort([("sequence", -1)]).limit(1))[0]['sequence'])
 
-    print last_sequence_in_processed_collection
+
+if __name__ == "__main__":
+    # multiprocessing_config
+    limited = 100
+    skipped = 0
+    pool = Pool(10, initializer)
+
+    db = create_connect()['EPL']
+    raw_tweets_count = db[RAW_TWEETS_COLLECTION].count()
 
     while True:
         raw_tweets_cursor = db[RAW_TWEETS_COLLECTION].find(
@@ -98,3 +99,4 @@ if __name__ == "__main__":
 
         pool.map(consumer, raw_tweets_cursor)
         skipped = skipped + limited
+        break
