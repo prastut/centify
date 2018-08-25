@@ -30,26 +30,26 @@ import tweepy
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions, CategoriesOptions
 
-## ===== CONFIG ## 
+## ===== CONFIG ##
 fixture_collection = "fixtures"
 entities_collection = "entities_new"
 
 fixture_id = None
 ## ===== ##
 
-## ===  Kafka Config
+# ===  Kafka Config
 producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
 producer = KafkaProducer(retries=5)
 response_batch = []
-## 
+##
 
-## === Mongo Config
+# === Mongo Config
 MONGO_URL = os.getenv(
     'MONGODB_URI', "mongodb://bubble:bubble@104.196.215.99:27017/Bubble")
-    
+
 client = MongoClient(MONGO_URL)
 db = client["EPL"]
-## 
+##
 
 fixture_id = raw_input("Enter fixture id: ")
 fixture = db[fixture_collection].find_one({"_id": ObjectId(fixture_id)})

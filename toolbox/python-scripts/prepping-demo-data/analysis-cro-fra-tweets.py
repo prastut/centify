@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from bson import ObjectId
 import settings_watson
 import json
+from multiprocessing import Pool
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions, CategoriesOptions
 
@@ -14,12 +15,11 @@ FIXTURE_COLLECTION = "fixtures"
 ENTITIES_COLLECTION = "entities"
 
 FIXTURE_ID = "5b814e20cb67141dfdf05308"
+last_sequence_in_processed_collection = None
 ## ===== ##
 
 
 # === Mongo Config
-db = MongoClient("mongodb://root:root@localhost:27017/")["EPL"]
-
 natural_language_understanding = NaturalLanguageUnderstandingV1(
     username=settings_watson.username,
     password=settings_watson.password,
@@ -30,6 +30,10 @@ def merge_two_dicts(x, y):
     z = x.copy()
     z.update(y)
     return z
+
+
+def create_connect():
+    return MongoClient("mongodb://localhost:27017/", maxPoolSize=20)
 
 
 def analyze_tweet_from_watson(raw_tweet_object):
@@ -55,36 +59,41 @@ def analyze_tweet_from_watson(raw_tweet_object):
         return None
 
 
+def consumer(raw_tweet_object):
+    if int(raw_tweet_object['sequence']) > last_sequence_in_processed_collection:
+        db = create_connect()['EPL']
+        print ""
+        print raw_tweet_object['tweet']
+        analyzed_tweet_object = analyze_tweet_from_watson(raw_tweet_object)
+        if analyzed_tweet_object:
+            db["TEMP"].insert(analyzed_tweet_object)
+        else:
+            print "Watson finished"
+
+        print ""
+
+
 if __name__ == "__main__":
-    fixture_details = db[FIXTURE_COLLECTION].find_one(
-        {"_id": ObjectId(FIXTURE_ID)})
+    # multiprocessing_config
+    tweets_batch = []
+    pool = Pool(10)
+    limited = 100
+    skipped = 0
 
-    team_one = fixture_details["teamOne"]
-    team_two = fixture_details["teamTwo"]
-
-    all_entities_for_fixture = list(db[ENTITIES_COLLECTION].find(
-        {
-            "$or": [
-                {"team": team_one}, {"team": team_two}, {
-                    "key": team_one}, {"key": team_two}
-            ]
-        }
-    ))
+    db = create_connect()['EPL']
+    raw_tweets_count = db[RAW_TWEETS_COLLECTION].count()
 
     last_sequence_in_processed_collection = int(list(
         db[WATSON_PROCESSED_COLLECTION].find().sort([("sequence", -1)]).limit(1))[0]['sequence'])
 
     print last_sequence_in_processed_collection
 
-    raw_tweets_cursor = db[RAW_TWEETS_COLLECTION].find({}, {'_id': False})
+    while True:
+        raw_tweets_cursor = db[RAW_TWEETS_COLLECTION].find(
+            {}, {'_id': False}).skip(skipped).limit(limited)
 
-    for raw_tweet_object in raw_tweets_cursor:
-        if int(raw_tweet_object['sequence']) > last_sequence_in_processed_collection:
-            print raw_tweet_object['tweet']
-            analyzed_tweet_object = analyze_tweet_from_watson(raw_tweet_object)
-            if analyzed_tweet_object:
-                db[WATSON_PROCESSED_COLLECTION].insert(analyzed_tweet_object)
-                print ""
-            else:
-                print "Watson finished"
-                break
+        if skipped > raw_tweets_count:
+            break
+
+        pool.map(consumer, raw_tweets_cursor)
+        skipped = skipped + limited
