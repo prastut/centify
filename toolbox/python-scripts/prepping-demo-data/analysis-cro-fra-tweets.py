@@ -82,5 +82,9 @@ if __name__ == "__main__":
         if int(raw_tweet_object['sequence']) > last_sequence_in_processed_collection:
             print raw_tweet_object['tweet']
             analyzed_tweet_object = analyze_tweet_from_watson(raw_tweet_object)
-            db[WATSON_PROCESSED_COLLECTION].insert(analyzed_tweet_object)
-            print ""
+            if analyzed_tweet_object:
+                db[WATSON_PROCESSED_COLLECTION].insert(analyzed_tweet_object)
+                print ""
+            else:
+                print "Watson finished"
+                break
