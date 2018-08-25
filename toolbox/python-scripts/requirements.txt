@@ -1,2 +1,9 @@
+pylint
+autopep8
+
+
 pymongo
 beautifulsoup4
+requests
+kafka-python
+tweepy
