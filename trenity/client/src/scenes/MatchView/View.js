@@ -113,6 +113,8 @@ class View extends Component {
       this.setupIntervals();
       this.firstTimeFire();
     }
+
+    //Events
     if (this.state.events.length > prevState.events.length) {
       const updatedEvents = this.state.events;
       const updatedEventsLength = updatedEvents.length;
@@ -128,6 +130,12 @@ class View extends Component {
           };
         });
       }
+    }
+
+    //
+    if (this.state.selectedEntity.key !== prevState.selectedEntity.key) {
+      console.log(this.state.selectedEntity);
+      this.pollEntityTweets();
     }
   }
 
@@ -298,17 +306,13 @@ class View extends Component {
       e => e.key === entityKey
     );
 
-    //Move Poll Entity to ComponentDidUpdate
-    this.setState(
-      {
-        selectedEntity: {
-          key: entityKey,
-          tweets: [],
-          imageURL
-        }
-      },
-      () => this.pollEntityTweets()
-    );
+    this.setState({
+      selectedEntity: {
+        key: entityKey,
+        tweets: [],
+        imageURL
+      }
+    });
   };
 
   resetSpecificEntityState = () => {

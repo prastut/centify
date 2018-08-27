@@ -110,13 +110,13 @@ class ReactionFeed extends PureComponent {
     //Previous
     const prevViewing = prevState.viewing;
     const prevSelectedEntity = prevProps.selectedEntity;
-    const prevName = prevSelectedEntity.name;
+    const prevName = prevSelectedEntity.key;
     const prevTweets = prevSelectedEntity.tweets;
 
     //Current
     const currentViewing = this.state.viewing;
     const currentSelectedEntity = this.props.selectedEntity;
-    const currentName = currentSelectedEntity.name;
+    const currentName = currentSelectedEntity.key;
     const currentTweets = currentSelectedEntity.tweets;
 
     console.log("Current Tweets Length->", currentTweets.length);
