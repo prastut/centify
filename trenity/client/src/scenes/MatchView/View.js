@@ -115,22 +115,6 @@ class View extends Component {
     }
 
     //Events
-    if (this.state.events.length > prevState.events.length) {
-      const updatedEvents = this.state.events;
-      const updatedEventsLength = updatedEvents.length;
-      const lastEventinUpdatedEvents = updatedEvents[updatedEventsLength - 1];
-      const { scoringTeam, event } = lastEventinUpdatedEvents;
-      if (event === "Goal") {
-        this.setState(prevState => {
-          return {
-            score: {
-              ...prevState.score,
-              [scoringTeam]: prevState.score[scoringTeam] + 1
-            }
-          };
-        });
-      }
-    }
 
     //
     if (this.state.selectedEntity.key !== prevState.selectedEntity.key) {
@@ -179,10 +163,10 @@ class View extends Component {
       throttleRate.timer * 1000
     );
 
-    // this.eventsInterval = setInterval(
-    //   this.getEventsUntilNow,
-    //   throttleRate.events * 1000
-    // );
+    this.eventsInterval = setInterval(
+      this.getEventsUntilNow,
+      throttleRate.events * 1000
+    );
 
     this.trendingEntitiesInterval = setInterval(
       this.getTrendingEntities,
@@ -258,7 +242,11 @@ class View extends Component {
 
     const events = await api.getEvents(matchId, timeInsideMatch);
 
-    const filteredNullEvents = events.filter(e => e.event);
+    const filteredNullEvents = events.filter(
+      e => e.event && moment.utc(e.timeStamp).isAfter(UTCStartTime)
+    );
+
+    console.log(filteredNullEvents);
 
     const updatedEvents = filteredNullEvents.map(e => {
       return {

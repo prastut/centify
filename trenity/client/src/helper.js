@@ -121,6 +121,8 @@ export const eventsToEmoji = event => {
       return "🤬";
     case "OUCH":
       return "🤬";
+    case "KICK-OFF":
+      return "🏁";
     case "START HALF":
       return "🏁";
     case "START-SECOND-HALF":

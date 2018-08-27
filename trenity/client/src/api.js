@@ -1,5 +1,4 @@
 import axios from "axios";
-import { isEmpty, toPairs, sort, fromPairs } from "ramda";
 import { DEMO_LIST } from "./sampleData";
 
 const api = {
