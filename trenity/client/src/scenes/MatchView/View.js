@@ -45,14 +45,12 @@ class View extends Component {
       timeInsideMatch: "",
       score: {},
       events: [],
-      trending: {
-        entities: {}
-      },
+      trending: {},
       emojis: {},
       selectedEntity: {
-        name: "",
+        key: "",
         tweets: [],
-        image: ""
+        imageURL: ""
       },
       video: {
         autoplay: true,
@@ -71,7 +69,6 @@ class View extends Component {
     const { matchDetails } = this.props;
     const { isDemo } = matchDetails;
 
-    console.log(matchDetails);
     //Demo
     //past
     //live
@@ -90,8 +87,6 @@ class View extends Component {
         timeInsideMatch = moment.utc();
       }
     }
-
-    console.log(timeInsideMatch);
 
     this.setupSocket();
     this.setupSocketListeners();
@@ -176,10 +171,10 @@ class View extends Component {
       throttleRate.timer * 1000
     );
 
-    this.eventsInterval = setInterval(
-      this.getEventsUntilNow,
-      throttleRate.events * 1000
-    );
+    // this.eventsInterval = setInterval(
+    //   this.getEventsUntilNow,
+    //   throttleRate.events * 1000
+    // );
 
     this.trendingEntitiesInterval = setInterval(
       this.getTrendingEntities,
@@ -274,24 +269,13 @@ class View extends Component {
     const { matchId } = this.props.matchDetails;
     const { timeInsideMatch } = this.state;
 
-    const entities = await api.getTrendingEntities(
+    const trending = await api.getTrendingEntities(
       matchId,
       timeInsideMatch,
-      this.state.trending.entities
+      this.state.trending
     );
 
-    // console.log(entities);
-
-    if (entities) {
-      this.setState(({ trending }) => {
-        return {
-          trending: {
-            ...trending,
-            entities
-          }
-        };
-      });
-    }
+    if (!isEmpty(trending)) this.setState({ trending });
   };
 
   pollEntityTweets = () => {
@@ -304,23 +288,23 @@ class View extends Component {
       "get entity tweets",
       timeInsideMatch,
       matchId,
-      selectedEntity.name,
+      selectedEntity.key,
       gap
     );
   };
 
-  changeSpecificEntityState = entity => {
-    const entityData = this.props.matchDetails.allEntities.find(
-      e => e.key === entity
+  changeSpecificEntityState = entityKey => {
+    const { imageURL } = this.props.matchDetails.allEntities.find(
+      e => e.key === entityKey
     );
 
     //Move Poll Entity to ComponentDidUpdate
     this.setState(
       {
         selectedEntity: {
-          name: entity,
+          key: entityKey,
           tweets: [],
-          image: entityData.imageURL
+          imageURL
         }
       },
       () => this.pollEntityTweets()
@@ -331,16 +315,16 @@ class View extends Component {
     clearTimeout(this.delayForPollingTweetTimeout);
     this.setState({
       selectedEntity: {
-        name: "",
+        key: "",
         tweets: [],
-        image: ""
+        imageURL: ""
       }
     });
   };
 
   //Click Handlers
-  handleSpecificEntityClick = entity => {
-    this.changeSpecificEntityState(entity);
+  handleSpecificEntityClick = entityKey => {
+    this.changeSpecificEntityState(entityKey);
   };
 
   handleVideoStatus = status => {
@@ -406,7 +390,7 @@ class View extends Component {
       const trending = (
         <TrendingEntities
           variant={trendingUIVariant}
-          selected={this.state.selectedEntity.name}
+          selected={this.state.selectedEntity.key}
           trending={this.state.trending}
           emojis={this.state.emojis}
           allEntities={matchDetails.allEntities}
@@ -432,7 +416,7 @@ class View extends Component {
           {this.state.video.src && (
             <VideoComponent
               stateOfVideo={this.state.video}
-              isSpecificEntityView={this.state.selectedEntity.name}
+              isSpecificEntityView={this.state.selectedEntity.key}
               trendingOnVideo={trending}
               reactionOnVideo={reaction}
               onVideoStatus={this.handleVideoStatus}

@@ -64,6 +64,8 @@ class View extends Component {
     try {
       const fixtures = await api.getAllFixtures();
 
+      console.log(fixtures);
+
       this.setState({
         upcomingMatches: fixtures.filter(m => m.matchState === "upcoming"),
         liveMatches: fixtures.filter(m => m.matchState === "live"),
@@ -127,7 +129,7 @@ class View extends Component {
                   <div className={classes.upcomingMatchStatus}>
                     Will go live on{" "}
                     {moment
-                      .utc(match.startTime)
+                      .utc(match.timeStamp)
                       .format("dddd, MMM Do YYYY [at] HH:mm")}
                   </div>
                 </div>
@@ -146,7 +148,7 @@ class View extends Component {
                   </Link>
                   <div className={classes.upcomingMatchStatus}>
                     {`Finished on ${moment
-                      .utc(match.startTime)
+                      .utc(match.timeStamp)
                       .format("dddd, MMM Do YYYY [at] HH:mm")}`}
                   </div>
                 </div>

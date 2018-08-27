@@ -63,17 +63,17 @@ class TrendingEntities extends PureComponent {
 
     return (
       <div className={rootStyles}>
-        {entitiesDictToSortedEntitiesArray(trending.entities, allEntities)
+        {entitiesDictToSortedEntitiesArray(trending, allEntities)
           .slice(0, 6)
           .map(e => (
-            <div key={e.entity} className={entityStyles}>
+            <div key={e.key} className={entityStyles}>
               <TopicCard
                 variant={variant === "onVideo" ? "onVideo" : "tile"}
-                entityKey={e.entity}
-                entityImage={e.image}
+                entityKey={e.key}
+                entityImage={e.imageURL}
                 selected={selected}
                 emojiComponent={
-                  emojis[e.entity] && <Emoji emoji={emojis[e.entity]} />
+                  emojis[e.key] && <Emoji emoji={emojis[e.key]} />
                 }
                 sentimentBarComponent={
                   <SentimentBar

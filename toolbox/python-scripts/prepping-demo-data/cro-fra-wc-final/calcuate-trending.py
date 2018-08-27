@@ -21,16 +21,17 @@ until_now_dict = {}
 for tweet_object in tweets_cursor:
   
   key = tweet_object['key']
+  sentiment = tweet_object['sentiment']
 
   if key not in until_now_dict:
-	  until_now_dict[key] = 1
+	  until_now_dict[key] = {'count': 1, 'sentiment': sentiment}
   else:
-	  until_now_dict[key] = until_now_dict[key] + 1
+      until_now_dict[key]['count'] = until_now_dict[key]['count'] + 1
+      until_now_dict[key]['sentiment'] = sentiment
 
-  
   trending_dict = {
 	  'sequence': tweet_object['sequence'],
-	  'created_at': tweet_object['created_at'],
+	  'timeStamp': tweet_object['timeStamp'],
 	  'until_now': until_now_dict,
   }
 

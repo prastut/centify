@@ -16,7 +16,7 @@ exports = module.exports = io => {
             if ("emotion" in t) {
               return {
                 ...accumulator,
-                [t.entity_name]: `${t.max_emotion}-${Date.now()}`
+                [t.key]: `${t.emotion}-${Date.now()}`
               };
             }
           }, {});
@@ -29,21 +29,21 @@ exports = module.exports = io => {
 
       socket.on(
         "get entity tweets",
-        async (timeInsideMatch, collection, entity, gap) => {
+        async (timeInsideMatch, collection, entityKey, gap) => {
           // console.log(timeInsideMatch, collection, entity);
           const tweetsData = await db.getSelectedEntityTweets(
             moment.utc(timeInsideMatch),
             collection,
-            entity,
+            entityKey,
             gap
           );
 
-          const tweets = tweetsData.map(i => {
+          const tweets = tweetsData.map(t => {
             return {
-              id: i._id,
-              tweet: i.tweet,
-              emotion: i.max_emotion,
-              image: i.userProfile
+              id: t._id,
+              tweet: t.tweet,
+              emotion: t.emotion,
+              image: t.userProfileImageURL
             };
           });
 
