@@ -116,6 +116,13 @@ class View extends Component {
 
     //Events
 
+    if (this.state.events > prevState.events) {
+      const allGoalEvents = this.state.events.filter(e => e.event === "GOAL");
+      const lastGoalEvent = allGoalEvents[allGoalEvents.length - 1];
+
+      if (lastGoalEvent) this.setState({ score: lastGoalEvent.score });
+    }
+
     //
     if (this.state.selectedEntity.key !== prevState.selectedEntity.key) {
       console.log(this.state.selectedEntity);
