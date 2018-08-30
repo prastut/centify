@@ -22,5 +22,4 @@ export const DEMO_LIST = [
   }
 ];
 
-export const DUMMY_TWEET_IMAGE =
-  "http://www.razzlesnightclub.com/sites/default/files/default_images/default_testimonial.png";
+export const DUMMY_TWEET_IMAGE = "https://i.imgur.com/sYoJO6a.png";
