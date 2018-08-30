@@ -141,23 +141,21 @@ const getSelectedEntityTweets = async (t, match, entityKey, gap) => {
 
   try {
     const paramsForFind = {
-      $and: [
-        {
-          timeStamp: {
-            $gte: t
-              .clone()
-              .subtract(gap, "s")
-              .toDate(),
-            $lt: t.toDate()
-          }
-        },
-        { key: entityKey }
-      ]
+      timeStamp: {
+        $gte: t
+          .clone()
+          .subtract(gap, "s")
+          .toDate(),
+        $lt: t.toDate()
+      },
+      key: entityKey
     };
 
     const tweets = await state.db
       .collection(match)
       .find(paramsForFind)
+      .sort({ sequence: 1, timeStamp: 1 })
+      .limit(5)
       .toArray();
 
     // console.log(tweets);

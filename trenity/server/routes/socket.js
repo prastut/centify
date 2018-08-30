@@ -31,21 +31,12 @@ exports = module.exports = io => {
         "get entity tweets",
         async (timeInsideMatch, collection, entityKey, gap) => {
           // console.log(timeInsideMatch, collection, entity);
-          const tweetsData = await db.getSelectedEntityTweets(
+          const tweets = await db.getSelectedEntityTweets(
             moment.utc(timeInsideMatch),
             collection,
             entityKey,
             gap
           );
-
-          const tweets = tweetsData.map(t => {
-            return {
-              id: t._id,
-              tweet: t.tweet,
-              emotion: t.emotion,
-              image: t.userProfileImageURL
-            };
-          });
 
           socket.emit("entity tweets", tweets);
         }

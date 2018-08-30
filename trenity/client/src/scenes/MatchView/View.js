@@ -188,8 +188,6 @@ class View extends Component {
   };
 
   setupSocketListeners = () => {
-    const throttleSpecificEntityTime = moment.utc("2018-07-15 15:17:35");
-
     this.socket.on("trending emojis", trendingEmojis => {
       this.setState(prevState => ({
         emojis: {
@@ -200,8 +198,7 @@ class View extends Component {
     });
 
     this.socket.on("entity tweets", newTweets => {
-      const { timeInsideMatch } = this.state;
-
+      console.log(newTweets);
       if (isEmpty(newTweets)) {
         console.log("Empty Result, poll again");
         this.delayForPollingTweetTimeout = setTimeout(
@@ -212,20 +209,6 @@ class View extends Component {
         const prevTweets = this.state.selectedEntity.tweets;
         const allTweets = concat(prevTweets, newTweets);
         const uniqueTweets = uniqBy(tweet => tweet.tweet, allTweets);
-
-        console.log(timeInsideMatch);
-
-        if (timeInsideMatch.isSame(throttleSpecificEntityTime)) {
-          uniqueTweets.push({
-            id: "1",
-            tweet: "75% discount",
-            emotion: "joy",
-            image:
-              "https://www.theindianwire.com/wp-content/uploads/2017/07/swiggy-logo.png"
-          });
-
-          console.log(uniqueTweets);
-        }
 
         this.setState(({ selectedEntity }) => ({
           selectedEntity: {
@@ -241,18 +224,14 @@ class View extends Component {
 
   tick = () => {
     // //Any player throttle
-    // // const { key, throttleAt } = queryString.parse(this.props.location.search);
+    // const { key, throttleAt } = queryString.parse(this.props.location.search);
 
-    // const key = "Mario_Mandzukic";
-    // const throttleAt = 20;
+    const key = "France";
+    const throttleSpecificEntityTime = moment.utc(`2018-07-15 15:18:00`);
 
-    // const throttleSpecificEntityTime = moment.utc(
-    //   `2018-07-15 15:${throttleAt}:00`
-    // );
-
-    // if (timeInsideMatch.isSame(throttleSpecificEntityTime)) {
-    //   this.handleSpecificEntityClick(key);
-    // }
+    if (this.state.timeInsideMatch.isSame(throttleSpecificEntityTime)) {
+      this.handleSpecificEntityClick(key);
+    }
 
     this.setState(prevState => ({
       timeInsideMatch: prevState.timeInsideMatch.clone().add(1, "s")
@@ -303,11 +282,13 @@ class View extends Component {
     const { matchId } = this.props.matchDetails;
     const { timeInsideMatch, selectedEntity } = this.state;
 
+    const demoTimeInsideMatch = timeInsideMatch.clone().add(32, "seconds");
+    console.log(demoTimeInsideMatch.format());
     const gap = 2;
 
     this.socket.emit(
       "get entity tweets",
-      timeInsideMatch.clone().add(32, "seconds"),
+      demoTimeInsideMatch,
       matchId,
       selectedEntity.key,
       gap

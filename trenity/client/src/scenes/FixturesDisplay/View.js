@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { isEmpty, reverse } from "ramda";
-import Swiper from "react-id-swiper";
 
 //Material Styles
 import Grid from "@material-ui/core/Grid";

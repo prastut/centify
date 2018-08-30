@@ -29,6 +29,11 @@ const styles = {
     right: "0",
     marginRight: "-0.4em"
   },
+  adImage: {
+    width: "30px",
+    height: "30px",
+    borderRadius: "100%"
+  },
   emoji: {
     fontSize: "2em"
   }
@@ -38,7 +43,9 @@ class TwitterUser extends Component {
   state = { imageExists: false };
 
   async componentDidMount() {
-    const doesImageExist = await checkImageExists(this.props.tweet.image);
+    const doesImageExist = await checkImageExists(
+      this.props.tweet.userProfileImageURL
+    );
     if (doesImageExist) {
       this.setState({ imageExists: true });
     }
@@ -46,7 +53,9 @@ class TwitterUser extends Component {
 
   async componentDidUpdate(prevProps) {
     if (this.props.tweet.id !== prevProps.tweet.id) {
-      const doesImageExist = await checkImageExists(this.props.tweet.image);
+      const doesImageExist = await checkImageExists(
+        this.props.tweet.userProfileImageURL
+      );
       this.setState({ imageExists: doesImageExist });
     }
   }
@@ -57,7 +66,9 @@ class TwitterUser extends Component {
     const viewingStyles =
       index === viewing ? classes.userSelected : classes.userFaded;
 
-    const imageSrc = this.state.imageExists ? tweet.image : DUMMY_TWEET_IMAGE;
+    const imageSrc = this.state.imageExists
+      ? tweet.userProfileImageURL
+      : DUMMY_TWEET_IMAGE;
 
     return (
       <div
@@ -65,7 +76,13 @@ class TwitterUser extends Component {
         onClick={() => (onUserClick ? onUserClick(index) : null)}
       >
         {tweet.type && tweet.type === "ad" ? (
-          <span>1</span>
+          <span className={viewingStyles}>
+            <img
+              src={imageSrc}
+              alt="twitter-user-profile"
+              className={classes.adImage}
+            />
+          </span>
         ) : (
           <span className={viewingStyles}>
             <div className={classes.emoji}>{textToEmoji(tweet.emotion)}</div>

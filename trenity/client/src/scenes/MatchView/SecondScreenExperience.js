@@ -19,7 +19,7 @@ const styles = {
   },
   trending: {},
   centerPadding: {
-    width: "calc(100vw*0.8)",
+    width: "calc(100vw*0.9)",
     margin: "0 auto"
   },
   reaction: {

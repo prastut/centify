@@ -119,8 +119,8 @@ class ReactionFeed extends PureComponent {
     const currentName = currentSelectedEntity.key;
     const currentTweets = currentSelectedEntity.tweets;
 
-    console.log("Current Tweets Length->", currentTweets.length);
-    console.log("Viewing->", currentViewing);
+    // console.log("Current Tweets Length->", currentTweets.length);
+    // console.log("Viewing->", currentViewing);
     if (!isEmpty(currentTweets) && currentTweets.length !== prevTweets.length) {
       clearInterval(this.automaticSwitchToNextTweetInterval);
       this.automaticSwitchingLogic();
@@ -168,13 +168,33 @@ class ReactionFeed extends PureComponent {
 
   handleClick = index => {
     clearInterval(this.automaticSwitchToNextTweetInterval);
-    this.setState({ viewing: index }, this.automaticSwitchingLogic);
+    this.setState({ viewing: index });
     // this.setState({ viewing: index })
   };
 
   handleExitEntityViewOnVideo = () => {
     clearInterval(this.automaticSwitchToNextTweetInterval);
     this.props.onResetSpecificEntityState();
+  };
+
+  generateTweetTextBox = () => {
+    const { selectedEntity } = this.props;
+    const { tweets } = selectedEntity;
+    const { viewing } = this.state;
+
+    if (!tweets[viewing]) return null;
+
+    if (tweets[viewing].type === "ad") {
+      return (
+        <TweetBox
+          text={tweets[viewing].tweet}
+          variant="ad"
+          imageToShow={tweets[viewing].adBannerImageURL}
+        />
+      );
+    } else {
+      return <TweetBox text={tweets[viewing].tweet} variant="text" />;
+    }
   };
 
   render() {
@@ -251,7 +271,7 @@ class ReactionFeed extends PureComponent {
 
     return (
       <div className={classes.root}>
-        {tweets[viewing] && <TweetBox text={tweets[viewing].tweet} />}
+        {this.generateTweetTextBox()}
         <div>
           <Swiper
             shouldSwiperUpdate

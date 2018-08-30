@@ -55,7 +55,7 @@ class TrendingEntities extends PureComponent {
   };
 
   componentDidUpdate() {
-    if (!this.state.initSlide) {
+    if (!this.state.initSlide && this.props.variant === "carousel") {
       this.swiper.slideTo(0);
       this.setState({ initSlide: true });
     }
