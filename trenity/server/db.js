@@ -155,7 +155,6 @@ const getSelectedEntityTweets = async (t, match, entityKey, gap) => {
       .collection(match)
       .find(paramsForFind)
       .sort({ sequence: 1, timeStamp: 1 })
-      .limit(5)
       .toArray();
 
     // console.log(tweets);
