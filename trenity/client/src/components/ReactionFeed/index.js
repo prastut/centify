@@ -182,7 +182,7 @@ class ReactionFeed extends PureComponent {
     const { tweets } = selectedEntity;
     const { viewing } = this.state;
 
-    if (variant === "onVideo" && selectedEntity.name) {
+    if (variant === "onVideo" && selectedEntity.key) {
       return (
         <React.Fragment>
           <div className={classes.onFSleftContainer}>
@@ -190,8 +190,8 @@ class ReactionFeed extends PureComponent {
               <div className={classes.onFSEntity}>
                 <TopicCard
                   variant="tile"
-                  entityKey={selectedEntity.name}
-                  entityImage={selectedEntity.image}
+                  entityKey={selectedEntity.key}
+                  entityImage={selectedEntity.imageURL}
                 />
               </div>
               <div className={classes.onFSEmojisContainer}>

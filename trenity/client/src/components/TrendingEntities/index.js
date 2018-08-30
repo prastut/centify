@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import Swiper from "react-id-swiper";
 
 //Material Styles
 import { withStyles } from "@material-ui/core/styles";
@@ -34,10 +35,32 @@ const styles = {
     flex: "1 0 100px",
     padding: "5px",
     height: "100%"
+  },
+  carouselContainer: {
+    height: "100px"
   }
 };
 
+const CARAOUSEL_SWIPER_PARAMS = {
+  slidesPerView: 4,
+  spaceBetween: 10,
+  freeMode: true,
+  slideToClickedSlide: true,
+  slidesOffsetBefore: 20
+};
+
 class TrendingEntities extends PureComponent {
+  state = {
+    initSlide: false
+  };
+
+  componentDidUpdate() {
+    if (!this.state.initSlide) {
+      this.swiper.slideTo(0);
+      this.setState({ initSlide: true });
+    }
+  }
+
   render() {
     const {
       variant,
@@ -61,30 +84,66 @@ class TrendingEntities extends PureComponent {
       return null;
     }
 
+    const entitiesToShow = entitiesDictToSortedEntitiesArray(
+      trending,
+      allEntities
+    ).slice(0, 6);
+
+    if (variant === "carousel") {
+      return (
+        <div>
+          <Swiper
+            shouldSwiperUpdate
+            {...CARAOUSEL_SWIPER_PARAMS}
+            ref={node => {
+              if (node) this.swiper = node.swiper;
+            }}
+          >
+            {entitiesToShow.map(e => (
+              <div key={e.key} className={classes.carouselContainer}>
+                <TopicCard
+                  variant={variant === "onVideo" ? "onVideo" : "tile"}
+                  entityKey={e.key}
+                  entityImage={e.imageURL}
+                  selected={selected}
+                  emojiComponent={
+                    emojis[e.key] && <Emoji emoji={emojis[e.key]} />
+                  }
+                  sentimentBarComponent={
+                    <SentimentBar
+                      positive={e.sentiment.positive}
+                      negative={e.sentiment.negative}
+                    />
+                  }
+                  onEntityClick={onSpecificEntityClick}
+                />
+              </div>
+            ))}
+          </Swiper>
+        </div>
+      );
+    }
+
     return (
       <div className={rootStyles}>
-        {entitiesDictToSortedEntitiesArray(trending, allEntities)
-          .slice(0, 6)
-          .map(e => (
-            <div key={e.key} className={entityStyles}>
-              <TopicCard
-                variant={variant === "onVideo" ? "onVideo" : "tile"}
-                entityKey={e.key}
-                entityImage={e.imageURL}
-                selected={selected}
-                emojiComponent={
-                  emojis[e.key] && <Emoji emoji={emojis[e.key]} />
-                }
-                sentimentBarComponent={
-                  <SentimentBar
-                    positive={e.sentiment.positive}
-                    negative={e.sentiment.negative}
-                  />
-                }
-                onEntityClick={onSpecificEntityClick}
-              />
-            </div>
-          ))}
+        {entitiesToShow.map(e => (
+          <div key={e.key} className={entityStyles}>
+            <TopicCard
+              variant={variant === "onVideo" ? "onVideo" : "tile"}
+              entityKey={e.key}
+              entityImage={e.imageURL}
+              selected={selected}
+              emojiComponent={emojis[e.key] && <Emoji emoji={emojis[e.key]} />}
+              sentimentBarComponent={
+                <SentimentBar
+                  positive={e.sentiment.positive}
+                  negative={e.sentiment.negative}
+                />
+              }
+              onEntityClick={onSpecificEntityClick}
+            />
+          </div>
+        ))}
       </div>
     );
   }

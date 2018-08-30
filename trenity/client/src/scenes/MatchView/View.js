@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { isEmpty } from "ramda";
+import { isEmpty, concat, uniqBy } from "ramda";
 import moment from "moment";
 
 //API
@@ -115,7 +115,6 @@ class View extends Component {
     }
 
     //Events
-
     if (this.state.events > prevState.events) {
       const allGoalEvents = this.state.events.filter(e => e.event === "GOAL");
       const lastGoalEvent = allGoalEvents[allGoalEvents.length - 1];
@@ -123,7 +122,6 @@ class View extends Component {
       if (lastGoalEvent) this.setState({ score: lastGoalEvent.score });
     }
 
-    //
     if (this.state.selectedEntity.key !== prevState.selectedEntity.key) {
       console.log(this.state.selectedEntity);
       this.pollEntityTweets();
@@ -183,13 +181,15 @@ class View extends Component {
     this.emojisEntitiesInterval = setInterval(() => {
       this.socket.emit(
         "get trending emojis",
-        this.state.timeInsideMatch,
+        this.state.timeInsideMatch.clone().add(32, "seconds"),
         this.props.matchDetails.matchId
       );
     }, throttleRate.emojis * 1000);
   };
 
   setupSocketListeners = () => {
+    const throttleSpecificEntityTime = moment.utc("2018-07-15 15:17:35");
+
     this.socket.on("trending emojis", trendingEmojis => {
       this.setState(prevState => ({
         emojis: {
@@ -199,18 +199,38 @@ class View extends Component {
       }));
     });
 
-    this.socket.on("entity tweets", tweets => {
-      if (isEmpty(tweets)) {
+    this.socket.on("entity tweets", newTweets => {
+      const { timeInsideMatch } = this.state;
+
+      if (isEmpty(newTweets)) {
         console.log("Empty Result, poll again");
         this.delayForPollingTweetTimeout = setTimeout(
           this.pollEntityTweets,
           2000
         );
       } else {
+        const prevTweets = this.state.selectedEntity.tweets;
+        const allTweets = concat(prevTweets, newTweets);
+        const uniqueTweets = uniqBy(tweet => tweet.tweet, allTweets);
+
+        console.log(timeInsideMatch);
+
+        if (timeInsideMatch.isSame(throttleSpecificEntityTime)) {
+          uniqueTweets.push({
+            id: "1",
+            tweet: "75% discount",
+            emotion: "joy",
+            image:
+              "https://www.theindianwire.com/wp-content/uploads/2017/07/swiggy-logo.png"
+          });
+
+          console.log(uniqueTweets);
+        }
+
         this.setState(({ selectedEntity }) => ({
           selectedEntity: {
             ...selectedEntity,
-            tweets: [...selectedEntity.tweets, ...tweets]
+            tweets: uniqueTweets
           }
         }));
       }
@@ -253,8 +273,6 @@ class View extends Component {
       e => e.event && moment.utc(e.timeStamp).isAfter(UTCStartTime)
     );
 
-    console.log(filteredNullEvents);
-
     const updatedEvents = filteredNullEvents.map(e => {
       return {
         ...e,
@@ -274,7 +292,7 @@ class View extends Component {
 
     const trending = await api.getTrendingEntities(
       matchId,
-      timeInsideMatch,
+      timeInsideMatch.clone().add(32, "seconds"),
       this.state.trending
     );
 
@@ -289,7 +307,7 @@ class View extends Component {
 
     this.socket.emit(
       "get entity tweets",
-      timeInsideMatch,
+      timeInsideMatch.clone().add(32, "seconds"),
       matchId,
       selectedEntity.key,
       gap

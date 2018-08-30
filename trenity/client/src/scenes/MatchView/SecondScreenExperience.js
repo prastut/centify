@@ -17,12 +17,7 @@ const styles = {
     padding: "20px 0",
     minHeight: "95px"
   },
-  trending: {
-    width: "calc(100%*0.8)",
-    margin: "0px auto",
-    display: "flex",
-    flexDirection: "column"
-  },
+  trending: {},
   centerPadding: {
     width: "calc(100vw*0.8)",
     margin: "0 auto"
@@ -54,7 +49,9 @@ class SecondScreenExperience extends Component {
           <React.Fragment>
             <div className={classes.events}>{events}</div>
             <div className={classes.trending}>
-              <Headings text="TRENDING ENTITIES" />
+              <div className={classes.centerPadding}>
+                <Headings text="TRENDING ENTITIES" />
+              </div>
               {trending}
             </div>
             <div className={classes.reaction}>

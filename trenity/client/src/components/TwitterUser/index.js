@@ -64,14 +64,18 @@ class TwitterUser extends Component {
         className={classes.userContainer}
         onClick={() => (onUserClick ? onUserClick(index) : null)}
       >
-        <span className={viewingStyles}>
-          <div className={classes.emoji}>{textToEmoji(tweet.emotion)}</div>
-          <img
-            src={imageSrc}
-            className={classes.userImage}
-            alt="twitter-user-profile"
-          />
-        </span>
+        {tweet.type && tweet.type === "ad" ? (
+          <span>1</span>
+        ) : (
+          <span className={viewingStyles}>
+            <div className={classes.emoji}>{textToEmoji(tweet.emotion)}</div>
+            <img
+              src={imageSrc}
+              className={classes.userImage}
+              alt="twitter-user-profile"
+            />
+          </span>
+        )}
       </div>
     );
   }
