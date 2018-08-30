@@ -8,9 +8,9 @@ import Basic from "./Basic";
 
 const App = () => (
   <Switch>
-    <Route exact path="/" component={IterationDisplay} />
+    <Route exact path="/" component={Basic} />
     <Route exact path="/product-hunt" component={ProductHuntLandingPage} />
-    <Route exact path="/basic" component={Basic} />
+    <Route exact path="/options" component={IterationDisplay} />
   </Switch>
 );
 

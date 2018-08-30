@@ -11,19 +11,24 @@ import Navbar from "../../components/Navbar";
 import ClientHeightContainer from "../../components/ClientHeightContainer";
 import ValueProp from "../../components/ValueProp";
 import DisplayUseCaseBasic from "../../components/DisplayUseCaseBasic";
+import LandscapeUseCase from "../../components/LandscapeUseCase";
 import BackGroundVideo from "../../components/BackGroundVideo";
 
 //Video
 import backgroundVideo from "../../assets/background.mp4";
 import verticalPhoneVideo from "../../assets/vertical-compressed.mp4";
+import landscapePhoneVideo from "../../assets/landscape-compressed.mp4";
 
 //Mocks
 import verticalPhoneMock from "../../assets/iphonex-big.svg";
+import landscapePhoneMock from "../../assets/iphonex-landscape-big.svg";
+
 // import phoneHorizontal from "../../assets/phone-horizontal.svg";
 
 const styles = {
   root: {
-    color: "white"
+    color: "white",
+    overflowX: "hidden"
   },
   dots: {
     display: "flex",
@@ -54,6 +59,9 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
+  },
+  landscapeContainer: {
+    height: "calc(0.7*100vh)"
   }
 };
 
@@ -114,17 +122,18 @@ class Basic extends Component {
             )}
           </Media>
         </ClientHeightContainer>
-        {/* <ClientHeightContainer>
+        <div className={classes.landscapeContainer}>
           <Media query={`(${breakPoints.sm})`}>
             {matches => (
-              <DisplayUseCaseBasic
-                imagePosition={matches ? "bottom" : "right"}
-                image={phoneVertical}
+              <LandscapeUseCase
+                variant={matches ? "bottom" : "right"}
+                video={landscapePhoneVideo}
+                mock={landscapePhoneMock}
                 {...texts.basic[language].usecase.brandSolutions}
               />
             )}
           </Media>
-        </ClientHeightContainer> */}
+        </div>
       </div>
     );
   }

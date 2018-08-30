@@ -48,7 +48,7 @@ const styles = {
     height: mockSize.height,
     position: "absolute",
     backgroundSize: [[mockSize.width, mockSize.height]],
-    top: -45
+    top: -20
   }),
   [`@media (${breakPoints.sm})`]: {
     descriptionContainer: {

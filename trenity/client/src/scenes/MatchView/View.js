@@ -226,12 +226,12 @@ class View extends Component {
     // //Any player throttle
     // const { key, throttleAt } = queryString.parse(this.props.location.search);
 
-    const key = "France";
-    const throttleSpecificEntityTime = moment.utc(`2018-07-15 15:18:00`);
+    // const key = "France";
+    // const throttleSpecificEntityTime = moment.utc(`2018-07-15 15:18:00`);
 
-    if (this.state.timeInsideMatch.isSame(throttleSpecificEntityTime)) {
-      this.handleSpecificEntityClick(key);
-    }
+    // if (this.state.timeInsideMatch.isSame(throttleSpecificEntityTime)) {
+    //   this.handleSpecificEntityClick(key);
+    // }
 
     this.setState(prevState => ({
       timeInsideMatch: prevState.timeInsideMatch.clone().add(1, "s")
