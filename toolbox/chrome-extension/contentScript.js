@@ -102,6 +102,18 @@ function attachToYoutube(){
     },1500);//giving this timeout, so that youtube player is ready, hacky for now, needs a proper check until div is present using a watcher.
 }
 
+function hotstarFullscreenActivate(){
+    document.onwebkitfullscreenchange = (evt) => {
+        if(document.webkitIsFullScreen){
+            let vjsDiv = document.getElementById(evt.target.id);
+            let helloDiv = document.createElement('div');
+            helloDiv.innerHTML = 'Hello world!';
+            helloDiv.style.fontSize = '1.3em';
+            vjsDiv.insertBefore(helloDiv,vjsDiv.firstChild);
+        }
+    }
+}
+
 function attachToHotstar(){
     if(document.getElementById('trenity-hotstar-view') !== null){
         return;
@@ -121,6 +133,7 @@ function attachToHotstar(){
         app.style.display = 'flex';
         app.style.justifyContent = 'space-between';
         scroll(0,0);
+        hotstarFullscreenActivate();
     },1000);
 }
 
