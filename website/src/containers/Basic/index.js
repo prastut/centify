@@ -106,20 +106,20 @@ class Basic extends Component {
             )}
           </Media>
         </ClientHeightContainer>
-        <Media query={`(${breakPoints.sm})`}>
+        <Media query={`(${breakPoints.lg})`}>
           {matches => (
             <PotraitUseCase
-              variant={matches ? "bottom" : "left"}
+              variant={matches ? "left" : "bottom"}
               video={verticalPhoneVideo}
               mock={verticalPhoneMock}
               {...texts.basic[language].usecase.socialTV}
             />
           )}
         </Media>
-        <Media query={`(${breakPoints.sm})`}>
+        <Media query={`(${breakPoints.lg})`}>
           {matches => (
             <LandscapeUseCase
-              variant={matches ? "bottom" : "right"}
+              variant={matches ? "right" : "bottom"}
               video={landscapePhoneVideo}
               mock={landscapePhoneMock}
               {...texts.basic[language].usecase.brandSolutions}

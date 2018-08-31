@@ -24,7 +24,9 @@ const styles = {
   },
   descriptionContainer: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    flex: "1 0 100%",
+    textAlign: "center"
   },
   descriptionItems: {
     flex: "1 0 100%"
@@ -33,7 +35,13 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    position: "relative"
+    position: "relative",
+    flex: "1 0 100%"
+  },
+  iphoneContainer: {
+    display: "flex",
+    justifyContent: "center",
+    position: "absolute"
   },
   mockDevice: props => ({
     backgroundImage: `url(${props.mock})`,
@@ -44,31 +52,42 @@ const styles = {
     top: -20
   }),
   [`@media (${breakPoints.xs})`]: {
+    videoContainer: {
+      height: "100vh"
+    },
     video: {
       width: "220px",
       height: "100vh"
     },
-    videoContainer: {
-      height: "100vh"
-    },
     iphoneContainer: {
       width: "100vw",
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      position: "absolute"
+      height: "100vh"
     },
     iphone: {
       height: "100%"
     }
   },
   [`@media (${breakPoints.sm})`]: {
-    descriptionContainer: {
-      flex: "1 0 100%",
-      textAlign: "center"
+    root: {
+      height: "calc(100vh + 30px)",
+      width: "100vw"
     },
     mockContainer: {
-      flex: "1 0 100%"
+      width: "calc(100%*0.8)"
+    },
+    videoContainer: {
+      width: "calc(100% - 20px)"
+    },
+    video: {
+      width: "100%",
+      height: "auto"
+    },
+    iphoneContainer: {
+      width: "100%"
+    },
+    iphone: {
+      width: "100%",
+      height: "100%"
     }
   },
   [`@media (${breakPoints.md})`]: {

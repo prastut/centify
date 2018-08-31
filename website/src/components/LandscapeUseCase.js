@@ -9,7 +9,6 @@ const mockSize = {
 };
 
 const styles = {
-  root: {},
   wrapper: {
     display: "flex",
     flexWrap: "wrap",
@@ -23,8 +22,8 @@ const styles = {
   descriptionContainer: {
     display: "flex",
     flexWrap: "wrap",
-    width: "calc(100%*0.8)",
-    margin: "0 auto"
+    flex: "0 0 80%",
+    textAlign: "center"
   },
   descriptionItems: {
     flex: "1 0 100%"
@@ -71,15 +70,28 @@ const styles = {
     }
   },
   [`@media (${breakPoints.sm})`]: {
-    descriptionContainer: {
-      flex: "1 0 100%",
-      textAlign: "center"
+    root: {
+      height: "70vh",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "center"
     },
     mockContainer: {
       flex: "1 0 100%"
     },
     video: {
       marginLeft: "calc( ( 100vw - ( 100vw*0.8 ) ) / 2 + 20px)"
+    },
+    iphoneContainer: {
+      width: "100vw",
+      height: "270px",
+      overflow: "hidden",
+      position: "absolute"
+    },
+    iphone: {
+      height: "100%",
+      marginLeft: "calc( ( 100vw - ( 100vw*0.8 ) ) / 2 )"
     }
   },
   [`@media (${breakPoints.md})`]: {
