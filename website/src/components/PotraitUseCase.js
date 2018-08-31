@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import injectSheet from "react-jss";
 import { breakPoints } from "../helper";
-import Video from "./Video";
-
-const mockSize = {
-  width: 280,
-  height: 580
-};
 
 const styles = {
   wrapper: {
@@ -15,7 +9,8 @@ const styles = {
     margin: "0 auto",
     display: "flex",
     flexWrap: "wrap",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "center"
   },
   box: {
     height: "calc(100vh*0.8)",
@@ -36,21 +31,15 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    flex: "1 0 100%"
+    flex: "1 0 100%",
+    maxWidth: "300px",
+    maxHeight: "600px"
   },
   iphoneContainer: {
     display: "flex",
     justifyContent: "center",
     position: "absolute"
   },
-  mockDevice: props => ({
-    backgroundImage: `url(${props.mock})`,
-    width: mockSize.width,
-    height: mockSize.height,
-    position: "absolute",
-    backgroundSize: [[mockSize.width, mockSize.height]],
-    top: -20
-  }),
   [`@media (${breakPoints.xs})`]: {
     videoContainer: {
       height: "100vh"
@@ -90,12 +79,16 @@ const styles = {
       height: "100%"
     }
   },
-  [`@media (${breakPoints.md})`]: {
+  [`@media (${breakPoints.lg})`]: {
+    wrapper: {
+      justifyContent: "space-around"
+    },
     mockContainer: {
       flex: "1 0 50%"
     },
     descriptionContainer: {
-      flex: "1 0 50%"
+      flex: "0 0 50%",
+      textAlign: "left"
     }
   }
 };
@@ -126,7 +119,7 @@ class PotraitUseCase extends Component {
           <PotraitVideo src={video} customStyles={classes.video} />
         </div>
         <div className={classes.iphoneContainer}>
-          <img src={mock} className={classes.iphone} />
+          <img src={mock} alt="iphone-potrait" className={classes.iphone} />
         </div>
       </div>
     );

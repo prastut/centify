@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import injectSheet from "react-jss";
 import { breakPoints } from "../helper";
-import Video from "./Video";
 
 const mockSize = {
   width: 580,
@@ -23,7 +22,9 @@ const styles = {
     display: "flex",
     flexWrap: "wrap",
     flex: "0 0 80%",
-    textAlign: "center"
+    textAlign: "center",
+    width: "calc(100vw*0.8)",
+    margin: "0 auto"
   },
   descriptionItems: {
     flex: "1 0 100%"
@@ -55,8 +56,11 @@ const styles = {
       height: "100vh"
     },
     mockContainer: {
-      marginTop: "20px",
+      marginTop: "30px",
       position: "relative"
+    },
+    video: {
+      marginLeft: "calc( ( 100vw - ( 100vw*0.8 ) ) / 2 + 20px)"
     },
     iphoneContainer: {
       width: "100vw",
@@ -94,12 +98,41 @@ const styles = {
       marginLeft: "calc( ( 100vw - ( 100vw*0.8 ) ) / 2 )"
     }
   },
-  [`@media (${breakPoints.md})`]: {
-    mockContainer: {
-      flex: "1 0 50%"
+  [`@media (${breakPoints.lg})`]: {
+    root: {
+      height: "100vh",
+      width: "calc(100vw*0.8)",
+      margin: "0 auto",
+      flexDirection: "column"
     },
     descriptionContainer: {
-      flex: "1 0 50%"
+      flex: "1 0 20%",
+      alignItems: "center"
+    },
+    mockContainer: {
+      flex: "1 0 70%",
+      width: "100%",
+      textAlign: "center"
+    },
+    landScapeVideoContainer: {
+      width: "calc(100% - 80px)",
+      overflow: "visible"
+    },
+    video: {
+      marginLeft: "0",
+      width: "100%",
+      height: "100%",
+      maxHeight: "370px",
+      maxWidth: "740px"
+    },
+    iphoneContainer: {
+      width: "100%",
+      height: "auto",
+      position: "absolute"
+    },
+    iphone: {
+      height: "100%",
+      marginLeft: "0"
     }
   }
 };
@@ -131,7 +164,7 @@ class LandscapeUseCase extends Component {
           <LandScapeVideo src={video} customStyles={classes.video} />
         </div>
         <div className={classes.iphoneContainer}>
-          <img src={mock} className={classes.iphone} />
+          <img src={mock} alt="iphone-landscape" className={classes.iphone} />
         </div>
       </div>
     );

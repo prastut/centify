@@ -89,15 +89,15 @@ class Basic extends Component {
         <Navbar brand={texts.basic[language].brand} />
         <ClientHeightContainer>
           <BackGroundVideo src={backgroundVideo} />
-          <Media query={`(${breakPoints.sm})`}>
+          <Media query={`(${breakPoints.lg})`}>
             {matches => (
               <ValueProp
                 heading={
                   matches
                     ? texts.basic[language].valueProp[valuePropState].heading
-                        .mobile
-                    : texts.basic[language].valueProp[valuePropState].heading
                         .desktop
+                    : texts.basic[language].valueProp[valuePropState].heading
+                        .mobile
                 }
                 subheading={
                   texts.basic[language].valueProp[valuePropState].subheading
