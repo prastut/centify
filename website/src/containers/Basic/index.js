@@ -10,7 +10,7 @@ import { breakPoints } from "../../helper";
 import Navbar from "../../components/Navbar";
 import ClientHeightContainer from "../../components/ClientHeightContainer";
 import ValueProp from "../../components/ValueProp";
-import DisplayUseCaseBasic from "../../components/DisplayUseCaseBasic";
+import PotraitUseCase from "../../components/PotraitUseCase";
 import LandscapeUseCase from "../../components/LandscapeUseCase";
 import BackGroundVideo from "../../components/BackGroundVideo";
 
@@ -27,8 +27,7 @@ import landscapePhoneMock from "../../assets/iphonex-landscape-big.svg";
 
 const styles = {
   root: {
-    color: "white",
-    overflowX: "hidden"
+    color: "white"
   },
   dots: {
     display: "flex",
@@ -59,9 +58,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
-  },
-  landscapeContainer: {
-    height: "calc(0.7*100vh)"
   }
 };
 
@@ -110,30 +106,26 @@ class Basic extends Component {
             )}
           </Media>
         </ClientHeightContainer>
-        <ClientHeightContainer>
-          <Media query={`(${breakPoints.sm})`}>
-            {matches => (
-              <DisplayUseCaseBasic
-                variant={matches ? "bottom" : "left"}
-                video={verticalPhoneVideo}
-                mock={verticalPhoneMock}
-                {...texts.basic[language].usecase.socialTV}
-              />
-            )}
-          </Media>
-        </ClientHeightContainer>
-        <div className={classes.landscapeContainer}>
-          <Media query={`(${breakPoints.sm})`}>
-            {matches => (
-              <LandscapeUseCase
-                variant={matches ? "bottom" : "right"}
-                video={landscapePhoneVideo}
-                mock={landscapePhoneMock}
-                {...texts.basic[language].usecase.brandSolutions}
-              />
-            )}
-          </Media>
-        </div>
+        <Media query={`(${breakPoints.sm})`}>
+          {matches => (
+            <PotraitUseCase
+              variant={matches ? "bottom" : "left"}
+              video={verticalPhoneVideo}
+              mock={verticalPhoneMock}
+              {...texts.basic[language].usecase.socialTV}
+            />
+          )}
+        </Media>
+        <Media query={`(${breakPoints.sm})`}>
+          {matches => (
+            <LandscapeUseCase
+              variant={matches ? "bottom" : "right"}
+              video={landscapePhoneVideo}
+              mock={landscapePhoneMock}
+              {...texts.basic[language].usecase.brandSolutions}
+            />
+          )}
+        </Media>
       </div>
     );
   }

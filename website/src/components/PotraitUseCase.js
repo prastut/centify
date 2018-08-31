@@ -9,9 +9,6 @@ const mockSize = {
 };
 
 const styles = {
-  root: {
-    height: "100%"
-  },
   wrapper: {
     height: "100%",
     width: "calc(100%*0.8)",
@@ -38,10 +35,6 @@ const styles = {
     alignItems: "center",
     position: "relative"
   },
-  video: {
-    width: 238,
-    height: 516
-  },
   mockDevice: props => ({
     backgroundImage: `url(${props.mock})`,
     width: mockSize.width,
@@ -50,6 +43,25 @@ const styles = {
     backgroundSize: [[mockSize.width, mockSize.height]],
     top: -20
   }),
+  [`@media (${breakPoints.xs})`]: {
+    video: {
+      width: "220px",
+      height: "100vh"
+    },
+    videoContainer: {
+      height: "100vh"
+    },
+    iphoneContainer: {
+      width: "100vw",
+      height: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      position: "absolute"
+    },
+    iphone: {
+      height: "100%"
+    }
+  },
   [`@media (${breakPoints.sm})`]: {
     descriptionContainer: {
       flex: "1 0 100%",
@@ -68,15 +80,35 @@ const styles = {
     }
   }
 };
+const PotraitVideo = ({ src, height, width, customStyles }) => (
+  <div
+    dangerouslySetInnerHTML={{
+      __html: `
+					  <video
+						  muted
+						  autoplay
+						  playsinline
+						  loop
+						  class="${customStyles}""
+						  src="${src}"
+					  />
+			  `
+    }}
+  />
+);
 
-class DisplayUseCaseBasic extends Component {
+class PotraitUseCase extends Component {
   render() {
-    const { classes, variant, video, heading, subheading } = this.props;
+    const { classes, variant, video, heading, subheading, mock } = this.props;
 
     const gif = (
       <div className={classes.mockContainer}>
-        <Video src={video} customStyles={classes.video} />
-        <div className={classes.mockDevice} />
+        <div className={classes.videoContainer}>
+          <PotraitVideo src={video} customStyles={classes.video} />
+        </div>
+        <div className={classes.iphoneContainer}>
+          <img src={mock} className={classes.iphone} />
+        </div>
       </div>
     );
 
@@ -107,4 +139,4 @@ class DisplayUseCaseBasic extends Component {
   }
 }
 
-export default injectSheet(styles)(DisplayUseCaseBasic);
+export default injectSheet(styles)(PotraitUseCase);

@@ -9,13 +9,8 @@ const mockSize = {
 };
 
 const styles = {
-  root: {
-    height: "100%"
-  },
+  root: {},
   wrapper: {
-    height: "100%",
-    width: "calc(100%*0.8)",
-    margin: "0 auto",
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center"
@@ -27,7 +22,9 @@ const styles = {
   },
   descriptionContainer: {
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    width: "calc(100%*0.8)",
+    margin: "0 auto"
   },
   descriptionItems: {
     flex: "1 0 100%"
@@ -42,6 +39,10 @@ const styles = {
     width: 516,
     height: 238
   },
+  landScapeVideoContainer: {
+    width: "100vw",
+    overflow: "hidden"
+  },
   mockDevice: props => ({
     backgroundImage: `url(${props.mock})`,
     width: mockSize.width,
@@ -50,6 +51,25 @@ const styles = {
     backgroundSize: [[mockSize.width, mockSize.height]],
     top: -20
   }),
+  [`@media (${breakPoints.xs})`]: {
+    root: {
+      height: "100vh"
+    },
+    mockContainer: {
+      marginTop: "20px",
+      position: "relative"
+    },
+    iphoneContainer: {
+      width: "100vw",
+      height: "270px",
+      overflow: "hidden",
+      position: "absolute"
+    },
+    iphone: {
+      height: "100%",
+      marginLeft: "calc( ( 100vw - ( 100vw*0.8 ) ) / 2 )"
+    }
+  },
   [`@media (${breakPoints.sm})`]: {
     descriptionContainer: {
       flex: "1 0 100%",
@@ -57,6 +77,9 @@ const styles = {
     },
     mockContainer: {
       flex: "1 0 100%"
+    },
+    video: {
+      marginLeft: "calc( ( 100vw - ( 100vw*0.8 ) ) / 2 + 20px)"
     }
   },
   [`@media (${breakPoints.md})`]: {
@@ -69,14 +92,35 @@ const styles = {
   }
 };
 
+const LandScapeVideo = ({ src, height, width, customStyles }) => (
+  <div
+    dangerouslySetInnerHTML={{
+      __html: `
+					  <video
+						  muted
+						  autoplay
+						  playsinline
+						  loop
+						  class="${customStyles}""
+						  src="${src}"
+					  />
+			  `
+    }}
+  />
+);
+
 class LandscapeUseCase extends Component {
   render() {
-    const { classes, variant, video, heading, subheading } = this.props;
+    const { classes, variant, video, heading, subheading, mock } = this.props;
 
     const gif = (
       <div className={classes.mockContainer}>
-        <Video src={video} customStyles={classes.video} />
-        <div className={classes.mockDevice} />
+        <div className={classes.landScapeVideoContainer}>
+          <LandScapeVideo src={video} customStyles={classes.video} />
+        </div>
+        <div className={classes.iphoneContainer}>
+          <img src={mock} className={classes.iphone} />
+        </div>
       </div>
     );
 
@@ -89,19 +133,17 @@ class LandscapeUseCase extends Component {
 
     return (
       <div className={classes.root}>
-        <div className={classes.wrapper}>
-          {variant === "right" || variant === "bottom" ? (
-            <React.Fragment>
-              {description}
-              {gif}
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              {gif}
-              {description}
-            </React.Fragment>
-          )}
-        </div>
+        {variant === "right" || variant === "bottom" ? (
+          <React.Fragment>
+            {description}
+            {gif}
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            {gif}
+            {description}
+          </React.Fragment>
+        )}
       </div>
     );
   }
