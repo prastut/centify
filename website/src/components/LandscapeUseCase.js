@@ -75,13 +75,17 @@ const styles = {
   },
   [`@media (${breakPoints.sm})`]: {
     root: {
-      height: "70vh",
       display: "flex",
       flexWrap: "wrap",
       justifyContent: "center",
       alignItems: "center"
     },
+    descriptionContainer: {
+      marginTop: "100px"
+    },
     mockContainer: {
+      marginTop: "50px",
+      marginBottom: "100px",
       flex: "1 0 100%"
     },
     video: {

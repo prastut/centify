@@ -58,11 +58,12 @@ const styles = {
   },
   [`@media (${breakPoints.sm})`]: {
     root: {
-      height: "calc(100vh + 30px)",
       width: "100vw"
     },
     mockContainer: {
-      width: "calc(100%*0.8)"
+      width: "calc(100%*0.8)",
+      marginTop: "60px",
+      height: "510px"
     },
     videoContainer: {
       width: "calc(100% - 20px)"
