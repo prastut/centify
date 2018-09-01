@@ -81,6 +81,9 @@ const styles = {
     }
   },
   [`@media (${breakPoints.lg})`]: {
+    root: {
+      height: "100vh"
+    },
     wrapper: {
       justifyContent: "space-around"
     },

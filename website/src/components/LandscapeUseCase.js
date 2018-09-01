@@ -106,15 +106,14 @@ const styles = {
     root: {
       height: "100vh",
       width: "calc(100vw*0.8)",
-      margin: "0 auto",
-      flexDirection: "column"
+      margin: "0 auto"
     },
     descriptionContainer: {
-      flex: "1 0 20%",
+      flex: "1 0 100%",
       alignItems: "center"
     },
     mockContainer: {
-      flex: "1 0 70%",
+      flex: "1 0 100%",
       width: "100%",
       textAlign: "center"
     },
