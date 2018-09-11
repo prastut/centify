@@ -89,6 +89,8 @@ class TrendingEntities extends PureComponent {
       allEntities
     ).slice(0, 6);
 
+    console.log(entitiesToShow);
+
     if (variant === "carousel") {
       return (
         <div>

@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import FixturesDisplay from "../FixturesDisplay";
 
 import Demo from "../Demo";
+import DemoChrome from "../DemoChrome/";
 import Dashboard from "../Dashboard";
 import ErrorPage from "../ErrorPage";
 
@@ -15,6 +16,7 @@ const App = () => (
     <Route exact path="/" render={() => <Redirect to="/fixtures" />} />
     <Route path="/fixtures" component={FixturesDisplay} />
     <Route path="/demo" component={Demo} />
+    <Route path="/demo-chrome" component={DemoChrome} />
     <Route exact path="/dashboard" component={Dashboard} />
     <Route component={ErrorPage} />
   </Switch>
