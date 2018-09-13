@@ -105,11 +105,26 @@ function attachToYoutube(){
 function hotstarFullscreenActivate(){
     document.onwebkitfullscreenchange = (evt) => {
         if(document.webkitIsFullScreen){
+            let ele;
+            if((ele = document.getElementById('trenity-fullscreen-frame') )!== null){
+                ele.style.display = 'block';
+                return;
+            }
             let vjsDiv = document.getElementById(evt.target.id);
-            let helloDiv = document.createElement('div');
-            helloDiv.innerHTML = 'Hello world!';
-            helloDiv.style.fontSize = '1.3em';
-            vjsDiv.insertBefore(helloDiv,vjsDiv.firstChild);
+            let iframeElement = document.createElement('iframe');
+            iframeElement.src = `https://trenity.me/demo-chrome/match/5b814e20cb67141dfdf05308?variant=17_20`;
+            iframeElement.style.height = '96vh';
+            iframeElement.style.width = '100vw';
+            iframeElement.style.position = `sticky`;
+            iframeElement.style.zIndex = `999`;
+            iframeElement.style.top = '0px';
+            iframeElement.id = 'trenity-fullscreen-frame';
+            iframeElement.style.border = 'none';
+            iframeElement.style.backgroundColor = 'transparent';
+            vjsDiv.insertBefore(iframeElement,vjsDiv.firstChild);
+        }
+        else{
+            document.getElementById('trenity-fullscreen-frame').style.display = 'none';
         }
     }
 }
@@ -125,6 +140,7 @@ function attachToHotstar(){
     iframeElement.style.position = `sticky`;
     iframeElement.style.zIndex = `999`;
     iframeElement.id = 'trenity-hotstar-view';
+    iframeElement.style.backgroundColor = 'black';
     setTimeout(() => {
         if(document.getElementById('trenity-hotstar-view') !== null){
             return;
