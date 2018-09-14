@@ -18,14 +18,37 @@ class Match extends Component {
   async componentDidMount() {
     try {
       const {
+        url,
         params: { matchId }
       } = this.props.match;
 
       const matchDetails = await api.getMatchVerboseDetails(matchId);
 
+      const isDemo = url.split("/")[1] === "demo";
+
+      let finalMatchPacket = null;
+
+      if (isDemo) {
+        const { search } = this.props.location;
+        const variant = search.split("=")[1];
+
+        const demoDetails = api.getDemoDetails(matchId, variant);
+
+        finalMatchPacket = {
+          ...matchDetails,
+          ...demoDetails,
+          isDemo: true
+        };
+      } else {
+        finalMatchPacket = {
+          ...matchDetails,
+          isDemo: false
+        };
+      }
+
       this.setState({
         matchDetailsLoaded: true,
-        matchDetails: matchDetails
+        matchDetails: finalMatchPacket
       });
     } catch (e) {
       console.log(e);
@@ -46,7 +69,7 @@ class Match extends Component {
       }
     }
 
-    return null;
+    return <h1>Hello World</h1>;
   }
 }
 
