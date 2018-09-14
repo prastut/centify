@@ -1,0 +1,10 @@
+[TWITTER]
+consumerKey = v1MZNKkfQjv5AMpm2vxLDV4yU 
+consumerSecret = sTCDZMkP4hJCpSlsqvfobgps2VpqV9kWdPOSPXvwsdhmPy4coB
+accessToken = 203413064-RMlxZHBliQK7sxFoKpLTvOvwaUAwRNbI4LwbrVOc
+accessTokenSecret = 0KRvgVQVcmQLlIQO5v8cfcxW2V4Db1A14fHrm8nNehOzY
+
+[HASHTAGS]
+hashtag_1 = #EPL
+hashtag_2 = hello
+hashtag_3 = wonderful

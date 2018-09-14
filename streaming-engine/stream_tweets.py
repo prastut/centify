@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-import csv
-import datetime
-import json
-import os
+import logging
 import re
-import time
+import configparser
 
 from kafka import KafkaProducer
 from kafka.errors import KafkaError
@@ -12,20 +9,19 @@ import settings_twitter
 import tweepy
 from bson import ObjectId
 
-producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
-producer = KafkaProducer(retries=5)
+logging.basicConfig(filename='streaming.log', level=logging.DEBUG)
 
-print "Enter the fixture id:"
-_id = raw_input()
-kafka_topic = _id
-_id = ObjectId(_id)
+
+# _id = raw_input()
+# kafka_topic = _id
+# _id = ObjectId(_id)
 
 
 class StreamListener(tweepy.StreamListener):
-    tweet = {}
-    httpsCheck = 'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
-    httpCheck = 'http?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
-    idSelf = 0
+
+    def __init__(self):
+        self.producer = KafkaProducer(
+            bootstrap_servers=['localhost:9092'], retries=5)
 
     def on_status(self, status):
         if status.retweeted:
@@ -33,8 +29,8 @@ class StreamListener(tweepy.StreamListener):
         tweetText = status.text.encode('utf8')
         if (re.findall(self.httpCheck, tweetText) or re.findall(self.httpsCheck, tweetText)):
             return
-        if tweetText[:2] == "RT":
-            return
+        # if tweetText[:2] == "RT":
+        #     return
         try:
             self.tweet["userProfile"] = status.user._json[
                 "profile_image_url_https"]
@@ -64,28 +60,42 @@ class StreamListener(tweepy.StreamListener):
             return False
 
 
-auth = tweepy.OAuthHandler(
-    settings_twitter.TWITTER_APP_KEY, settings_twitter.TWITTER_APP_SECRET)
-auth.set_access_token(settings_twitter.TWITTER_KEY,
-                      settings_twitter.TWITTER_SECRET)
-api = tweepy.API(auth)
-print("Twitter API Authentication is successful!")
-stream_listener = StreamListener()
+if __name__ == '__main__':
+    # Setup logging
 
+    config = configparser.ConfigParser()
+    config.read('config.txt')
 
-def start_stream():
+    # Read Twitter Credentials
+    consumer_key = config['TWITTER']['consumerKey']
+    consumer_secret = config['TWITTER']['consumerSecret']
+    access_key = config['TWITTER']['accessToken']
+    access_secret = config['TWITTER']['accessTokenSecret']
 
-    print "Enter the fixture hashtag:"
-    hashtag = raw_input()
-    print("start stream")
+    # Auth Object
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_key, access_secret)
+    api = tweepy.API(auth)
+
+    logging.info("Twitter API Auth successful")
+
+    # Hashtags to filter for
+    hashtagsDict = dict(config['HASHTAGS'].items())
+
+    hashtagsListToFilter = []
+
+    for key in hashtagsDict:
+        hashtagsListToFilter.append(hashtagsDict[key])
+
+    logging.info("Tracking %s", hashtagsListToFilter)
+
+    # Create Stream and bind listener
+    logging.info("Starting Stream")
     while True:
         try:
             print("trying")
-            stream = tweepy.Stream(auth=api.auth, listener=stream_listener)
+            stream = tweepy.Stream(auth=api.auth, listener=StreamListener())
             print("Connection made.")
-            stream.filter(languages=["en"], track=[hashtag, "#EPL"])
+            stream.filter(languages=["en"], track=hashtagsListToFilter)
         except Exception as e:
-            print(e)
-
-
-start_stream()
+            logging.error(e)
