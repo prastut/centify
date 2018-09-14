@@ -110,17 +110,17 @@ class ReactionFeed extends PureComponent {
     //Previous
     const prevViewing = prevState.viewing;
     const prevSelectedEntity = prevProps.selectedEntity;
-    const prevName = prevSelectedEntity.name;
+    const prevName = prevSelectedEntity.key;
     const prevTweets = prevSelectedEntity.tweets;
 
     //Current
     const currentViewing = this.state.viewing;
     const currentSelectedEntity = this.props.selectedEntity;
-    const currentName = currentSelectedEntity.name;
+    const currentName = currentSelectedEntity.key;
     const currentTweets = currentSelectedEntity.tweets;
 
-    console.log("Current Tweets Length->", currentTweets.length);
-    console.log("Viewing->", currentViewing);
+    // console.log("Current Tweets Length->", currentTweets.length);
+    // console.log("Viewing->", currentViewing);
     if (!isEmpty(currentTweets) && currentTweets.length !== prevTweets.length) {
       clearInterval(this.automaticSwitchToNextTweetInterval);
       this.automaticSwitchingLogic();
@@ -168,7 +168,7 @@ class ReactionFeed extends PureComponent {
 
   handleClick = index => {
     clearInterval(this.automaticSwitchToNextTweetInterval);
-    this.setState({ viewing: index }, this.automaticSwitchingLogic);
+    this.setState({ viewing: index });
     // this.setState({ viewing: index })
   };
 
@@ -177,12 +177,32 @@ class ReactionFeed extends PureComponent {
     this.props.onResetSpecificEntityState();
   };
 
+  generateTweetTextBox = () => {
+    const { selectedEntity } = this.props;
+    const { tweets } = selectedEntity;
+    const { viewing } = this.state;
+
+    if (!tweets[viewing]) return null;
+
+    if (tweets[viewing].type === "ad") {
+      return (
+        <TweetBox
+          text={tweets[viewing].tweet}
+          variant="ad"
+          imageToShow={tweets[viewing].adBannerImageURL}
+        />
+      );
+    } else {
+      return <TweetBox text={tweets[viewing].tweet} variant="text" />;
+    }
+  };
+
   render() {
     const { classes, variant, selectedEntity } = this.props;
     const { tweets } = selectedEntity;
     const { viewing } = this.state;
 
-    if (variant === "onVideo" && selectedEntity.name) {
+    if (variant === "onVideo" && selectedEntity.key) {
       return (
         <React.Fragment>
           <div className={classes.onFSleftContainer}>
@@ -190,8 +210,8 @@ class ReactionFeed extends PureComponent {
               <div className={classes.onFSEntity}>
                 <TopicCard
                   variant="tile"
-                  entityKey={selectedEntity.name}
-                  entityImage={selectedEntity.image}
+                  entityKey={selectedEntity.key}
+                  entityImage={selectedEntity.imageURL}
                 />
               </div>
               <div className={classes.onFSEmojisContainer}>
@@ -251,7 +271,7 @@ class ReactionFeed extends PureComponent {
 
     return (
       <div className={classes.root}>
-        {tweets[viewing] && <TweetBox text={tweets[viewing].tweet} />}
+        {this.generateTweetTextBox()}
         <div>
           <Swiper
             shouldSwiperUpdate

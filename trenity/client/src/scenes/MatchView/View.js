@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { isEmpty } from "ramda";
+import { isEmpty, concat, uniqBy } from "ramda";
 import moment from "moment";
 
 //API
@@ -7,8 +7,8 @@ import api from "../../api";
 import openSocket from "socket.io-client";
 
 //Containers
-import SecondScreenExperience from "./SecondScreenExperience";
-import VideoComponent from "./VideoComponent";
+import SecondScreen from "./SecondScreen";
+import FullScreen from "./FullScreen";
 
 //UI Elements
 import EventsTimeline from "../../components/EventsTimeline";
@@ -45,53 +45,33 @@ class View extends Component {
       timeInsideMatch: "",
       score: {},
       events: [],
-      trending: {
-        entities: {}
-      },
+      trending: {},
       emojis: {},
       selectedEntity: {
-        name: "",
+        key: "",
         tweets: [],
-        image: ""
+        imageURL: ""
       },
-      video: {
-        autoplay: true,
-        playing: false,
-        src: "",
-        muted: true,
-        userActive: true,
-        fullScreen: false,
-        controls: true,
-        inactivityTimeout: 2000
-      }
+      fullScreen: false
     };
   }
 
   componentDidMount() {
     const { matchDetails } = this.props;
-    const { isDemo } = matchDetails;
 
     console.log(matchDetails);
-    //Demo
+
     //past
     //live
     let timeInsideMatch = null;
 
-    if (isDemo) {
-      const { demoStartTime } = matchDetails;
+    const { matchState, startTime } = matchDetails;
 
-      timeInsideMatch = demoStartTime;
-    } else {
-      const { matchState, startTime } = matchDetails;
-
-      if (matchState === "past") {
-        timeInsideMatch = moment.utc(startTime);
-      } else if (matchState === "live") {
-        timeInsideMatch = moment.utc();
-      }
+    if (matchState === "past") {
+      timeInsideMatch = moment.utc(startTime);
+    } else if (matchState === "live") {
+      timeInsideMatch = moment.utc();
     }
-
-    console.log(timeInsideMatch);
 
     this.setupSocket();
     this.setupSocketListeners();
@@ -104,10 +84,7 @@ class View extends Component {
           [matchDetails.teams.teamOne.acronym]: 0,
           [matchDetails.teams.teamTwo.acronym]: 0
         },
-        video: {
-          ...prevState.video,
-          src: matchDetails.video ? matchDetails.video : ""
-        }
+        fullScreen: matchDetails.fullScreen
       };
     });
   }
@@ -118,21 +95,18 @@ class View extends Component {
       this.setupIntervals();
       this.firstTimeFire();
     }
-    if (this.state.events.length > prevState.events.length) {
-      const updatedEvents = this.state.events;
-      const updatedEventsLength = updatedEvents.length;
-      const lastEventinUpdatedEvents = updatedEvents[updatedEventsLength - 1];
-      const { scoringTeam, event } = lastEventinUpdatedEvents;
-      if (event === "Goal") {
-        this.setState(prevState => {
-          return {
-            score: {
-              ...prevState.score,
-              [scoringTeam]: prevState.score[scoringTeam] + 1
-            }
-          };
-        });
-      }
+
+    //Events
+    if (this.state.events > prevState.events) {
+      const allGoalEvents = this.state.events.filter(e => e.event === "GOAL");
+      const lastGoalEvent = allGoalEvents[allGoalEvents.length - 1];
+
+      if (lastGoalEvent) this.setState({ score: lastGoalEvent.score });
+    }
+
+    if (this.state.selectedEntity.key !== prevState.selectedEntity.key) {
+      console.log(this.state.selectedEntity);
+      this.pollEntityTweets();
     }
   }
 
@@ -205,18 +179,22 @@ class View extends Component {
       }));
     });
 
-    this.socket.on("entity tweets", tweets => {
-      if (isEmpty(tweets)) {
+    this.socket.on("entity tweets", newTweets => {
+      if (isEmpty(newTweets)) {
         console.log("Empty Result, poll again");
         this.delayForPollingTweetTimeout = setTimeout(
           this.pollEntityTweets,
           2000
         );
       } else {
+        const prevTweets = this.state.selectedEntity.tweets;
+        const allTweets = concat(prevTweets, newTweets);
+        const uniqueTweets = uniqBy(tweet => tweet.tweet, allTweets);
+
         this.setState(({ selectedEntity }) => ({
           selectedEntity: {
             ...selectedEntity,
-            tweets: [...selectedEntity.tweets, ...tweets]
+            tweets: uniqueTweets
           }
         }));
       }
@@ -226,20 +204,6 @@ class View extends Component {
   //Setting Up Match
 
   tick = () => {
-    // //Any player throttle
-    // // const { key, throttleAt } = queryString.parse(this.props.location.search);
-
-    // const key = "Mario_Mandzukic";
-    // const throttleAt = 20;
-
-    // const throttleSpecificEntityTime = moment.utc(
-    //   `2018-07-15 15:${throttleAt}:00`
-    // );
-
-    // if (timeInsideMatch.isSame(throttleSpecificEntityTime)) {
-    //   this.handleSpecificEntityClick(key);
-    // }
-
     this.setState(prevState => ({
       timeInsideMatch: prevState.timeInsideMatch.clone().add(1, "s")
     }));
@@ -255,7 +219,9 @@ class View extends Component {
 
     const events = await api.getEvents(matchId, timeInsideMatch);
 
-    const filteredNullEvents = events.filter(e => e.event);
+    const filteredNullEvents = events.filter(
+      e => e.event && moment.utc(e.timeStamp).isAfter(UTCStartTime)
+    );
 
     const updatedEvents = filteredNullEvents.map(e => {
       return {
@@ -274,24 +240,13 @@ class View extends Component {
     const { matchId } = this.props.matchDetails;
     const { timeInsideMatch } = this.state;
 
-    const entities = await api.getTrendingEntities(
+    const trending = await api.getTrendingEntities(
       matchId,
       timeInsideMatch,
-      this.state.trending.entities
+      this.state.trending
     );
 
-    // console.log(entities);
-
-    if (entities) {
-      this.setState(({ trending }) => {
-        return {
-          trending: {
-            ...trending,
-            entities
-          }
-        };
-      });
-    }
+    if (!isEmpty(trending)) this.setState({ trending });
   };
 
   pollEntityTweets = () => {
@@ -304,90 +259,45 @@ class View extends Component {
       "get entity tweets",
       timeInsideMatch,
       matchId,
-      selectedEntity.name,
+      selectedEntity.key,
       gap
     );
   };
 
-  changeSpecificEntityState = entity => {
-    const entityData = this.props.matchDetails.allEntities.find(
-      e => e.key === entity
+  changeSpecificEntityState = entityKey => {
+    const { imageURL } = this.props.matchDetails.allEntities.find(
+      e => e.key === entityKey
     );
 
-    //Move Poll Entity to ComponentDidUpdate
-    this.setState(
-      {
-        selectedEntity: {
-          name: entity,
-          tweets: [],
-          image: entityData.imageURL
-        }
-      },
-      () => this.pollEntityTweets()
-    );
+    this.setState({
+      selectedEntity: {
+        key: entityKey,
+        tweets: [],
+        imageURL
+      }
+    });
   };
 
   resetSpecificEntityState = () => {
     clearTimeout(this.delayForPollingTweetTimeout);
     this.setState({
       selectedEntity: {
-        name: "",
+        key: "",
         tweets: [],
-        image: ""
+        imageURL: ""
       }
     });
   };
 
   //Click Handlers
-  handleSpecificEntityClick = entity => {
-    this.changeSpecificEntityState(entity);
-  };
-
-  handleVideoStatus = status => {
-    this.setState(({ video }) => {
-      return {
-        video: {
-          ...video,
-          playing: status === "play"
-        }
-      };
-    });
-  };
-
-  handleVideoUserStatus = status => {
-    this.setState(({ video }) => {
-      return {
-        video: {
-          ...video,
-          userActive: status === "active"
-        }
-      };
-    });
-  };
-
-  handleVideoFullScreen = () => {
-    this.setState(({ video }) => {
-      return {
-        video: {
-          ...video,
-          fullScreen: !video.fullScreen
-        }
-      };
-    });
-
-    this.resetSpecificEntityState();
+  handleSpecificEntityClick = entityKey => {
+    this.changeSpecificEntityState(entityKey);
   };
 
   render() {
     const { matchDetails } = this.props;
 
-    const generalUIVariant = this.state.video.fullScreen ? "onVideo" : "tiles";
-    const trendingUIVariant =
-      generalUIVariant === "onVideo"
-        ? "onVideo"
-        : this.state.video.src
-          ? "carousel"
-          : "tiles";
+    const generalUIVariant = this.state.fullScreen ? "onVideo" : "tiles";
 
     if (this.state.startRendering) {
       const navbar = (
@@ -405,8 +315,8 @@ class View extends Component {
 
       const trending = (
         <TrendingEntities
-          variant={trendingUIVariant}
-          selected={this.state.selectedEntity.name}
+          variant={generalUIVariant}
+          selected={this.state.selectedEntity.key}
           trending={this.state.trending}
           emojis={this.state.emojis}
           allEntities={matchDetails.allEntities}
@@ -421,26 +331,24 @@ class View extends Component {
           onResetSpecificEntityState={this.resetSpecificEntityState}
         />
       );
+
+      if (this.state.fullScreen) {
+        return (
+          <FullScreen
+            isSpecificEntityView={this.state.selectedEntity.key}
+            trending={trending}
+            reaction={reaction}
+          />
+        );
+      }
+
       return (
-        <SecondScreenExperience
-          isFullScreen={this.state.video.fullScreen}
+        <SecondScreen
           navbar={navbar}
           events={events}
           trending={trending}
           reaction={reaction}
-        >
-          {this.state.video.src && (
-            <VideoComponent
-              stateOfVideo={this.state.video}
-              isSpecificEntityView={this.state.selectedEntity.name}
-              trendingOnVideo={trending}
-              reactionOnVideo={reaction}
-              onVideoStatus={this.handleVideoStatus}
-              onVideoUserStatus={this.handleVideoUserStatus}
-              onVideoFullScreen={this.handleVideoFullScreen}
-            />
-          )}
-        </SecondScreenExperience>
+        />
       );
     }
 

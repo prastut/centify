@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   tweetBox: {
-    width: "calc(100vw*0.8)",
+    width: "calc(100vw*0.9)",
     margin: "0 auto",
     height: "100px",
     overflow: "auto",
@@ -21,13 +21,22 @@ const styles = {
     width: "calc(100%*0.9)",
     display: "flex",
     alignItems: "center"
+  },
+  adBanner: {
+    width: "100%",
+    height: "100%"
   }
 };
 
-const TweetBox = ({ classes, text }) => (
-  <div className={classes.tweetBox}>
-    <div className={classes.tweetText}>{text}</div>
-  </div>
-);
+const TweetBox = ({ classes, text, variant, imageToShow }) => {
+  return (
+    <div className={classes.tweetBox}>
+      {variant === "text" && <div className={classes.tweetText}>{text}</div>}
+      {variant === "ad" && (
+        <img alt="ad-banner" src={imageToShow} className={classes.adBanner} />
+      )}
+    </div>
+  );
+};
 
 export default withStyles(styles)(TweetBox);

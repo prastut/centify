@@ -10,15 +10,19 @@ import { breakPoints } from "../../helper";
 import Navbar from "../../components/Navbar";
 import ClientHeightContainer from "../../components/ClientHeightContainer";
 import ValueProp from "../../components/ValueProp";
-import DisplayUseCaseBasic from "../../components/DisplayUseCaseBasic";
+import PotraitUseCase from "../../components/PotraitUseCase";
+import LandscapeUseCase from "../../components/LandscapeUseCase";
 import BackGroundVideo from "../../components/BackGroundVideo";
 
 //Video
 import backgroundVideo from "../../assets/background.mp4";
 import verticalPhoneVideo from "../../assets/vertical-compressed.mp4";
+import landscapePhoneVideo from "../../assets/landscape-compressed.mp4";
 
 //Mocks
 import verticalPhoneMock from "../../assets/iphonex-big.svg";
+import landscapePhoneMock from "../../assets/iphonex-landscape-big.svg";
+
 // import phoneHorizontal from "../../assets/phone-horizontal.svg";
 
 const styles = {
@@ -85,15 +89,15 @@ class Basic extends Component {
         <Navbar brand={texts.basic[language].brand} />
         <ClientHeightContainer>
           <BackGroundVideo src={backgroundVideo} />
-          <Media query={`(${breakPoints.sm})`}>
+          <Media query={`(${breakPoints.lg})`}>
             {matches => (
               <ValueProp
                 heading={
                   matches
                     ? texts.basic[language].valueProp[valuePropState].heading
-                        .mobile
-                    : texts.basic[language].valueProp[valuePropState].heading
                         .desktop
+                    : texts.basic[language].valueProp[valuePropState].heading
+                        .mobile
                 }
                 subheading={
                   texts.basic[language].valueProp[valuePropState].subheading
@@ -102,29 +106,26 @@ class Basic extends Component {
             )}
           </Media>
         </ClientHeightContainer>
-        <ClientHeightContainer>
-          <Media query={`(${breakPoints.sm})`}>
-            {matches => (
-              <DisplayUseCaseBasic
-                variant={matches ? "bottom" : "left"}
-                video={verticalPhoneVideo}
-                mock={verticalPhoneMock}
-                {...texts.basic[language].usecase.socialTV}
-              />
-            )}
-          </Media>
-        </ClientHeightContainer>
-        {/* <ClientHeightContainer>
-          <Media query={`(${breakPoints.sm})`}>
-            {matches => (
-              <DisplayUseCaseBasic
-                imagePosition={matches ? "bottom" : "right"}
-                image={phoneVertical}
-                {...texts.basic[language].usecase.brandSolutions}
-              />
-            )}
-          </Media>
-        </ClientHeightContainer> */}
+        <Media query={`(${breakPoints.lg})`}>
+          {matches => (
+            <PotraitUseCase
+              variant={matches ? "left" : "bottom"}
+              video={verticalPhoneVideo}
+              mock={verticalPhoneMock}
+              {...texts.basic[language].usecase.socialTV}
+            />
+          )}
+        </Media>
+        <Media query={`(${breakPoints.lg})`}>
+          {matches => (
+            <LandscapeUseCase
+              variant={matches ? "right" : "bottom"}
+              video={landscapePhoneVideo}
+              mock={landscapePhoneMock}
+              {...texts.basic[language].usecase.brandSolutions}
+            />
+          )}
+        </Media>
       </div>
     );
   }

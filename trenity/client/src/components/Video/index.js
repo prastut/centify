@@ -42,6 +42,7 @@ class VideoPlayer extends React.Component {
         <video
           ref={node => (this.videoNode = node)}
           className="video-js vjs-16-9 vjs-big-play-centered"
+          style={{ objectFit: "cover" }}
         >
           <source src={this.props.options.src} type="video/mp4" />
         </video>

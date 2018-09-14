@@ -3,12 +3,12 @@ import { Switch, Route } from "react-router-dom";
 
 //Containers
 import View from "./View";
-import MatchView from "../MatchView";
+import Match from "./Match";
 
 const Demo = () => (
   <Switch>
     <Route exact path="/demo" component={View} />
-    <Route path="/demo/match/:matchId" component={MatchView} />
+    <Route path="/demo/match/:matchId" component={Match} />
   </Switch>
 );
 

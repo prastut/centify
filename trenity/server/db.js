@@ -33,12 +33,11 @@ const close = done => {
 
 //Fixtures related DB CRUD
 const getAllFixtures = async collection => {
-  const timeStampSortAscending = { startTime: 1 };
   try {
     return await state.db
       .collection(collection)
       .find()
-      .sort(timeStampSortAscending)
+      .sort({ timeStamp: 1 })
       .toArray();
   } catch (err) {
     console.log(err);
@@ -102,10 +101,6 @@ const getTrendingEntitiesInTimeFrame = async (t, collection) => {
   try {
     const paramsForFind = {
       timeStamp: {
-        $gte: t
-          .clone()
-          .subtract(10, "s")
-          .toDate(),
         $lt: t.toDate()
       }
     };
@@ -139,30 +134,27 @@ const getTrendingEmojis = async (t, collection) => {
   }
 };
 
-const getSelectedEntityTweets = async (t, match, entity_name, gap) => {
+const getSelectedEntityTweets = async (t, match, entityKey, gap) => {
   console.log(
-    `timeInsideMatch ${t.format()} , entity: ${entity_name}, gap: ${gap}`
+    `timeInsideMatch ${t.format()} , entity: ${entityKey}, gap: ${gap}`
   );
 
   try {
     const paramsForFind = {
-      $and: [
-        {
-          timeStamp: {
-            $gte: t
-              .clone()
-              .subtract(gap, "s")
-              .toDate(),
-            $lt: t.toDate()
-          }
-        },
-        { entity_name }
-      ]
+      timeStamp: {
+        $gte: t
+          .clone()
+          .subtract(gap, "s")
+          .toDate(),
+        $lt: t.toDate()
+      },
+      key: entityKey
     };
 
     const tweets = await state.db
       .collection(match)
       .find(paramsForFind)
+      .sort({ sequence: 1, timeStamp: 1 })
       .toArray();
 
     // console.log(tweets);
@@ -209,7 +201,6 @@ const getLastTweetForAPastMatch = async collection => {
 };
 
 //Entitity related DB CRUD
-
 const getEntityData = async key => {
   try {
     return await state.db.collection(ENTITIES_COLLECTION).findOne({ key });

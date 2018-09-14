@@ -1,5 +1,4 @@
 import axios from "axios";
-import { isEmpty, toPairs, sort, fromPairs } from "ramda";
 import { DEMO_LIST } from "./sampleData";
 
 const api = {
@@ -13,7 +12,7 @@ const api = {
   },
 
   getMatchVerboseDetails: async matchId => {
-    const { teamOne, teamTwo, matchState, startTime } = await api.getMatchData(
+    const { teamOne, teamTwo, matchState, timeStamp } = await api.getMatchData(
       matchId
     );
 
@@ -27,7 +26,7 @@ const api = {
     return {
       matchId,
       matchState,
-      startTime,
+      startTime: timeStamp,
       teams: { teamOne: teamOneData, teamTwo: teamTwoData },
       allEntities
     };
@@ -78,75 +77,30 @@ const api = {
       );
 
       const data = dataForTrendingEntitiesCount.data;
-      if (!data) {
-        return null;
-      }
 
-      const trendingEntitiesCount = data.until_now;
-      const trendingEntitiesSentiment = data.sentiment;
+      if (!data) return null;
 
-      let sortedTrendingEntities = null;
+      const unsortedEntitiesData = data["until_now"];
+      const sortedTrendingEntities = {};
 
-      if (isEmpty(prevEntities)) {
-        sortedTrendingEntities = sort(
-          (a, b) => b[1] - a[1],
-          toPairs(trendingEntitiesCount)
-        ).reduce((accumulator, currentValue, index) => {
-          console.log(currentValue);
-          return {
-            ...accumulator,
-            [currentValue[0]]: {
-              count: currentValue[1],
-              difference: 0,
-              sentiment: trendingEntitiesSentiment
-                ? trendingEntitiesSentiment[currentValue[0]]
-                : null
-            }
+      Object.keys(unsortedEntitiesData).forEach(entityKey => {
+        if (entityKey in prevEntities) {
+          const oldCount = prevEntities[entityKey]["count"];
+          const newCount = unsortedEntitiesData[entityKey]["count"];
+          const difference = newCount - oldCount;
+
+          sortedTrendingEntities[entityKey] = {
+            ...unsortedEntitiesData[entityKey],
+            difference
           };
-        }, {});
+        } else {
+          sortedTrendingEntities[entityKey] = {
+            ...unsortedEntitiesData[entityKey],
+            difference: unsortedEntitiesData[entityKey]["count"]
+          };
+        }
+      });
 
-        // console.log("Initial emptysortedTrendingEntities);
-
-        console.log("Intial Dict Set->", sortedTrendingEntities);
-      } else {
-        const unsortedTrendingEntities = {};
-
-        Object.keys(trendingEntitiesCount).forEach(entity => {
-          const prevDataForEntity = prevEntities[entity];
-
-          if (prevDataForEntity) {
-            const oldCount = prevDataForEntity.count;
-            const newCount = trendingEntitiesCount[entity];
-            const difference = newCount - oldCount;
-
-            unsortedTrendingEntities[entity] = {
-              ...prevDataForEntity,
-              count: newCount,
-              difference,
-              sentiment: trendingEntitiesSentiment
-                ? trendingEntitiesSentiment[entity]
-                : null
-            };
-          } else {
-            unsortedTrendingEntities[entity] = {
-              count: trendingEntitiesCount[entity],
-              difference: 0,
-              sentiment: trendingEntitiesSentiment
-                ? trendingEntitiesSentiment[entity]
-                : null
-            };
-          }
-        });
-
-        sortedTrendingEntities = fromPairs(
-          sort(
-            (a, b) => b[1].difference - a[1].difference,
-            toPairs(unsortedTrendingEntities)
-          )
-        );
-      }
-
-      console.log(sortedTrendingEntities);
       return sortedTrendingEntities;
     } catch (error) {
       console.log(error);

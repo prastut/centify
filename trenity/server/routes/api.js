@@ -15,7 +15,7 @@ const matchStateUpdater = allFixtures => {
   return allFixtures.map(fixture => {
     return {
       ...fixture,
-      matchState: getMatchState(fixture.startTime)
+      matchState: getMatchState(fixture.timeStamp)
     };
   });
 };
@@ -56,7 +56,7 @@ router.get("/match/data/:matchId", async (req, res) => {
     const { matchId } = req.params;
 
     const matchData = await db.getMatchData(matchId);
-    const matchState = getMatchState(matchData.startTime);
+    const matchState = getMatchState(matchData.timeStamp);
 
     if (matchData) {
       res.json({ ...matchData, matchState });
@@ -94,6 +94,7 @@ router.get("/match/trending/:matchId", async (req, res) => {
       moment.utc(JSON.parse(timeInsideMatch)),
       matchId
     );
+
     res.json(trending);
   } catch (err) {
     console.log(err);

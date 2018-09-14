@@ -8,7 +8,8 @@ const styles = {
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
+    justifyContent: "center",
+    textAlign: "center"
   },
   contentWrapper: {
     width: "calc(100%*0.8)",
@@ -16,19 +17,19 @@ const styles = {
   },
   heading: {
     margin: "10px 0",
-    fontSize: "3em",
+    fontSize: "2.5em",
     fontWeight: "700"
   },
   subheading: {
     fontSize: "1.2em",
     margin: "10px 0"
   },
-  [`@media (${breakPoints.sm})`]: {
+  [`@media (${breakPoints.lg})`]: {
     root: {
-      textAlign: "center"
+      textAlign: "left"
     },
     heading: {
-      fontSize: "2.5em"
+      fontSize: "3em"
     }
   }
 };

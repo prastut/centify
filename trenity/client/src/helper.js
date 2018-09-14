@@ -121,6 +121,8 @@ export const eventsToEmoji = event => {
       return "🤬";
     case "OUCH":
       return "🤬";
+    case "KICK-OFF":
+      return "🏁";
     case "START HALF":
       return "🏁";
     case "START-SECOND-HALF":
@@ -147,39 +149,22 @@ export const entitiesDictToSortedEntitiesArray = (
     (a, b) => b[1].difference - a[1].difference,
     toPairs(entitiesDict)
   ).map(i => {
-    const entity = i[0];
-    const sentiment = i[1].sentiment;
+    const key = i[0];
 
-    const refinedSentiment = {};
+    const refinedSentiment = {
+      positive: i[1].sentiment,
+      negative: 100 - i[1].sentiment
+    };
 
-    if (sentiment) {
-      if ("positive" in sentiment && "negative" in sentiment) {
-        refinedSentiment["positive"] = Math.round(sentiment.positive * 100);
-        refinedSentiment["negative"] = Math.round(sentiment.negative * 100);
-      } else {
-        if ("positive" in sentiment) {
-          refinedSentiment["positive"] = Math.round(sentiment.positive * 100);
-          refinedSentiment["negative"] = 0;
-        }
-
-        if ("negative" in sentiment) {
-          refinedSentiment["negative"] = Math.round(sentiment.negative * 100);
-          refinedSentiment["positive"] = 0;
-        }
-      }
-    } else {
-      refinedSentiment["positive"] = 50;
-      refinedSentiment["negative"] = 50;
-    }
-
-    const entityData = allEntities.find(e => e.key === entity);
+    const { imageURL } = allEntities.find(e => e.key === key);
 
     return {
-      entity,
-      image: entityData.imageURL,
+      key,
+      imageURL,
       sentiment: refinedSentiment
     };
   });
+
   return sortedEntitiesArray;
 };
 
