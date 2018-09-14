@@ -5,7 +5,7 @@ import api from "../../api";
 
 //UI Components
 import UpcomingMatchView from "../../components/UpcomingMatchView";
-import View from "./View";
+import View from "./MatchView";
 
 class Match extends Component {
   state = {

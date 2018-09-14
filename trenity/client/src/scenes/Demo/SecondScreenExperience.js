@@ -8,6 +8,7 @@ const styles = {
   root: {
     color: "white",
     height: "100%",
+    background: "black",
     width: "100vw"
   },
   navbar: {

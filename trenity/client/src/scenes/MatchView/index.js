@@ -18,14 +18,19 @@ class Match extends Component {
   async componentDidMount() {
     try {
       const {
-        params: { matchId }
-      } = this.props.match;
+        location: { search },
+        match: {
+          params: { matchId }
+        }
+      } = this.props;
 
       const matchDetails = await api.getMatchVerboseDetails(matchId);
 
+      const fullScreen = search.split("=")[1] === "fullScreen";
+
       this.setState({
         matchDetailsLoaded: true,
-        matchDetails: matchDetails
+        matchDetails: { ...matchDetails, fullScreen }
       });
     } catch (e) {
       console.log(e);

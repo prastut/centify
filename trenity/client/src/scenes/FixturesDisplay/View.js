@@ -15,6 +15,9 @@ import moment from "moment";
 // import MatchTile from "../../components/MatchTile";
 
 const styles = {
+  rootWrapper: {
+    background: "black"
+  },
   root: {
     width: "calc(100vw*0.8)",
     maxWidth: "1000px",
@@ -92,27 +95,28 @@ class View extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container className={classes.root}>
-        <Grid item xs={12}>
-          <Navbar>
-            <div className={classes.brand}>Trenity</div>
-          </Navbar>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid container>
-            <Grid item xs={12}>
-              <div className={classes.headings}> LIVE </div>
-              {isEmpty(this.state.liveMatches) ? (
-                <div className={classes.noLiveMatches}>
-                  No live matches at the moment.
-                </div>
-              ) : (
-                this.state.liveMatches.map((match, index) =>
-                  this.generateLink(match)
-                )
-              )}
-            </Grid>
-            {/* <Grid item xs={12}>
+      <div className={classes.rootWrapper}>
+        <Grid container className={classes.root}>
+          <Grid item xs={12}>
+            <Navbar>
+              <div className={classes.brand}>Trenity</div>
+            </Navbar>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container>
+              <Grid item xs={12}>
+                <div className={classes.headings}> LIVE </div>
+                {isEmpty(this.state.liveMatches) ? (
+                  <div className={classes.noLiveMatches}>
+                    No live matches at the moment.
+                  </div>
+                ) : (
+                  this.state.liveMatches.map((match, index) =>
+                    this.generateLink(match)
+                  )
+                )}
+              </Grid>
+              {/* <Grid item xs={12}>
               <div className={classes.headings}> PAST MATCHES </div>
               {this.state.pastMatches.map((match, index) => (
                 <Link key={match.key} to={`/fixtures/match/${match.key}`}>
@@ -120,45 +124,46 @@ class View extends Component {
                 </Link>
               ))}
             </Grid> */}
-            <Grid item xs={12}>
-              <div className={classes.headings}> UPCOMING MATCHES </div>
-              {this.state.upcomingMatches.map(match => (
-                <div key={match._id} className={classes.matchLinkContainer}>
-                  <div>
-                    {prettyName(match.teamOne)} vs {prettyName(match.teamTwo)}
+              <Grid item xs={12}>
+                <div className={classes.headings}> UPCOMING MATCHES </div>
+                {this.state.upcomingMatches.map(match => (
+                  <div key={match._id} className={classes.matchLinkContainer}>
+                    <div>
+                      {prettyName(match.teamOne)} vs {prettyName(match.teamTwo)}
+                    </div>
+                    <div className={classes.upcomingMatchStatus}>
+                      Will go live on{" "}
+                      {moment
+                        .utc(match.timeStamp)
+                        .format("dddd, MMM Do YYYY [at] HH:mm")}
+                    </div>
                   </div>
-                  <div className={classes.upcomingMatchStatus}>
-                    Will go live on{" "}
-                    {moment
-                      .utc(match.timeStamp)
-                      .format("dddd, MMM Do YYYY [at] HH:mm")}
-                  </div>
-                </div>
-              ))}
-            </Grid>
+                ))}
+              </Grid>
 
-            <Grid item xs={12}>
-              <div className={classes.headings}> PAST MATCHES </div>
-              {this.state.pastMatches.map(match => (
-                <div key={match._id} className={classes.matchLinkContainer}>
-                  <Link
-                    className={classes.matchLink}
-                    to={`/fixtures/match/${match._id}`}
-                  >
-                    {prettyName(match.teamOne)} vs {prettyName(match.teamTwo)}
-                  </Link>
-                  <div className={classes.upcomingMatchStatus}>
-                    {`Finished on ${moment
-                      .utc(match.timeStamp)
-                      .format("dddd, MMM Do YYYY [at] HH:mm")}`}
+              <Grid item xs={12}>
+                <div className={classes.headings}> PAST MATCHES </div>
+                {this.state.pastMatches.map(match => (
+                  <div key={match._id} className={classes.matchLinkContainer}>
+                    <Link
+                      className={classes.matchLink}
+                      to={`/fixtures/match/${match._id}`}
+                    >
+                      {prettyName(match.teamOne)} vs {prettyName(match.teamTwo)}
+                    </Link>
+                    <div className={classes.upcomingMatchStatus}>
+                      {`Finished on ${moment
+                        .utc(match.timeStamp)
+                        .format("dddd, MMM Do YYYY [at] HH:mm")}`}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </Grid>
             </Grid>
           </Grid>
+          <Grid item xs={12} />
         </Grid>
-        <Grid item xs={12} />
-      </Grid>
+      </div>
     );
   }
 }

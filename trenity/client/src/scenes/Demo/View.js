@@ -12,6 +12,11 @@ import Navbar from "../../components/Navbar";
 import { DEMO_LIST } from "../../sampleData";
 
 const styles = {
+  rootWrapper: {
+    height: "100vh",
+    width: "100vw",
+    background: "black"
+  },
   root: {
     width: "calc(100vw*0.8)",
     maxWidth: "1000px",
@@ -38,33 +43,35 @@ const styles = {
 
 const View = ({ classes }) => {
   return (
-    <Grid container className={classes.root}>
-      <Grid item xs={12}>
-        <Navbar>
-          <div className={classes.brand}>Trenity</div>
-        </Navbar>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container>
-          <Grid item xs={12}>
-            <div className={classes.headings}> DEMO LIST </div>
-            <div className={classes.demoListContainer}>
-              {DEMO_LIST.map(demo => (
-                <div key={demo.variant} className={classes.demo}>
-                  <Link
-                    className={classes.demoLink}
-                    to={`/demo/match/${demo.matchId}?variant=${demo.variant}`}
-                  >
-                    {demo.title}
-                  </Link>
-                </div>
-              ))}
-            </div>
+    <div className={classes.rootWrapper}>
+      <Grid container className={classes.root}>
+        <Grid item xs={12}>
+          <Navbar>
+            <div className={classes.brand}>Trenity</div>
+          </Navbar>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container>
+            <Grid item xs={12}>
+              <div className={classes.headings}> DEMO LIST </div>
+              <div className={classes.demoListContainer}>
+                {DEMO_LIST.map(demo => (
+                  <div key={demo.variant} className={classes.demo}>
+                    <Link
+                      className={classes.demoLink}
+                      to={`/demo/match/${demo.matchId}?variant=${demo.variant}`}
+                    >
+                      {demo.title}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </Grid>
           </Grid>
         </Grid>
+        <Grid item xs={12} />
       </Grid>
-      <Grid item xs={12} />
-    </Grid>
+    </div>
   );
 };
 

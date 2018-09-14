@@ -52,12 +52,14 @@ class View extends Component {
         tweets: [],
         imageURL: ""
       },
-      fullScreen: true
+      fullScreen: false
     };
   }
 
   componentDidMount() {
     const { matchDetails } = this.props;
+
+    console.log(matchDetails);
 
     //past
     //live
@@ -82,10 +84,7 @@ class View extends Component {
           [matchDetails.teams.teamOne.acronym]: 0,
           [matchDetails.teams.teamTwo.acronym]: 0
         },
-        video: {
-          ...prevState.video,
-          src: matchDetails.video ? matchDetails.video : ""
-        }
+        fullScreen: matchDetails.fullScreen
       };
     });
   }
