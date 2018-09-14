@@ -4,7 +4,10 @@ consumerSecret = sTCDZMkP4hJCpSlsqvfobgps2VpqV9kWdPOSPXvwsdhmPy4coB
 accessToken = 203413064-RMlxZHBliQK7sxFoKpLTvOvwaUAwRNbI4LwbrVOc
 accessTokenSecret = 0KRvgVQVcmQLlIQO5v8cfcxW2V4Db1A14fHrm8nNehOzY
 
+[STREAMING]
+collection = 5b7afa907da5160c055a738f
+
 [HASHTAGS]
-hashtag_1 = #EPL
+hashtag_1 = #KyunkiYahanBhajpaHai
 hashtag_2 = hello
-hashtag_3 = wonderful
+hashtag_3 = a

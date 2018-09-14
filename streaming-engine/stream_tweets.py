@@ -8,51 +8,81 @@ from kafka.errors import KafkaError
 import settings_twitter
 import tweepy
 from bson import ObjectId
+import json
 
-logging.basicConfig(filename='streaming.log', level=logging.DEBUG)
+# Logging Config
+logger = logging.getLogger('streaming')
+logger.setLevel(logging.DEBUG)
+
+fh = logging.FileHandler('streaming.log')
+fh.setLevel(logging.DEBUG)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+
+logger.addHandler(fh)
+logger.addHandler(ch)
+####
 
 
-# _id = raw_input()
-# kafka_topic = _id
-# _id = ObjectId(_id)
+def check_for_http_and_https(text):
+    httpsCheck = 'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
+    httpCheck = 'http?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'
+
+    if(re.findall(httpCheck, text) or re.findall(httpsCheck, text)):
+        return True
+    else:
+        return False
+
+
+def convert_hashtags_dict_to_list(hashtag_dict):
+    hashtag_list = []
+    for key in hashtag_dict:
+        hashtag_list.append(hashtag_dict[key])
+
+    return hashtag_list
 
 
 class StreamListener(tweepy.StreamListener):
+    '''Streaming Class'''
 
-    def __init__(self):
+    def __init__(self, api, kafka_topic):
+        self.api = api
+        self.kafka_topic = kafka_topic
         self.producer = KafkaProducer(
             bootstrap_servers=['localhost:9092'], retries=5)
+        self.tweet = {}
+        self.idSelf = 0
 
     def on_status(self, status):
         if status.retweeted:
             return
         tweetText = status.text.encode('utf8')
-        if (re.findall(self.httpCheck, tweetText) or re.findall(self.httpsCheck, tweetText)):
+        if (check_for_http_and_https(tweetText)):
             return
-        # if tweetText[:2] == "RT":
-        #     return
         try:
-            self.tweet["userProfile"] = status.user._json[
-                "profile_image_url_https"]
-            # print("User profile done")
             self.idSelf += 1
-            # print("Id self incremented.")
-            self.tweet["tweet"] = status.text.encode('utf8')
-            # print("Tweet inserted.")
+            self.tweet["userProfileImageURL"] = status.user._json[
+                "profile_image_url_https"]
+            self.tweet["tweet"] = tweetText
             self.tweet["id"] = status.id
-            # print("Status' id inserted.")
             self.tweet["sequence"] = self.idSelf
-            # print("sequence updated.")
-            self.tweet["created_at"] = status.created_at
-            # print("timestamp inserted")
-            future = producer.send(kafka_topic, bytes(
+            self.tweet["timestamp"] = status.created_at
+
+            logger.info("Tweet sequence: %d", self.idSelf)
+            self.producer.send(self.kafka_topic, bytes(
                 str(self.tweet).encode('utf8')))
-            print("Pushed.")
+
         except Exception as e:
-            print("In on_status")
-            print(e)
+            logging.info("Error inside status")
+            logging.error(e)
         finally:
-            producer.flush()
+            self.producer.flush()
 
     def on_error(self, status_code):
         logging.error(status_code)
@@ -76,25 +106,24 @@ if __name__ == '__main__':
     auth.set_access_token(access_key, access_secret)
     api = tweepy.API(auth)
 
-    logging.info("Twitter API Auth successful")
+    logger.info("Twitter API Auth successful")
 
-    # Hashtags to filter for
-    hashtagsDict = dict(config['HASHTAGS'].items())
+    # Streaming Config
+    hash_tags_dict = dict(config['HASHTAGS'].items())
+    collection = config['STREAMING']['collection']
 
-    hashtagsListToFilter = []
+    hash_tags_to_track = convert_hashtags_dict_to_list(hash_tags_dict)
 
-    for key in hashtagsDict:
-        hashtagsListToFilter.append(hashtagsDict[key])
-
-    logging.info("Tracking %s", hashtagsListToFilter)
+    logger.info("Tracking %s", hash_tags_to_track)
 
     # Create Stream and bind listener
-    logging.info("Starting Stream")
+    logger.info("Starting Stream")
+
     while True:
         try:
-            print("trying")
-            stream = tweepy.Stream(auth=api.auth, listener=StreamListener())
-            print("Connection made.")
-            stream.filter(languages=["en"], track=hashtagsListToFilter)
+            stream = tweepy.Stream(
+                auth=api.auth, listener=StreamListener(api=api, kafka_topic=collection))
+            logger.info("Connection Made")
+            stream.filter(languages=["en"], track=hash_tags_to_track)
         except Exception as e:
-            logging.error(e)
+            logger.error(e)

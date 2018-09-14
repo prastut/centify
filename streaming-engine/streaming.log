@@ -1,0 +1,610 @@
+2018-09-15 01:02:31,471 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:02:31,471 - streaming - INFO - Tracking [u'#EPL', u'hello', u'wonderful']
+2018-09-15 01:02:31,471 - streaming - INFO - Starting Stream
+2018-09-15 01:02:31,524 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:31,577 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:31,629 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:31,681 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:31,734 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:31,786 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:31,838 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:31,891 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:31,943 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:31,995 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,048 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,100 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,153 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,205 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,257 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,311 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,363 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,416 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,468 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,521 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,573 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,626 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,678 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,731 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,783 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,836 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,888 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,940 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:32,992 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,045 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,097 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,150 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,202 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,255 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,307 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,360 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,413 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,465 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,518 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,571 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,623 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,675 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,727 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,780 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,832 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,885 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,937 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:33,990 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,042 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,094 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,147 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,199 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,251 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,304 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,356 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,408 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,460 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,513 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,565 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,617 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,669 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,722 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,774 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,827 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,879 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,931 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:34,983 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,035 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,088 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,140 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,192 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,244 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,297 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,349 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,401 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,453 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,506 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,558 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,610 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,662 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,715 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,767 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,819 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,871 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,924 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:35,976 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:36,028 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:02:36,080 - streaming - ERROR - NoBrokersAvailable
+2018-09-15 01:07:33,961 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:07:33,961 - streaming - INFO - Tracking [u'#EPL', u'hello', u'wonderful']
+2018-09-15 01:07:33,961 - streaming - INFO - Starting Stream
+2018-09-15 01:07:35,876 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:07:37,668 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:07:39,609 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:07:41,136 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:09:06,874 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:09:06,875 - streaming - INFO - Tracking [u'#EPL', u'hello', u'wonderful']
+2018-09-15 01:09:06,875 - streaming - INFO - Starting Stream
+2018-09-15 01:09:35,076 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:09:35,076 - streaming - INFO - Tracking [u'#EPL', u'hello', u'wonderful']
+2018-09-15 01:09:35,076 - streaming - INFO - Starting Stream
+2018-09-15 01:09:36,888 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:09:38,492 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:09:40,821 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:09:42,570 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:09:44,720 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:10:03,162 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:10:03,162 - streaming - INFO - Tracking [u'#EPL', u'hello', u'wonderful']
+2018-09-15 01:10:03,163 - streaming - INFO - Starting Stream
+2018-09-15 01:12:34,507 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:12:34,507 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai']
+2018-09-15 01:12:34,508 - streaming - INFO - Starting Stream
+2018-09-15 01:12:48,797 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:13:00,020 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:14:01,964 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:14:01,964 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai']
+2018-09-15 01:14:01,964 - streaming - INFO - Starting Stream
+2018-09-15 01:14:23,738 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:14:23,738 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai']
+2018-09-15 01:14:23,738 - streaming - INFO - Starting Stream
+2018-09-15 01:15:57,475 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:15:57,475 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:15:57,475 - streaming - INFO - Starting Stream
+2018-09-15 01:19:02,662 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:19:02,662 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:19:02,662 - streaming - INFO - Starting Stream
+2018-09-15 01:19:04,171 - streaming - ERROR - 'StreamListener' object has no attribute 'api'
+2018-09-15 01:19:45,680 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:19:45,680 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:19:45,680 - streaming - INFO - Starting Stream
+2018-09-15 01:21:44,654 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:21:44,654 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:21:44,655 - streaming - INFO - Starting Stream
+2018-09-15 01:22:30,257 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:22:30,257 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:22:30,257 - streaming - INFO - Starting Stream
+2018-09-15 01:23:08,171 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:23:08,171 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:23:08,171 - streaming - INFO - Starting Stream
+2018-09-15 01:23:31,737 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:23:31,738 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:23:31,738 - streaming - INFO - Starting Stream
+2018-09-15 01:25:01,555 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:25:01,555 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:25:01,556 - streaming - INFO - Starting Stream
+2018-09-15 01:25:23,846 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:25:23,846 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:25:23,846 - streaming - INFO - Starting Stream
+2018-09-15 01:26:31,113 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:26:31,114 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:26:31,114 - streaming - INFO - Starting Stream
+2018-09-15 01:26:49,066 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:26:49,066 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:26:49,066 - streaming - INFO - Starting Stream
+2018-09-15 01:28:09,328 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:28:09,328 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:28:09,328 - streaming - INFO - Starting Stream
+2018-09-15 01:29:27,726 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:29:27,727 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:29:27,727 - streaming - INFO - Starting Stream
+2018-09-15 01:31:18,705 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:31:18,706 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:31:18,706 - streaming - INFO - Starting Stream
+2018-09-15 01:31:48,828 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:31:48,828 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:31:48,828 - streaming - INFO - Starting Stream
+2018-09-15 01:32:25,591 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:32:25,591 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:32:25,591 - streaming - INFO - Starting Stream
+2018-09-15 01:32:25,702 - streaming - INFO - Connection Made
+2018-09-15 01:33:12,977 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:33:12,977 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:33:12,977 - streaming - INFO - Starting Stream
+2018-09-15 01:33:13,085 - streaming - INFO - Connection Made
+2018-09-15 01:33:14,500 - streaming - INFO - Tweet Text: @SheldonReed15 @riotwomennn @nikkihaley Did you read the story at all?  Nope, you went with the outrage based on a lie.  #ButMuhNarrative
+2018-09-15 01:33:14,827 - streaming - INFO - Tweet Text: THIS.
+2018-09-15 01:33:14,831 - streaming - INFO - Tweet Text: RT @GothamGirlBlue: I retweeted Tim Kaine advocating for this staffer earlier, but I'd like to point out: it is extremely fucked up that we…
+2018-09-15 01:33:14,833 - streaming - INFO - Tweet Text: @pgm_lique I can listen to the carter 3 all day without skipping a track
+2018-09-15 01:33:14,836 - streaming - INFO - Tweet Text: RT @CraziestSex: Fuck a perfect relationship, get you someone who won't give up on you 🤞🏻
+2018-09-15 01:33:15,107 - streaming - INFO - Tweet Text: SHEEESH!!
+2018-09-15 01:33:15,112 - streaming - INFO - Tweet Text: "The Undertaker sends a chilling warning to Triple H and Shawn Michaels." You'd think it was 2007
+2018-09-15 01:33:15,116 - streaming - INFO - Tweet Text: RT @NWS: This storm is long-from-over. Those along the coast are still dealing with dangerous storm surge, and flash flooding. As the storm…
+2018-09-15 01:33:15,119 - streaming - INFO - Tweet Text: RT @thecjpearson: A few days ago, I made the choice to defend the honor of the brave men and women in uniform who serve our country. 
+
+Sinc…
+2018-09-15 01:33:15,381 - streaming - INFO - Tweet Text: RT @GordonRamsay: In just two weeks, @HellsKitchenFOX is back and so is my wit, charm and a few naughty words....Here's some of my best bur…
+2018-09-15 01:33:15,385 - streaming - INFO - Tweet Text: RT @amazongames: RT &amp; FOLLOW @amazongames for a chance to win a Shadow of the Tomb Raider skinned Xbox One S Console (a $499 value)! https:…
+2018-09-15 01:33:15,387 - streaming - INFO - Tweet Text: so fucking mad i’m pulling a double on a friday, i fr wanna burn this mf down g
+2018-09-15 01:33:15,389 - streaming - INFO - Tweet Text: RT @RayPoetry: PATRIOTS:My Friend Vikki @NRAHillbilly asked me if I would write a POEM in HONOR of her Dear Friend Pam, who’s daughter ALYA…
+2018-09-15 01:33:15,391 - streaming - INFO - Tweet Text: @pot_handbook @hempfest_canada Pamenar is a noice hidden gem in Kensington Market. Killer patio and good chunes
+2018-09-15 01:33:15,394 - streaming - INFO - Tweet Text: RT @Techno_Fog: November of 2016 - Manafort responded to a DOJ request for documents. 
+
+Was that DOJ request made before or after the elect…
+2018-09-15 01:33:15,724 - streaming - INFO - Tweet Text: RT @DiamondandSilk: Before @TheJuanWilliams can point his finger and call anyone a racist, a provocateur, a hater, a misogynist or a bigot,…
+2018-09-15 01:33:15,731 - streaming - INFO - Tweet Text: RT @PhilSanchez2020: The letter supposedly states some facts about Kavanaugh and a girl in high school. What boy in high school did not hav…
+2018-09-15 01:33:16,492 - streaming - INFO - Tweet Text: finally some recognition for the best disney movie franchise
+2018-09-15 01:33:16,496 - streaming - INFO - Tweet Text: RT @Okeydegeneral: Removing Buhari come 2019 has as a matter of fact become a national emergency.
+A man without conscience who will ignore…
+2018-09-15 01:33:16,499 - streaming - INFO - Tweet Text: RT @irishrygirl: 12,800 children at $775 per day means tax payers are paying $9,920,000 a day for this madness. My tax money should be goin…
+2018-09-15 01:33:16,502 - streaming - INFO - Tweet Text: RT @Lizabs68: Saraki is a wicked &amp; selfish animal. Is it in the constitution that FG shld not do it alone or the people suffering on that r…
+2018-09-15 01:33:16,505 - streaming - INFO - Tweet Text: RT @Hateriarchy: @GorillaXlim @NikkiCantDie I said ranch you idiot lol
+
+HAHAHAHA you haven’t fought a minute of your miserable anorexic life
+2018-09-15 01:33:16,509 - streaming - INFO - Tweet Text: RT @notyoshawty: when you tell someone what you’ve been through with your past relationships and they put you through it all over again htt…
+2018-09-15 01:33:16,511 - streaming - INFO - Tweet Text: RT @hannahlawson19: I have a spending addiction
+2018-09-15 01:33:16,984 - streaming - INFO - Tweet Text: RT @mayadusenbery: Thanks for this review @FeminEM! ER doc @WLWoolley says my book "had me questioning the medical care that I’ve received…
+2018-09-15 01:33:16,989 - streaming - INFO - Tweet Text: RT @donghunslaysme: wake up to #IFeelSoLucky
+do the dishes to #IFeelSoLucky
+take a shower to #IFeelSoLucky
+go to bed to #IFeelSoLucky 
+
+AS…
+2018-09-15 01:33:16,993 - streaming - INFO - Tweet Text: @Eminem I don’t know what the comeback for ‘I gave you a career so I could destroy you’ is. 🤭
+2018-09-15 01:33:17,481 - streaming - INFO - Tweet Text: RT @vic26c: #KulsoomNawazSharif is now buried.
+RIP
+"Now Back to Adiala !"
+No, Jati Umrah won't be a Sub Jail.
+@CMShehbaz
+@pmln_org
+Either S…
+2018-09-15 01:33:17,487 - streaming - INFO - Tweet Text: RT @nictheshaderoom: A 9 year old Australian girl was suspended today because she wouldn’t stand during the national anthem. Her reasoning…
+2018-09-15 01:33:17,489 - streaming - INFO - Tweet Text: @settofaze @Steve_Loxton Points to the "easy" I mentioned. With a open adult mind this wouldn't be an issue
+2018-09-15 01:33:17,492 - streaming - INFO - Tweet Text: Instagram is not a real thing hey, eeerbody hot ? Lol fuck outta here
+2018-09-15 01:33:17,494 - streaming - INFO - Tweet Text: RT @DSORennie: The Economist has a new China column, "Chaguan", or "Teahouse". I'm honoured to be its author. My first column explains the…
+2018-09-15 01:33:17,497 - streaming - INFO - Tweet Text: to build is a home is such a good song Bitch These Tears Were Built From Bop!
+2018-09-15 01:33:17,872 - streaming - INFO - Tweet Text: RT @videodante: @DeadSeaGulls @molly7anne no job is unskilled, that's just a term used to deny benefits to workers
+2018-09-15 01:33:17,876 - streaming - INFO - Tweet Text: RT @TezosFoundation: Have a great weekend, everyone, because mainnet arrives Monday!
+2018-09-15 01:33:17,880 - streaming - INFO - Tweet Text: I thought 6lack was a rapper .. how do you say his name in real life
+2018-09-15 01:33:17,883 - streaming - INFO - Tweet Text: RT @tfalex1892: The Sun are on the look out for mags tonight and tomorrow to do a video on Ashley 
+
+No self respecting mag should go anywhe…
+2018-09-15 01:33:17,886 - streaming - INFO - Tweet Text: RT @OMGno2trump: Let's make this totally clear.  The biggest scam in the history of America is the very notion of trickle down economics.…
+2018-09-15 01:33:18,434 - streaming - INFO - Tweet Text: @CalvinHarris outside is a banger. Forgot how good it was. You scottish pillock #tune #scottish #dance #stoned
+2018-09-15 01:33:18,438 - streaming - INFO - Tweet Text: @WGCgrounds Ain’t nothing like a little pre hurricane golf. @WGCgrounds
+2018-09-15 01:33:18,441 - streaming - INFO - Tweet Text: RT @gripweeds: The Grip Weeds set the controls for a Trip Around The Sun! New album out 10.19 on JEM Records! More info coming soon... @gri…
+2018-09-15 01:33:18,444 - streaming - INFO - Tweet Text: RT @traffordista: #KILLSHOT
+Eminem : But Kells, The Day You put out a hit is The Day Diddy Admits that he put the Hit out that got Pac Kill…
+2018-09-15 01:33:18,449 - streaming - INFO - Tweet Text: RT @SquashyNUFC: Hope everyone has a good weekend except tories.
+2018-09-15 01:33:18,451 - streaming - INFO - Tweet Text: RT @mrjamesob: I have a horrible sense that anti-Semitism doesn’t matter to enough non-Jews outside the media/politics axis to make it elec…
+2018-09-15 01:33:18,454 - streaming - INFO - Tweet Text: can’t relate @abigpigeon - going on like 5 years of this lolz
+2018-09-15 01:33:18,457 - streaming - INFO - Tweet Text: RT @NyxSSB: this is what happens if you get too close to isabelle. the game physically stops you from hurting her. you cannot lay a finger…
+2018-09-15 01:33:18,459 - streaming - INFO - Tweet Text: @sazmeister88 Take care 9f yourself. There's a LOT of people who really appreciate everything you do 💪
+2018-09-15 01:33:18,462 - streaming - INFO - Tweet Text: RT @LifeOfTraplord: "It's your moment. This is it, as big as you're gonna get, so enjoy it / Had to give you a career to destroy it." - Emi…
+2018-09-15 01:33:18,703 - streaming - INFO - Tweet Text: RT @Amy_Siskind: YOU CANNOT SERIOUSLY TELL ME THAT ANY SENATOR WILL STAND BEHIND A MAN WHO ATTEMPTED RAPE TO BE ON THE HIGHEST COURT IN OUR…
+2018-09-15 01:33:18,707 - streaming - INFO - Tweet Text: this could be a tweet
+2018-09-15 01:33:18,709 - streaming - INFO - Tweet Text: RT @BillKristol: If it were a witch hunt, one could say one of the witches has flipped.
+2018-09-15 01:33:18,712 - streaming - INFO - Tweet Text: RT @Ocasio2018: You’re looking at the wrong number.
+
+*Every* progressive local candidate in NY-14 won last night. Our district ALONE took d…
+2018-09-15 01:33:18,970 - streaming - INFO - Tweet Text: RT @dramafever: An ambitious and calculating lawyer cares only about her career. But when she switches bodies with a death row inmate, she…
+2018-09-15 01:33:18,973 - streaming - INFO - Tweet Text: Ariana is a wonderful person, we had been, are and will always be close to her.
+2018-09-15 01:33:18,975 - streaming - INFO - Tweet Text: @thakopia I like to use the 0.5 in a sideways range to create an "equilibrium" level of the range. Price has a funny way of reacting to it.
+2018-09-15 01:33:18,978 - streaming - INFO - Tweet Text: RT @dcpoll: Manafort charging document: Manafort privately coordinated with an unnamed senior Israeli official to spread fake news, which B…
+2018-09-15 01:33:18,980 - streaming - INFO - Tweet Text: RT @1Hakz_: My days of arguing and trying to get a mf to act right or care is OVER...
+2018-09-15 01:33:19,309 - streaming - INFO - Tweet Text: RT @manaimmune: Breaking off hiatus to reopen commission due to the impending economic crisis on my country rn :) -- $8 for a halfbody, $15…
+2018-09-15 01:33:19,312 - streaming - INFO - Tweet Text: Big Brother launch.@bbuk 
+I’ll have a quick look. 
+Last series. 
+Watched the first series.
+2018-09-15 01:33:19,314 - streaming - INFO - Tweet Text: RT @fit4aqueen3: Can you believe this leftist drivel? Only God knows how many lives have been snuffed out with these murderous abortions. S…
+2018-09-15 01:33:19,317 - streaming - INFO - Tweet Text: RT @claireechappell: My mom is at TIFF &amp; having a sleepover with her three girlfriends. Me? I have two classes and three meetings. When did…
+2018-09-15 01:33:19,319 - streaming - INFO - Tweet Text: RT @thecjpearson: A few days ago, I made the choice to defend the honor of the brave men and women in uniform who serve our country. 
+
+Sinc…
+2018-09-15 01:33:19,711 - streaming - INFO - Tweet Text: RT @RenniRucci: idgaf about a lot of shit 🤷🏼‍♀️
+2018-09-15 01:33:19,719 - streaming - INFO - Tweet Text: RT @AsapRaps: Couple A, B, C's, 
+bad bitch, double D's
+Popping E, 
+I don't give a F, 
+told you I'm a G
+2018-09-15 01:33:19,721 - streaming - INFO - Tweet Text: cant believe im dating with a literal goddess?
+2018-09-15 01:33:19,723 - streaming - INFO - Tweet Text: @TiagoRM89 yeah she does (she's Bruna fucking Marquezine) but still better as a brunette imo
+2018-09-15 01:33:19,726 - streaming - INFO - Tweet Text: RT @JusticeTrolls: Good Afternoon Family
+Antoya Wilson was stopped for driving with a headlight out.
+Her vehicle smelled of marijuana and t…
+2018-09-15 01:33:19,729 - streaming - INFO - Tweet Text: RT @jpyoung27: OBAMA’S 8YRS OF DESTRUCTION 
+HE WAS A COMMUNITY ORGANIZER
+HE COULDN’T ORGANIZE A SOCK DRAWER
+USA didn’t need a magic Wand we…
+2018-09-15 01:33:20,292 - streaming - INFO - Tweet Text: RT @ILOVEPARKJIMlN: Fake wokes are cancelling Jimin and making him look like a bad person for listening to Chr*s Br*wn?? Where was y'all en…
+2018-09-15 01:33:20,295 - streaming - INFO - Tweet Text: RT @LauraLoomer: WATCH: I saw the 1st video in the upcoming @Project_Veritas expose on the Deep State. 
+
+It’s a bombshell. 
+
+Who knows....…
+2018-09-15 01:33:20,298 - streaming - INFO - Tweet Text: RT @skinnyseoul: Whoever invented calories your mom is a hoe
+2018-09-15 01:33:20,301 - streaming - INFO - Tweet Text: RT @inspower: Everything in life can teach you a lesson, you just have to be willing to learn.
+2018-09-15 01:33:20,304 - streaming - INFO - Tweet Text: RT @musicnewsfact: Ariana Grande reacts to Mac Miller’s death in a new Instagram post:
+
+‘I adored you from the day I met you [...] I’m so m…
+2018-09-15 01:33:20,307 - streaming - INFO - Tweet Text: RT @NathanJain_: When I was a kid, I used to get excited whenever I got a letter addressed to me but now everytime I get one I think "what…
+2018-09-15 01:33:20,313 - streaming - INFO - Tweet Text: RT @traffordista: #KILLSHOT
+Eminem : But Kells, The Day You put out a hit is The Day Diddy Admits that he put the Hit out that got Pac Kill…
+2018-09-15 01:33:20,568 - streaming - INFO - Tweet Text: Grow a beard today . Lesson learnt
+2018-09-15 01:33:20,572 - streaming - INFO - Tweet Text: RT @TSmoove_1: The SnapBack on ya belt loop was a wild era
+2018-09-15 01:33:20,575 - streaming - INFO - Tweet Text: RT @biondinn: Got you at your own wake, I'm the billy goat
+You ain't never made a list next to no Biggie, no Jay
+Next to Taylor Swift, and…
+2018-09-15 01:33:20,577 - streaming - INFO - Tweet Text: I need a sugar daddy :(
+2018-09-15 01:33:20,770 - streaming - INFO - Tweet Text: RT @AboutLibras: #Libra have a big heart and are the least selfish sign of the Zodiac.
+2018-09-15 01:33:20,845 - streaming - INFO - Tweet Text: RT @JamesMelville: A pastor brags about punching a “dangerously bright kid”.
+Here we have a religious zealot who is threatened by intellige…
+2018-09-15 01:33:20,848 - streaming - INFO - Tweet Text: RT @autumnbrewerr: who still takes pinkie promises seriously? 
+retweet if you do, asking for a friend.
+2018-09-15 01:33:20,851 - streaming - INFO - Tweet Text: happy people is not a great man in every way, but one that can find simple things in life and give thanks diligent.
+2018-09-15 01:33:21,150 - streaming - INFO - Tweet Text: RT @ComptrolLembo: If you're interested in adopting (even if you haven't made a final decision!), call 1-888-KID-HERO and talk it over with…
+2018-09-15 01:33:21,155 - streaming - INFO - Tweet Text: RT @derek_mafs: Believe it or not, this is a shark on the freeway in Wrightsville Beach, North Carolina. #HurricaneFlorence #FlorenceHurric…
+2018-09-15 01:33:21,157 - streaming - INFO - Tweet Text: Ohhhhh o’ a
+2018-09-15 01:33:21,554 - streaming - INFO - Tweet Text: RT @jules_su: Hey there folks, just a quick update:
+
+The NRA is advocating that you should shoot at the police if they try to enter your ho…
+2018-09-15 01:33:21,557 - streaming - INFO - Tweet Text: RT @flowerveil: this might be a controversial opinion on main but feminine clothes for the most part are tailored and designed for small-ch…
+2018-09-15 01:33:21,559 - streaming - INFO - Tweet Text: RT @Dan_Solberg: Also, if you want to talk to me and/or other DED LED organizers about the compilation for an article, video, or podcast, s…
+2018-09-15 01:33:21,562 - streaming - INFO - Tweet Text: RT @briannaeads_: this man came into starbucks today n was havin a conversation w/me about how he’s been to all 50 states &amp; their capitals…
+2018-09-15 01:33:21,565 - streaming - INFO - Tweet Text: RT @GerardBattenMEP: Anne Marie Waters suspended from Twitter. This is wrong. She has a legitimate right to speak. They silence her now who…
+2018-09-15 01:33:21,864 - streaming - INFO - Tweet Text: RT @davidkingtheo: @nlitvin @Amaka_Ekwo See how sit at home cripples police jobs in some cities of Biafra. They were forced to go a play ni…
+2018-09-15 01:33:21,868 - streaming - INFO - Tweet Text: RT @notyoshawty: when you tell someone what you’ve been through with your past relationships and they put you through it all over again htt…
+2018-09-15 01:33:21,871 - streaming - INFO - Tweet Text: RT @SenJeffMerkley: Team Trump has proposed a new reg to allow family internment camps in America. Yes… internment camps! Is this what we'v…
+2018-09-15 01:33:21,874 - streaming - INFO - Tweet Text: Everything in life can teach you a lesson, you just have to be willing to learn.
+2018-09-15 01:33:21,876 - streaming - INFO - Tweet Text: RT @lovelyymf: SELF CARE IS NOT JUST PUTTING ON A FACE MASK AND AVOIDING SHIT, ITS ALSO CALLING YOURSELF OUT ON YOUR OWN SHITTY BEHAVIORS A…
+2018-09-15 01:33:22,166 - streaming - INFO - Tweet Text: RT @sgfglaur: Tana Mongeau, 
+
+there is no possible explanation or apology that is forgivable for your actions of making a mockery/joking wi…
+2018-09-15 01:33:22,171 - streaming - INFO - Tweet Text: RT @Saint_Ayodeji: Yoruba people love shortening names, i donno why, you'll see
+Ayodeji - A.Y
+Tayo - T.Y
+Akinola - A.K
+Jibola - J.B
+Add you…
+2018-09-15 01:33:22,174 - streaming - INFO - Tweet Text: RT @jalenramsey: I hope y’all having a blessed day forreal
+2018-09-15 01:33:22,176 - streaming - INFO - Tweet Text: I just signed up for a succulent subscription service where I receive two plants every month IM SO HAPPY
+2018-09-15 01:33:22,179 - streaming - INFO - Tweet Text: RT @RonaldKlain: If you are a Democrat running for Congress in 2018, Paul Ryan just cut your best ad. He's PROMSING that if your opponent w…
+2018-09-15 01:33:22,182 - streaming - INFO - Tweet Text: RT @HandsomeAnHeavy: Man until you lose a homie you don't know how important certain texts can be. Y'all be reaching with these "bro code"…
+2018-09-15 01:33:22,777 - streaming - INFO - Tweet Text: Aj Green is a top-5 wr in the NFL
+2018-09-15 01:33:22,780 - streaming - INFO - Tweet Text: RT @dazeddivine: hey water &amp; air signs do you guys wanna play a game called stop jumping to conclusions &amp; calling it your intuition?
+2018-09-15 01:33:22,782 - streaming - INFO - Tweet Text: RT @OfficialJonZal: CNN: "Paul Manafort pleaded guilty today to multiple felonies, including conspiracy against the US."
+
+MSNBC: "Manafort…
+2018-09-15 01:33:22,787 - streaming - INFO - Tweet Text: RT @WebDesignHer: @dodoshyne @korrinesky In public?! Bare breasts hanging out in a civilized area?! 😷Is her child that important?! 😲
+2018-09-15 01:33:22,791 - streaming - INFO - Tweet Text: RT @malcolmsjmo: So a 19 year old boy was killed in a bicycle-vehicle crash in the town next to mine, and a friend of the deceased tried to…
+2018-09-15 01:33:23,053 - streaming - INFO - Tweet Text: RT @BixJacks: On Breaking Bad, Walter White bought the car wash to clean his drug money. He didn’t pay people directly out his bank account…
+2018-09-15 01:33:23,056 - streaming - INFO - Tweet Text: I am a Christian and would never marry for money. This one cemented that belief forever!
+2018-09-15 01:33:23,402 - streaming - INFO - Tweet Text: @Hiroshark @NintendoAmerica I can’t say I’m a fan of the “disappointing-character-ice-cream-bar-with-bubblegum-eyes” aesthetic.
+2018-09-15 01:33:23,407 - streaming - INFO - Tweet Text: RT @Hugs007: Oh dear oh dear oh dear EU showing their true dictatorship colours if you don't deal with us we won't let you British drive in…
+2018-09-15 01:33:23,411 - streaming - INFO - Tweet Text: RT @RXMANSPHOENIX: 6TEEN IS BACK WITH THIS REUNION SPECIAL?! THEY EIGHTEEN NOW?! THEY CUSSING IN THIS?! JUDE’S A POTHEAD?!NIKKI IS BACK?! I…
+2018-09-15 01:33:23,415 - streaming - INFO - Tweet Text: RT @splcenter: Having teachers bring firearms into their schools would make classrooms more dangerous &amp; increase the chance of more lives b…
+2018-09-15 01:33:23,704 - streaming - INFO - Tweet Text: RT @dbongino: Yet delusional Liberals will still cling to their “collusion” fairytale. These hopeless individuals are desperate for their c…
+2018-09-15 01:33:23,708 - streaming - INFO - Tweet Text: RT @BabyBron4Life25: Everyday is a struggle..Yes, I’m on meds and I have my days where I let my own demons win but a year ago I tried to ta…
+2018-09-15 01:33:24,015 - streaming - INFO - Tweet Text: RT @JSteezy5: Eminem called mgk a mumble rapper? Bitch wtf are you even talking about 😂
+2018-09-15 01:33:24,019 - streaming - INFO - Tweet Text: RT @mark_shepparduk: This is a very insightful video titled "Inside the Brains of Children Separated from Parents" please watch it. Now can…
+2018-09-15 01:33:24,022 - streaming - INFO - Tweet Text: RT @TheEconomist: Has the world recovered since the financial crisis of 2008? Our editors look back to the days that followed the collapse…
+2018-09-15 01:33:24,026 - streaming - INFO - Tweet Text: RT @tagsbo: Steven Gerrard questions refs, BBC Sport Scotland run stories calling him naive, Celtic start moaning about decisions, BBC Spor…
+2018-09-15 01:33:24,028 - streaming - INFO - Tweet Text: Car dealership tomorrow 😈💵🚘 I want a second car 😊😊😊
+2018-09-15 01:33:24,031 - streaming - INFO - Tweet Text: RT @dat_mastermind: Admit it, we all tried to keep a diary at some point... And failed 😥😂😂
+2018-09-15 01:33:24,033 - streaming - INFO - Tweet Text: @CindilAshley @lt_lute @VICE I'm also a photographer and like a good one duh
+2018-09-15 01:33:24,318 - streaming - INFO - Tweet Text: RT @arb: if fleetwood mac could write “rumors” on a wild monthslong coke binge while they were all breaking up with each other then i can m…
+2018-09-15 01:33:24,325 - streaming - INFO - Tweet Text: RT @cube: Having this Twitter name means I learn an awful lot about the K-Pop industry.
+
+A lot of angry people today want to tell me all ab…
+2018-09-15 01:33:24,328 - streaming - INFO - Tweet Text: RT @MichaelAvenatti: To those that call for a kinder, gentler Dem party, I give you the 1988 election, the 2000 recount, the Garland nomina…
+2018-09-15 01:33:24,330 - streaming - INFO - Tweet Text: RT @10avier: white people will call you a bozo as an insult lmfao
+2018-09-15 01:33:24,626 - streaming - INFO - Tweet Text: RT @shaunking: We believe that Dallas Police Officer Amber Guyger deliberately went to Botham Jean's apartment, in anger, to tell him to tu…
+2018-09-15 01:33:24,631 - streaming - INFO - Tweet Text: RT @traffordista: #KILLSHOT
+Eminem : But Kells, The Day You put out a hit is The Day Diddy Admits that he put the Hit out that got Pac Kill…
+2018-09-15 01:33:24,633 - streaming - INFO - Tweet Text: I think an even billion ought to cover it.
+2018-09-15 01:33:24,635 - streaming - INFO - Tweet Text: @Riisargh @tombraider totally! so good solving the puzzles myself without lara speaking a clue after 2 minutes 😋
+2018-09-15 01:33:24,639 - streaming - INFO - Tweet Text: RT @NFUPress: Food - the reason the Agriculture Bill matters just as much to the public, as it does for farmers. Have a read of our Preside…
+2018-09-15 01:33:25,243 - streaming - INFO - Tweet Text: RT @natajiajennings: this dumb white girl in my class who said “Native Americans don’t exist. It’s just a excuse brown people use to get a…
+2018-09-15 01:33:25,247 - streaming - INFO - Tweet Text: RT @TheDweck: Do you know how evil you have to be for a story to come out that you hate blind people and it’s not even in the top five wors…
+2018-09-15 01:33:25,249 - streaming - INFO - Tweet Text: RT @shaunking: BREAKING: Two different witnesses have said that they are 100% sure that they heard Dallas Police Officer Amber Guyger repea…
+2018-09-15 01:33:25,251 - streaming - INFO - Tweet Text: @ByronYork Can we just distill this to “Woodward is a hack”?
+2018-09-15 01:33:25,253 - streaming - INFO - Tweet Text: RT @thatCHARM3R: When I read "vampire facial," I thought it was a headline about pornographic Twilight fan fiction. The reality is worse.…
+2018-09-15 01:33:25,257 - streaming - INFO - Tweet Text: RT @MorganBergoon: Yes, most Muslims are peaceful. But it only took 19 radical Muslims to kill almost 3,000 people &amp; leave a scar on Americ…
+2018-09-15 01:33:25,259 - streaming - INFO - Tweet Text: God knows how much I wanna break a boy's heart ._.
+2018-09-15 01:33:25,261 - streaming - INFO - Tweet Text: RT @DavidCornDC: Hey, don't forget this fun fact: Paul Manafort and Roger Stone had a notorious lobbying firm together for years. They're l…
+2018-09-15 01:33:25,264 - streaming - INFO - Tweet Text: "i need a chick like you"
+2018-09-15 01:33:25,266 - streaming - INFO - Tweet Text: @pattymo @sheckyyoungman Is Rodman wearing a sari under that jacket
+2018-09-15 01:33:25,267 - streaming - INFO - Tweet Text: @JohnRawlingsTV I thought you were a sports guy?
+2018-09-15 01:33:25,270 - streaming - INFO - Tweet Text: RT @_BlackProtector: If 64% of blacks in SA are living in poverty
+
+That means the Rand is working against us&amp;no longer beneficial for us
+
+M…
+2018-09-15 01:33:25,272 - streaming - INFO - Tweet Text: RT @dyIanobrjcn: just incase you haven’t seen this for a while, i thought i’d remind you of the scene which made us all fall head over heel…
+2018-09-15 01:33:25,520 - streaming - INFO - Tweet Text: RT @arb: if fleetwood mac could write “rumors” on a wild monthslong coke binge while they were all breaking up with each other then i can m…
+2018-09-15 01:33:25,523 - streaming - INFO - Tweet Text: RT @JamesOKeefeIII: It has become necessary to unmask, to personify, and to put a face to the individuals who seek to disturb the fabric of…
+2018-09-15 01:33:25,526 - streaming - INFO - Tweet Text: RT @traffordista: #KILLSHOT
+Eminem : But Kells, The Day You put out a hit is The Day Diddy Admits that he put the Hit out that got Pac Kill…
+2018-09-15 01:33:25,791 - streaming - INFO - Tweet Text: RT @GRAMMYMuseum: A big thank you to @BTS_twt for joining us for such a personal and enlightening conversation last night! We hope to see y…
+2018-09-15 01:33:25,799 - streaming - INFO - Tweet Text: RT @WhyLarryIsReal: Harry: Please, Lou… After everything we've been through together. You can’t do this.
+
+Louis: I’m sorry, Harry.
+
+Harry:…
+2018-09-15 01:33:26,070 - streaming - INFO - Tweet Text: RT @traffordista: #KILLSHOT
+Eminem : But Kells, The Day You put out a hit is The Day Diddy Admits that he put the Hit out that got Pac Kill…
+2018-09-15 01:33:26,075 - streaming - INFO - Tweet Text: RT @FreakyTheory: In case no one has told you today:
+You're strong.
+You're special.
+You're needed.
+You're alive for a reason.
+Never give up…
+2018-09-15 01:33:26,078 - streaming - INFO - Tweet Text: RT @__andrew_m: @mattdpearce At a basic level if you are progressive and have a trust fund, what are you more likely to do, go get a job at…
+2018-09-15 01:33:26,081 - streaming - INFO - Tweet Text: RT @tomsrep: Even 9 years later it hurts watching this video. Seeing Taylor beaming with happiness to all of a sudden being distraught seco…
+2018-09-15 01:33:26,084 - streaming - INFO - Tweet Text: RT @FWordsFilmPolls: The Worst Film of the 1950s
+Round 1 Group 4
+* I Was a Teenage Frankenstein
+2018-09-15 01:33:26,777 - streaming - INFO - Tweet Text: RT @NBCNews: A Hispanic mother living in Wilmington, North Carolina, says she is concerned that if she evacuates her family to a Hurricane…
+2018-09-15 01:33:26,780 - streaming - INFO - Tweet Text: RT @oraeekene: If there is anything that is a summary of the books on Africa I've een reading while off twitter, its that
+
+1. Africa's prob…
+2018-09-15 01:33:26,783 - streaming - INFO - Tweet Text: RT @clairedabear85: #Steelers #HereWeGo  #NFLGIVEAWAY This weeks #prize is full of #BlackandYellow #SWAG Inc a BLAZE mini helmet &amp; #Terribl…
+2018-09-15 01:33:26,785 - streaming - INFO - Tweet Text: RT @NHDems: |￣￣￣￣￣￣￣￣￣￣￣|
+    Knocking doors wins 
+             elections. 
+|＿＿＿＿＿＿＿＿＿＿＿| 
+                \ (•◡•) / 
+                  \…
+2018-09-15 01:33:26,788 - streaming - INFO - Tweet Text: RT @LORAFRIMANEE: chief keef: “my pistol sing like beethoven” 
+
+Beethoven never sung meaning this jus a double entendres to let us know he…
+2018-09-15 01:33:26,791 - streaming - INFO - Tweet Text: RT @NYCulture: ARTISTS: We received nearly 2,000 nominations of women, groups of women, or events in NYC women’s history to commemorate. No…
+2018-09-15 01:33:26,794 - streaming - INFO - Tweet Text: Ok this thread is very important sis went OFF!!!!
+2018-09-15 01:33:26,798 - streaming - INFO - Tweet Text: RT @Amy_Siskind: Can't fit in 280 characters all the outrage of Trump - erratic and unfit, unindicted co-conspirator to a crime, whose inne…
+2018-09-15 01:33:27,086 - streaming - INFO - Tweet Text: @ImSaltay @ysera__ How does one get in such a group chat🤔🤔...asking for a friend
+2018-09-15 01:33:27,091 - streaming - INFO - Tweet Text: RT @chuckwoolery: The one thing you will never hear a politician in Washington run on? Cutting Government spending. Trump is not a Politici…
+2018-09-15 01:33:27,093 - streaming - INFO - Tweet Text: If you roll up less than a gram you nasty
+2018-09-15 01:33:27,095 - streaming - INFO - Tweet Text: RT @TheRedJinty: Yo if Season 5 is so good why ain't there a Season 5 2? 
+
+Oh. There is. 
+
+In collaboration with: 
+@CynicOnRails
+@DDandT6
+@…
+2018-09-15 01:33:27,099 - streaming - INFO - Tweet Text: @gunnergonuts I played 4 and not had a shot on target
+2018-09-15 01:33:27,390 - streaming - INFO - Tweet Text: RT @BillKristol: If it were a witch hunt, one could say one of the witches has flipped.
+2018-09-15 01:33:27,395 - streaming - INFO - Tweet Text: @Oriade_ Lool so you’re on a whining mission abi 😂😂 continuuu I just dey observe 🚶🏽‍♂️
+2018-09-15 01:33:27,397 - streaming - INFO - Tweet Text: @cheshellen That is a super cute cat, thank you x
+2018-09-15 01:33:27,400 - streaming - INFO - Tweet Text: RT @NewWorldHominin: The murder of 13-year old Marissa Shen by 28-year old Syrian refugee Ibrahim Ali happened in the course of a sexual as…
+2018-09-15 01:33:27,402 - streaming - INFO - Tweet Text: RT @tanafuhyohoe: Apart of me feels on top of the world, another part of me feels alone at the bottom of a dark abyss with nothing but my t…
+2018-09-15 01:33:27,697 - streaming - INFO - Tweet Text: RT @ACLU: This is an attack on an innocent man who was killed by a cop for simply existing in his own home. PERIOD.
+
+Botham Jean should sti…
+2018-09-15 01:33:27,702 - streaming - INFO - Tweet Text: First Friday off in a while 🙃
+2018-09-15 01:33:28,018 - streaming - INFO - Tweet Text: RT @JoeAgneya: FUNNIER FACT:
+
+Euler is the most daring European mathematician who admitted to studying Indian calendrical texts when he pub…
+2018-09-15 01:33:28,025 - streaming - INFO - Tweet Text: @brodyvburks Can’t go wrong with a marching band.
+2018-09-15 01:33:28,027 - streaming - INFO - Tweet Text: RT @GovMikeHuckabee: Support girls’ sports and giving women jobs? A sex predator; if not UR a sexist. Either way, not fit for SCOTUS. To th…
+2018-09-15 01:33:28,415 - streaming - INFO - Tweet Text: RT @flowerveil: this might be a controversial opinion on main but feminine clothes for the most part are tailored and designed for small-ch…
+2018-09-15 01:33:28,418 - streaming - INFO - Tweet Text: RT @MyLifesTwoShort: The Lockport Cave can refer to one of two caverns beneath the city of Lockport, New York. One of the caves formed natu…
+2018-09-15 01:33:28,421 - streaming - INFO - Tweet Text: RT @LewisCapaldi: just off stage and I told over seven thousand people I was worried that my trousers were too high, because I might have a…
+2018-09-15 01:33:28,423 - streaming - INFO - Tweet Text: @rspyda @_yellow_paiges_ @__strangefruit if it's the regular price then why is it hastily written in Sharpie on a piece of paper?
+2018-09-15 01:33:28,425 - streaming - INFO - Tweet Text: The only reason Jadon Sancho isn't a regular starter for England is because he plays in Germany.
+2018-09-15 01:33:28,427 - streaming - INFO - Tweet Text: RT @NathanJain_: When I was a kid, I used to get excited whenever I got a letter addressed to me but now everytime I get one I think "what…
+2018-09-15 01:33:28,430 - streaming - INFO - Tweet Text: @WingsScotland What's a high pressure job?? Am about to blow ma lid over this!!!!
+2018-09-15 01:33:28,739 - streaming - INFO - Tweet Text: RT @ericuman: Nine hours left to apply for us to fund your investigation.
+
+We want to pay your salary.
+
+We want to help you hold state govt…
+2018-09-15 01:33:28,742 - streaming - INFO - Tweet Text: @day6official HAPPY BIRTHDAY JAE!!!! I wish a awesome day because you deserve that! Ly
+2018-09-15 01:33:28,745 - streaming - INFO - Tweet Text: RT @jadebirdxo: Spent £250 yesterday on @OfficialPLT for them to not send me the item I needed most 😡😡😡 RT IF PLT HAS PISSED YOU OFF RECENT…
+2018-09-15 01:33:29,169 - streaming - INFO - Tweet Text: RT @TonyReali: Her heart, strength, compass, fearlessness &amp; commitment are always on display; her independence, accountability &amp; humanity a…
+2018-09-15 01:33:29,172 - streaming - INFO - Tweet Text: RT @cracknee: taemin: for self-defense reasons i'm going to pretend to be a burglar and you guys have to act wisely
+
+jinki and kibum: okay…
+2018-09-15 01:33:29,175 - streaming - INFO - Tweet Text: Jackie Bryant is a hard lock
+2018-09-15 01:33:29,178 - streaming - INFO - Tweet Text: RT @Dripping_Rayys: Zoya helped him out of the darkness he surrounded himself in when he found out of his child SHE BROUGHT BACK THAT SMILE…
+2018-09-15 01:33:29,441 - streaming - INFO - Tweet Text: RT @NCCourts: Meet Morty, one of North Carolina’s first responders. He is a veteran of Hurricane Maria in Puerto Rico, and is now helping p…
+2018-09-15 01:33:29,445 - streaming - INFO - Tweet Text: Great to see and be a part of Agria investing in Vets
+2018-09-15 01:33:29,451 - streaming - INFO - Tweet Text: RT @JessieWfan: I bet its awful being at a all girls school, surrounded by bitches and not lads who entertain the class x
+2018-09-15 01:33:29,755 - streaming - INFO - Tweet Text: RT @noirmalexxx: 🎉🎊Congrats to @RomanBlck for winning a #NoirMale t-shirt (DM us to collect)! You were the first to RT &amp; follow for our 10K…
+2018-09-15 01:33:29,759 - streaming - INFO - Tweet Text: Me giving u a mean look anywhere because it’s hot af 😒
+2018-09-15 01:33:29,762 - streaming - INFO - Tweet Text: RT @judyscholes: @chemicalbrodar @hay_whye Men without Make up 
+Fine... I av a younger sister for you. 😂
+2018-09-15 01:33:29,764 - streaming - INFO - Tweet Text: One day, I might come to a point where I just stop caring
+2018-09-15 01:33:29,766 - streaming - INFO - Tweet Text: RT @charliekirk11: Obama and Clinton have gotten away with: 
+
+Uranium One
+Benghazi
+Solyndra
+Fast &amp; Furious
+IRS targeting
+Cash to Iran
+Riggi…
+2018-09-15 01:33:29,768 - streaming - INFO - Tweet Text: RT @rmead777: Oh come on! This is a profoundly disgraceful, distorted, &amp; disturbing cover-up piece by the MSM hacks at CNN who clearly suff…
+2018-09-15 01:34:21,434 - streaming - INFO - Twitter API Auth successful
+2018-09-15 01:34:21,435 - streaming - INFO - Tracking [u'#KyunkiYahanBhajpaHai', u'hello', u'a']
+2018-09-15 01:34:21,435 - streaming - INFO - Starting Stream
+2018-09-15 01:34:21,547 - streaming - INFO - Connection Made
+2018-09-15 01:34:23,208 - streaming - INFO - Tweet sequence: 1
+2018-09-15 01:34:23,546 - streaming - INFO - Tweet sequence: 2
+2018-09-15 01:34:23,855 - streaming - INFO - Tweet sequence: 3
+2018-09-15 01:34:23,863 - streaming - INFO - Tweet sequence: 4
+2018-09-15 01:34:24,189 - streaming - INFO - Tweet sequence: 5
+2018-09-15 01:34:24,194 - streaming - INFO - Tweet sequence: 6
+2018-09-15 01:34:24,199 - streaming - INFO - Tweet sequence: 7
+2018-09-15 01:34:24,204 - streaming - INFO - Tweet sequence: 8
+2018-09-15 01:34:24,579 - streaming - INFO - Tweet sequence: 9
+2018-09-15 01:34:24,583 - streaming - INFO - Tweet sequence: 10
+2018-09-15 01:34:24,585 - streaming - INFO - Tweet sequence: 11
+2018-09-15 01:34:24,592 - streaming - INFO - Tweet sequence: 12
+2018-09-15 01:34:24,595 - streaming - INFO - Tweet sequence: 13
+2018-09-15 01:34:24,598 - streaming - INFO - Tweet sequence: 14
+2018-09-15 01:34:25,460 - streaming - INFO - Tweet sequence: 15
+2018-09-15 01:34:25,463 - streaming - INFO - Tweet sequence: 16
+2018-09-15 01:34:25,466 - streaming - INFO - Tweet sequence: 17
+2018-09-15 01:34:25,468 - streaming - INFO - Tweet sequence: 18
+2018-09-15 01:34:25,471 - streaming - INFO - Tweet sequence: 19
+2018-09-15 01:34:25,474 - streaming - INFO - Tweet sequence: 20
+2018-09-15 01:34:25,477 - streaming - INFO - Tweet sequence: 21
+2018-09-15 01:34:25,479 - streaming - INFO - Tweet sequence: 22
+2018-09-15 01:34:25,482 - streaming - INFO - Tweet sequence: 23
+2018-09-15 01:34:25,877 - streaming - INFO - Tweet sequence: 24
+2018-09-15 01:34:25,880 - streaming - INFO - Tweet sequence: 25
+2018-09-15 01:34:25,882 - streaming - INFO - Tweet sequence: 26
+2018-09-15 01:34:25,885 - streaming - INFO - Tweet sequence: 27
+2018-09-15 01:34:26,320 - streaming - INFO - Tweet sequence: 28
+2018-09-15 01:34:26,325 - streaming - INFO - Tweet sequence: 29
+2018-09-15 01:34:26,328 - streaming - INFO - Tweet sequence: 30
+2018-09-15 01:34:26,330 - streaming - INFO - Tweet sequence: 31
+2018-09-15 01:34:26,679 - streaming - INFO - Tweet sequence: 32
+2018-09-15 01:34:26,683 - streaming - INFO - Tweet sequence: 33
+2018-09-15 01:34:26,687 - streaming - INFO - Tweet sequence: 34
+2018-09-15 01:34:26,690 - streaming - INFO - Tweet sequence: 35
+2018-09-15 01:34:26,694 - streaming - INFO - Tweet sequence: 36
+2018-09-15 01:34:26,696 - streaming - INFO - Tweet sequence: 37
+2018-09-15 01:34:27,402 - streaming - INFO - Tweet sequence: 38
+2018-09-15 01:34:27,406 - streaming - INFO - Tweet sequence: 39
+2018-09-15 01:34:27,410 - streaming - INFO - Tweet sequence: 40
+2018-09-15 01:34:27,413 - streaming - INFO - Tweet sequence: 41
+2018-09-15 01:34:27,825 - streaming - INFO - Tweet sequence: 42
+2018-09-15 01:34:27,828 - streaming - INFO - Tweet sequence: 43
+2018-09-15 01:34:27,831 - streaming - INFO - Tweet sequence: 44
+2018-09-15 01:34:27,833 - streaming - INFO - Tweet sequence: 45
+2018-09-15 01:34:27,835 - streaming - INFO - Tweet sequence: 46
+2018-09-15 01:34:27,838 - streaming - INFO - Tweet sequence: 47
+2018-09-15 01:34:27,841 - streaming - INFO - Tweet sequence: 48
+2018-09-15 01:34:28,304 - streaming - INFO - Tweet sequence: 49
+2018-09-15 01:34:28,311 - streaming - INFO - Tweet sequence: 50
+2018-09-15 01:34:28,316 - streaming - INFO - Tweet sequence: 51
+2018-09-15 01:34:28,730 - streaming - INFO - Tweet sequence: 52
+2018-09-15 01:34:28,734 - streaming - INFO - Tweet sequence: 53
+2018-09-15 01:34:28,737 - streaming - INFO - Tweet sequence: 54
+2018-09-15 01:34:28,740 - streaming - INFO - Tweet sequence: 55
+2018-09-15 01:34:28,743 - streaming - INFO - Tweet sequence: 56
+2018-09-15 01:34:28,745 - streaming - INFO - Tweet sequence: 57
+2018-09-15 01:34:28,747 - streaming - INFO - Tweet sequence: 58
+2018-09-15 01:34:28,749 - streaming - INFO - Tweet sequence: 59
+2018-09-15 01:34:29,139 - streaming - INFO - Tweet sequence: 60
+2018-09-15 01:34:29,142 - streaming - INFO - Tweet sequence: 61
+2018-09-15 01:34:29,144 - streaming - INFO - Tweet sequence: 62
+2018-09-15 01:34:29,147 - streaming - INFO - Tweet sequence: 63
+2018-09-15 01:34:29,150 - streaming - INFO - Tweet sequence: 64
+2018-09-15 01:34:29,152 - streaming - INFO - Tweet sequence: 65
+2018-09-15 01:34:29,155 - streaming - INFO - Tweet sequence: 66
+2018-09-15 01:34:29,568 - streaming - INFO - Tweet sequence: 67
+2018-09-15 01:34:29,572 - streaming - INFO - Tweet sequence: 68
+2018-09-15 01:34:29,575 - streaming - INFO - Tweet sequence: 69
+2018-09-15 01:34:29,581 - streaming - INFO - Tweet sequence: 70
+2018-09-15 01:34:30,022 - streaming - INFO - Tweet sequence: 71
+2018-09-15 01:34:30,029 - streaming - INFO - Tweet sequence: 72
+2018-09-15 01:34:30,031 - streaming - INFO - Tweet sequence: 73
+2018-09-15 01:34:30,034 - streaming - INFO - Tweet sequence: 74
+2018-09-15 01:34:30,038 - streaming - INFO - Tweet sequence: 75
+2018-09-15 01:34:30,469 - streaming - INFO - Tweet sequence: 76
+2018-09-15 01:34:30,473 - streaming - INFO - Tweet sequence: 77
+2018-09-15 01:34:30,476 - streaming - INFO - Tweet sequence: 78
+2018-09-15 01:34:30,479 - streaming - INFO - Tweet sequence: 79
+2018-09-15 01:34:30,482 - streaming - INFO - Tweet sequence: 80
+2018-09-15 01:34:30,484 - streaming - INFO - Tweet sequence: 81
+2018-09-15 01:34:30,487 - streaming - INFO - Tweet sequence: 82
+2018-09-15 01:34:30,804 - streaming - INFO - Tweet sequence: 83
+2018-09-15 01:34:30,808 - streaming - INFO - Tweet sequence: 84
+2018-09-15 01:34:30,811 - streaming - INFO - Tweet sequence: 85
+2018-09-15 01:34:30,812 - streaming - INFO - Tweet sequence: 86
+2018-09-15 01:34:30,815 - streaming - INFO - Tweet sequence: 87
+2018-09-15 01:34:30,818 - streaming - INFO - Tweet sequence: 88
+2018-09-15 01:34:30,821 - streaming - INFO - Tweet sequence: 89
+2018-09-15 01:34:31,193 - streaming - INFO - Tweet sequence: 90
+2018-09-15 01:34:31,212 - streaming - INFO - Tweet sequence: 91
+2018-09-15 01:34:31,214 - streaming - INFO - Tweet sequence: 92
+2018-09-15 01:34:31,216 - streaming - INFO - Tweet sequence: 93
+2018-09-15 01:34:31,644 - streaming - INFO - Tweet sequence: 94
+2018-09-15 01:34:31,649 - streaming - INFO - Tweet sequence: 95
+2018-09-15 01:34:31,652 - streaming - INFO - Tweet sequence: 96
+2018-09-15 01:34:31,654 - streaming - INFO - Tweet sequence: 97
+2018-09-15 01:34:32,041 - streaming - INFO - Tweet sequence: 98
+2018-09-15 01:34:32,045 - streaming - INFO - Tweet sequence: 99
+2018-09-15 01:34:32,048 - streaming - INFO - Tweet sequence: 100
+2018-09-15 01:34:32,051 - streaming - INFO - Tweet sequence: 101
+2018-09-15 01:34:32,055 - streaming - INFO - Tweet sequence: 102
+2018-09-15 01:34:32,700 - streaming - INFO - Tweet sequence: 103
+2018-09-15 01:34:32,703 - streaming - INFO - Tweet sequence: 104
+2018-09-15 01:34:32,705 - streaming - INFO - Tweet sequence: 105
+2018-09-15 01:34:32,708 - streaming - INFO - Tweet sequence: 106
+2018-09-15 01:34:32,711 - streaming - INFO - Tweet sequence: 107
+2018-09-15 01:34:32,865 - streaming - INFO - Tweet sequence: 108
+2018-09-15 01:34:32,868 - streaming - INFO - Tweet sequence: 109
+2018-09-15 01:34:32,871 - streaming - INFO - Tweet sequence: 110
+2018-09-15 01:34:32,873 - streaming - INFO - Tweet sequence: 111
+2018-09-15 01:34:32,987 - streaming - INFO - Tweet sequence: 112
+2018-09-15 01:34:33,270 - streaming - INFO - Tweet sequence: 113
+2018-09-15 01:34:33,273 - streaming - INFO - Tweet sequence: 114
+2018-09-15 01:34:33,276 - streaming - INFO - Tweet sequence: 115
