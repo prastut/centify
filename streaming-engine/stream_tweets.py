@@ -55,9 +55,8 @@ class StreamListener(tweepy.StreamListener):
             producer.flush()
 
     def on_error(self, status_code):
-        print("Error, oops")
-        if status_code == 420:
-            return False
+        logging.error(status_code)
+        return True
 
 
 if __name__ == '__main__':
