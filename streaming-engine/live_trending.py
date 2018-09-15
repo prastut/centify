@@ -5,20 +5,20 @@ from collections import defaultdict
 from itertools import chain
 import sys
 
-## ===== CONFIG ## 
+## ===== CONFIG ##
 fixture_collection = "fixtures"
 entities_collection = "entities_new"
 
 fixture_id = None
 ## ===== ##
 
-## === Mongo Config
+# === Mongo Config
 MONGO_URL = os.getenv(
     'MONGODB_URI', "mongodb://bubble:bubble@104.196.215.99:27017/Bubble")
-    
+
 client = MongoClient(MONGO_URL)
 db = client["EPL"]
-## 
+##
 
 """
     Fetching the collection names for:

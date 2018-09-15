@@ -6,3 +6,4 @@ requests
 kafka-python
 watson-developer-cloud
 tweepy
+configparser
