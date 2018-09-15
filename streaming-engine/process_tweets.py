@@ -142,9 +142,9 @@ def get_max_emotion(emotion_dict):
     return max(emotion_dict.items(), key=operator.itemgetter(1))[0]
 
 
-def save_results(response):
+def save_tweet(response):
     db = connect_mongo()
-    db[fixture_id].insert(entity)
+    db[fixture_id].insert(response)
     print "saved"
 
 
@@ -175,7 +175,7 @@ def process_and_save_tweets(tweet_object):
                         tweet_object['sentiment'] = get_sentiment(
                             entity['sentiment'])
 
-                        print tweet_object
+                        save_tweet(tweet_object)
 
     except Exception as e:
         print("Error in processing and saving tweets")
