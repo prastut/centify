@@ -4,7 +4,17 @@ consumerSecret = sTCDZMkP4hJCpSlsqvfobgps2VpqV9kWdPOSPXvwsdhmPy4coB
 accessToken = 203413064-RMlxZHBliQK7sxFoKpLTvOvwaUAwRNbI4LwbrVOc
 accessTokenSecret = 0KRvgVQVcmQLlIQO5v8cfcxW2V4Db1A14fHrm8nNehOzY
 
-[STREAMING]
+[DB_CONFIG]
+database = EPL
+fixture_collection = fixtures
+entities_collection = entities
+
+[WATSON]
+url = "https://gateway.watsonplatform.net/natural-language-understanding/api"
+username = "ba65b1eb-b4d4-4e44-bd43-26b62b0ba3aa"
+password = "FdSmofP3EAvA"
+
+[FIXTURE]
 collection = 5b7afa907da5160c055a738f
 
 [HASHTAGS]

@@ -2,13 +2,9 @@
 import logging
 import re
 import configparser
-
 from kafka import KafkaProducer
 from kafka.errors import KafkaError
-import settings_twitter
 import tweepy
-from bson import ObjectId
-import json
 
 # Logging Config
 logger = logging.getLogger('streaming')
@@ -110,15 +106,12 @@ if __name__ == '__main__':
 
     # Streaming Config
     hash_tags_dict = dict(config['HASHTAGS'].items())
-    collection = config['STREAMING']['collection']
+    collection = config['FIXTURE']['collection']
 
     hash_tags_to_track = convert_hashtags_dict_to_list(hash_tags_dict)
-
     logger.info("Tracking %s", hash_tags_to_track)
 
-    # Create Stream and bind listener
-    logger.info("Starting Stream")
-
+    # Finally Streaming
     while True:
         try:
             stream = tweepy.Stream(
