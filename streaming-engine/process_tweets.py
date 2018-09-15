@@ -125,6 +125,7 @@ def analyze_from_watson(text):
 
         return analysis
     except Exception as e:
+        print e
         print "Error in analyzing from Watson"
 
 
