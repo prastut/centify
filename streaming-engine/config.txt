@@ -20,6 +20,9 @@ trending_collection = 5b7afa907da5160c055a738f_trending
 events_collection = 5b7afa907da5160c055a738f_events
 
 [HASHTAGS]
-hashtag_1 = #KyunkiYahanBhajpaHai
-hashtag_2 = hello
-hashtag_3 = a
+hashtag_1 = #LFC
+hashtag_2 = #YNWA
+hashtag_3 = #THFC
+hashtag_4 = #COYS
+hashtag_5 = #TOTLIV
+
