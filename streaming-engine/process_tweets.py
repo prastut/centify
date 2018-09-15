@@ -32,10 +32,10 @@ import logging
 
 ## ===== Logging Config ==== #
 logger = logging.getLogger('processing')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.CRITICAL)
 
 fh = logging.FileHandler('processing.log')
-fh.setLevel(logging.DEBUG)
+fh.setLevel(logging.CRITICAL)
 
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
@@ -54,6 +54,7 @@ logger.addHandler(ch)
 config = configparser.ConfigParser()
 config.read('config.txt')
 fixture_id = config['FIXTURE']['collection']
+trending_collection = config['FIXTURE']['trending_collection']
 
 mongo_database = config['DB_CONFIG']['database']
 fixture_collection = config['DB_CONFIG']['fixture_collection']
@@ -65,6 +66,7 @@ watson_password = config['WATSON']['password']
 
 ## === Mongo Config === ##
 db = MongoClient("localhost", 27017)[mongo_database]
+db[trending_collection].create_index([("sequence", -1)])
 ### ==================  ##
 
 ## === Watson Config === ##
@@ -142,23 +144,52 @@ def get_max_emotion(emotion_dict):
     return max(emotion_dict.items(), key=operator.itemgetter(1))[0]
 
 
-def save_tweet(response):
-    db = connect_mongo()
-    db[fixture_id].insert(response)
-    print "saved"
+def save_tweet(tweet_object):
+    try: 
+        db = connect_mongo()
+        db[fixture_id].insert(tweet_object)
+    
+    except Exception:
+        logger.exception("Tweet saving failed")
 
+def update_trending(tweet_object):
+    try: 
+        db = connect_mongo()
+        last_object_in_trending = db[trending_collection].find({}).sort([("sequence", -1)]).limit(1)
+
+        until_now_dict = {}
+        trending_dict = {}
+
+        key = tweet_object['key']
+        sentiment = tweet_object['sentiment']
+
+        if last_object_in_trending and key in last_object_in_trending['until_now']:
+                until_now_dict[key]['count'] = last_object_in_trending[key]['count'] + 1
+                until_now_dict[key]['sentiment'] = sentiment
+        else:
+            until_now_dict[key] = {'count': 1, 'sentiment': sentiment}
+
+        
+        trending_dict = {
+        'sequence': tweet_object['sequence'],
+        'timeStamp': tweet_object['timeStamp'],
+        'until_now': until_now_dict,
+        }
+
+        db[trending_collection].insert(trending_dict)
+
+    except Exception:
+        logger.exception("Trending failed")
+       
 
 def process_and_save_tweets(tweet_object):
 
     try:
         watson_analysis = analyze_from_watson(tweet_object['tweet'])
 
-        print "WATSON ANALYSIS"
-        print watson_analysis
-
         for entity in watson_analysis['entities']:
             if "emotion" not in entity.keys():
-                print "Not having emotion"
+                logger.info("No emotion")
                 continue
 
             for sampled_entity_key in entity_dict_final:
@@ -175,11 +206,14 @@ def process_and_save_tweets(tweet_object):
                         tweet_object['sentiment'] = get_sentiment(
                             entity['sentiment'])
 
+                        tweet_object['key'] = sampled_entity_key
+
                         save_tweet(tweet_object)
+                        update_trending(tweet_object)
 
     except Exception as e:
-        print("Error in processing and saving tweets")
-        print(e)
+        logger.exception("Processing and Saving Tweets Failed")
+       
 
 
 def format_raw_tweet_object_from_kakfa(raw_tweet_object_in_string):
@@ -188,7 +222,7 @@ def format_raw_tweet_object_from_kakfa(raw_tweet_object_in_string):
             '\n', '\\n')
         return eval(formatted_raw_tweet_object)
     except Exception as e:
-        print e
+        logger.exception("Formatting Error")
 
 
 def check_tweet_contains_RT(text):

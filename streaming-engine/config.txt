@@ -16,6 +16,8 @@ password = FdSmofP3EAvA
 
 [FIXTURE]
 collection = 5b7afa907da5160c055a738f
+trending_collection = 5b7afa907da5160c055a738f_trending
+events_collection = 5b7afa907da5160c055a738f_events
 
 [HASHTAGS]
 hashtag_1 = #KyunkiYahanBhajpaHai
